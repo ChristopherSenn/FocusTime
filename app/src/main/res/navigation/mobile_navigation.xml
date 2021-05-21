@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_day">
+
+    <fragment
+        android:id="@+id/navigation_day"
+        android:name="com.focustime.android.ui.calendar.day.CalendarDayFragment"
+        android:label="@string/title_calendar_day"
+        tools:layout="@layout/calendar_day_fragment" />
+    <fragment
+        android:id="@+id/navigation_create"
+        android:name="com.focustime.android.ui.calendar.create.CalendarCreateFragment"
+        android:label="@string/title_create"
+        tools:layout="@layout/calendar_create_fragment" />
+</navigation>

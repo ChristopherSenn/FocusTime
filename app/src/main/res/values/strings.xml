@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">FocusTime</string>
+
+    <string name="title_create">Create Focus Time</string>
+    <string name="title_calendar_day">Day View</string>
 </resources>
