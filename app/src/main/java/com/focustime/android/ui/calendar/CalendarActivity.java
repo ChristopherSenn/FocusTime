@@ -31,7 +31,7 @@ public class CalendarActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_day, R.id.navigation_create).build();
+                R.id.navigation_day, R.id.navigation_create, R.id.navigation_focusButton).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_calendar);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);

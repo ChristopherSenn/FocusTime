@@ -6,6 +6,11 @@
     app:startDestination="@id/navigation_day">
 
     <fragment
+        android:id="@+id/navigation_focusButton"
+        android:name="com.focustime.android.ui.calendar.focusButton.FocusButtonFragment"
+        android:label="@string/title_focusButton"
+        tools:layout="@layout/focus_button_fragment" />
+    <fragment
         android:id="@+id/navigation_day"
         android:name="com.focustime.android.ui.calendar.day.CalendarDayFragment"
         android:label="@string/title_calendar_day"
