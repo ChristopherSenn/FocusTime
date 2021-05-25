@@ -53,7 +53,6 @@ public class CalendarDayFragment extends Fragment {
             }
         });
 
-        test();
 
         return root;
     }
@@ -71,27 +70,6 @@ public class CalendarDayFragment extends Fragment {
         binding = null;
     }
 
-    public void test() {
-        CalendarAPI api = new CalendarAPI(this.getContext());
-        List<Calendar> calendars = api.getAllCalendars();
-        for(int i = 0; i < calendars.size(); i++) {
-            Log.e("Calendar", calendars.get(i).displayName + ", id " + calendars.get(i).id);
-        }
-        java.util.Calendar beginTime = java.util.Calendar.getInstance();
-        beginTime.set(2021, 5, 24, 15, 00);
-        java.util.Calendar endTime = java.util.Calendar.getInstance();
-        endTime.set(2021, 5, 24, 15, 30);
 
-        /*long id = api.createFocusTime(new FocusTime("Test Title", "Test Description",
-                beginTime,
-                endTime));*/
-        //Log.e("asljealksejas     ID", id+"");
-
-        for(Event e: api.getFocusTimes()) {
-            Log.e("alksje", e.title);
-        }
-
-
-    }
 
 }

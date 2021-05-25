@@ -27,7 +27,12 @@ public class CalendarAPI {
     public CalendarAPI(Context context) {
         this.context = context;
         calendarProvider = new CalendarProvider(context);
+        //this.deleteCalendar();
         this.createFocusTimeCalendar();
+        //Calendar c = calendarProvider.getCalendar(6);
+        //c.displayName = "Get out of my way";
+        //updateCalendar(c);
+
     }
 
     public List<Calendar> getAllCalendars() {
@@ -52,7 +57,10 @@ public class CalendarAPI {
     }
 
     public List<Event> getFocusTimes() {
-        return calendarProvider.getEvents(getFocusTimeCalendar().id).getList();
+        Calendar c = getFocusTimeCalendar();
+        List<Event> e = calendarProvider.getEvents(c.id).getList();
+
+        return e;
     }
 
     public long createFocusTime(FocusTime focusTime) {
