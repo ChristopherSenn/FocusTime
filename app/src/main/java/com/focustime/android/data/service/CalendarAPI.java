@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.focustime.android.data.model.FocusTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.everything.providers.android.calendar.Calendar;
@@ -27,42 +28,106 @@ public class CalendarAPI {
     public CalendarAPI(Context context) {
         this.context = context;
         calendarProvider = new CalendarProvider(context);
-        //this.deleteCalendar();
         this.createFocusTimeCalendar();
-        //Calendar c = calendarProvider.getCalendar(6);
-        //c.displayName = "Get out of my way";
-        //updateCalendar(c);
+
 
     }
 
+    /**
+     * Returns a list of all of the Users Calendars on their phone
+     * @return List of all Calendars on the users phone
+     */
     public List<Calendar> getAllCalendars() {
-        List<Calendar> calendars = calendarProvider.getCalendars().getList();
-        return calendars;
+        return calendarProvider.getCalendars().getList();
     }
 
+    /**
+     * Returns the Events of a certain calendar.
+     * Note that this returns Events, NOT FocusTimes!
+     * Use getFocusTimes() if you need FocusTimes specifically!
+     *
+     * @param calendar The calendar whose Events should be returned
+     * @return List of all Events in a certain calendar
+     */
     public List<Event> getEventsByCalendar(Calendar calendar) {
         return calendarProvider.getEvents(calendar.id).getList();
     }
 
+    /**
+     * Returns the Calendar that contains the FocusTimes.
+     * This should just be used if information from the Calendar is needed!
+     * If you want to access the FocusTimes, use getFocusTimes() instead!
+     *
+     * @return Calendar Object of the FocusTime Calendar
+     */
     public Calendar getFocusTimeCalendar() {
-        List<Calendar> calendars = this.getAllCalendars();
-        long id;
         for(Calendar calendar: this.getAllCalendars()) {
             if(calendar.displayName.equals(FOCUS_TIME_CALENDAR_NAME)) {
-                id = calendar.id;
                 return calendar;
             }
         }
         return null;
     }
 
-    public List<Event> getFocusTimes() {
+    /**
+     * Returns a List of every FocusTime Event
+     *
+     * @return List of every FocusTime Event.
+     */
+    public List<FocusTime> getFocusTimes() {
         Calendar c = getFocusTimeCalendar();
         List<Event> e = calendarProvider.getEvents(c.id).getList();
+        ArrayList<FocusTime> focusTimes = new ArrayList<>();
 
-        return e;
+        for(Event event: e) {
+            focusTimes.add(getFocusTimeById(event.id));
+        }
+
+        return focusTimes;
     }
 
+    /**
+     * Returns a specific FocusTime with a certain ID
+     * Returns null if the ID doesn't exist or is from an event in a different Calendar.
+     *
+     * @param id ID of the desired FocusTime
+     * @return FocusTime with the corresponding ID
+     */
+    public FocusTime getFocusTimeById(long id) {
+        Event event = calendarProvider.getEvent(id);
+        if(event.calendarId != getFocusTimeCalendar().id) {
+            Log.e("CalendarAPI: ", "The selected Event doesn't belong to the Focus Time Calendar!");
+            return null;
+        }
+        java.util.Calendar beginTime = java.util.Calendar.getInstance();
+        beginTime.setTimeInMillis(event.dTStart);
+        java.util.Calendar endTime = java.util.Calendar.getInstance();
+        beginTime.setTimeInMillis(event.dTend);
+
+        return new FocusTime(event.title, event.description, beginTime, endTime, event.id);
+    }
+
+    /**
+     * Updates a FocusTime in the phone's database
+     *
+     * @param newFocusTime FocusTime with updated parameters
+     */
+    public void updateFocusTime(FocusTime newFocusTime) {
+        Event e = calendarProvider.getEvent(newFocusTime.getId());
+        e.title = newFocusTime.getTitle();
+        e.description = newFocusTime.getDescription();
+        e.dTStart = newFocusTime.getBeginTime().getTimeInMillis();
+        e.dTend = newFocusTime.getEndTime().getTimeInMillis();
+
+        calendarProvider.update(e);
+    }
+
+    /**
+     * Save a FocusTime to the phone's database
+     *
+     * @param focusTime FocusTime Object that should be saved/created
+     * @return ID of the created Calendar Event
+     */
     public long createFocusTime(FocusTime focusTime) {
         ContentResolver cr = context.getContentResolver();
         ContentValues values = new ContentValues();
@@ -123,7 +188,11 @@ public class CalendarAPI {
 
     }
 
-    private void deleteCalendar() {
+    /**
+     * Deletes the focus time calendar and every FocusTime.
+     * Don't use this unless you know exactly what you are doing!
+     */
+    private void deleteFocusTimeCalendar() {
         Uri calUri = CalendarContract.Calendars.CONTENT_URI;
         calUri = calUri.buildUpon()
                 .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
@@ -136,6 +205,14 @@ public class CalendarAPI {
 
     }
 
+    /**
+     * Deletes a calendar with the corresponding ID and all of it's events if the calendar was created by the user.
+     * Just removes the calendar from the phone if it was a system calendar (Like Holidays etc.)
+     * NEVER use this unless you fucked up really bad an know exactly what you are doing!
+     * You can delete all of the users Events and Calendars using this!
+     *
+     * @param id ID of the calendar that should be deleted
+     */
     private void deleteCalendarById(String id) {
         Uri calUri = CalendarContract.Calendars.CONTENT_URI;
         calUri = calUri.buildUpon()
@@ -143,11 +220,15 @@ public class CalendarAPI {
                 .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
                 .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE, "com.google")
                 .build();
-        //calendarHandler.startDelete(0,-1,calUri,null,null);
         ContentResolver cr = context.getContentResolver();
         cr.delete(calUri, null,null);
     }
 
+    /**
+     * Updates a certain Calendar if any of its Parametes changed.
+     *
+     * @param newCalendar Calendar that should be updated
+     */
     private void updateCalendar(Calendar newCalendar) {
         calendarProvider.update(newCalendar);
     }

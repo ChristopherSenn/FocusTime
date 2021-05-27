@@ -5,7 +5,16 @@ import java.util.Calendar;
 public class FocusTime {
     private Calendar beginTime, endTime;
     private String title, description;
+    private long id;
 
+    /**
+     * The default Constructor for creating custom FocusTimes
+     *
+     * @param title Title of the Focus Time
+     * @param description Description of the FocusTime
+     * @param beginTime BeginTime of the FocusTime
+     * @param endTime EndTime of the FocusTime
+     */
     public FocusTime(String title, String description, Calendar beginTime, Calendar endTime) {
         this.beginTime = beginTime;
         this.endTime = endTime;
@@ -13,9 +22,23 @@ public class FocusTime {
         this.description = description;
     }
 
+    /**
+     * This should only ever be used when working with a FocusTime that already exists.
+     * Never just select a random ID!
+     *
+     * @param title Title of the Focus Time
+     * @param description Description of the FocusTime
+     * @param beginTime BeginTime of the FocusTime
+     * @param endTime EndTime of the FocusTime
+     * @param id Internal ID of the FocusTime
+     */
+    public FocusTime(String title, String description, Calendar beginTime, Calendar endTime, long id) {
+        this(title, description, beginTime, endTime);
+        this.id = id;
+    }
 
     public Calendar getBeginTime() {
-        return beginTime;
+        return this.beginTime;
     }
 
     public void setBeginTime(Calendar beginTime) {
@@ -23,7 +46,7 @@ public class FocusTime {
     }
 
     public Calendar getEndTime() {
-        return endTime;
+        return this.endTime;
     }
 
     public void setEndTime(Calendar endTime) {
@@ -31,7 +54,7 @@ public class FocusTime {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -39,6 +62,10 @@ public class FocusTime {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
+    }
+
+    public long getId() {
+        return this.id;
     }
 }

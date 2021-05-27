@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
 
@@ -49,9 +50,11 @@ public class CalendarDayViewModel extends AndroidViewModel {
                 endTime));*/
         //Log.e("asljealksejas     ID", id+"");
 
+
         Log.e("Events length", api.getFocusTimes().size()+"");
-        for(Event e: api.getFocusTimes()) {
-            Log.e("alksje", e.title+"");
+        for(FocusTime ft: api.getFocusTimes()) {
+
+            Log.e("alksje", ft.getId() + "  " + ft.getTitle());
         }
 
 
