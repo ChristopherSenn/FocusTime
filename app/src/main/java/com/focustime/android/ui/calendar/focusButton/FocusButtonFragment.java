@@ -94,17 +94,17 @@ public class FocusButtonFragment extends Fragment {
                 CustomTimePickerDialog customTimePickerDialog = new CustomTimePickerDialog(FocusButtonFragment.this.getContext(),
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                // Display Selected time in textbox
-                                if (hourOfDay < 10 && minute < 10) {
-                                    mTextViewCountdown.setText("0" + hourOfDay + ":" + "0" + minute );
-                                } else if (minute < 10) {
-                                    mTextViewCountdown.setText(hourOfDay + ":" + "0" + minute);
-                                } else {
-                                    mTextViewCountdown.setText(hourOfDay + ":" + minute);
-                                }
-                            }
-                        }, mHour, mMinute, true);
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    // Display Selected time in textbox
+                    if (hourOfDay == 0 && minute < 10) {
+                        mHour = hourOfDay;
+                        mTextViewCountdown.setText("0" + minute + ":" + "00");
+                    } else {
+                        mMinute = minute;
+                        mTextViewCountdown.setText(hourOfDay * 60 + minute + ":" + "00");
+                    }
+                }
+            }, mHour, mMinute, true);
                 //customTimePickerDialog.updateTime(5, 5);
                 customTimePickerDialog.show();
             }
@@ -122,37 +122,41 @@ public class FocusButtonFragment extends Fragment {
             Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
             startActivity(intent);
         } else {
-            mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
-
-            mImageView.setImageResource(0);
-
             String[] time = mTextViewCountdown.getText().toString().split(":");
-            mHour = Integer.parseInt(time[0]);
-            mMinute = Integer.parseInt(time[1]);
-            mTimeLeftInMillis = (mHour * 60 + mMinute) * 60 * 1000;
+            mMinute = Integer.parseInt(time[0]);
+            mTimeLeftInMillis = mMinute * 60 * 1000;
 
-            mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    mTimeLeftInMillis = millisUntilFinished;
-                    updateCountDownText();
-                }
+            if (mTimeLeftInMillis == 0) {
+                Toast.makeText(FocusButtonFragment.this.getContext(),"please set a focustime", Toast.LENGTH_SHORT).show();
+            } else {
+                mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
 
-                @Override
-                public void onFinish() {
-                    mCountDownTimer.cancel();
-                    mTimerRunning = false;
-                    mButtonStartStop.setText("start");
+                mImageView.setImageResource(0);
 
-                    mTextViewCountdown.setClickable(true);
-                    cancelDND();
-                }
-            }.start();
+                mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        mTimeLeftInMillis = millisUntilFinished;
+                        updateCountDownText();
+                    }
 
-            mTimerRunning = true;
-            mButtonStartStop.setText("give up");
+                    @Override
+                    public void onFinish() {
+                        mCountDownTimer.cancel();
+                        mTimerRunning = false;
+                        mButtonStartStop.setText("start");
 
-            mTextViewCountdown.setClickable(false);
+                        mTextViewCountdown.setClickable(true);
+                        cancelDND();
+                    }
+                }.start();
+
+                mTimerRunning = true;
+                mButtonStartStop.setText("give up");
+
+                mTextViewCountdown.setClickable(false);
+            }
+
         }
     }
 
@@ -166,7 +170,7 @@ public class FocusButtonFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void stopTimer() {
-        mTimeLeftInMillis = 0;
+        mTimeLeftInMillis = mMinute * 60 * 1000;
         updateCountDownText();
         mTimerRunning = false;
         mCountDownTimer.cancel();
