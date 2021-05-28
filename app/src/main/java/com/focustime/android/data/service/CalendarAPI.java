@@ -22,13 +22,11 @@ public class CalendarAPI {
     public static final String FOCUS_TIME_CALENDAR_NAME = "Focus Time Calendar";
     public static final String FOCUS_TIME_ACCOUNT_NAME ="focustime";
 
-    private CalendarProvider calendarProvider;
-    private Context context;
+    private final CalendarProvider calendarProvider;
 
     public CalendarAPI(Context context) {
-        this.context = context;
         calendarProvider = new CalendarProvider(context);
-        this.createFocusTimeCalendar();
+        this.createFocusTimeCalendar(context);
 
 
     }
@@ -126,9 +124,10 @@ public class CalendarAPI {
      * Save a FocusTime to the phone's database
      *
      * @param focusTime FocusTime Object that should be saved/created
+     * @param context application context
      * @return ID of the created Calendar Event
      */
-    public long createFocusTime(FocusTime focusTime) {
+    public long createFocusTime(FocusTime focusTime, Context context) {
         ContentResolver cr = context.getContentResolver();
         ContentValues values = new ContentValues();
 
@@ -146,8 +145,10 @@ public class CalendarAPI {
 
     /**
      * Creates an Calendar where FocusTimes can be stored if it doesn't already exist.
+     *
+     * @param context application context
      */
-    private void createFocusTimeCalendar() {
+    private void createFocusTimeCalendar(Context context) {
 
         List<Calendar> calendars = this.getAllCalendars();
 
@@ -191,8 +192,10 @@ public class CalendarAPI {
     /**
      * Deletes the focus time calendar and every FocusTime.
      * Don't use this unless you know exactly what you are doing!
+     *
+     * @param context application context
      */
-    private void deleteFocusTimeCalendar() {
+    private void deleteFocusTimeCalendar(Context context) {
         Uri calUri = CalendarContract.Calendars.CONTENT_URI;
         calUri = calUri.buildUpon()
                 .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
@@ -212,8 +215,10 @@ public class CalendarAPI {
      * You can delete all of the users Events and Calendars using this!
      *
      * @param id ID of the calendar that should be deleted
+     * @param context application context
      */
-    private void deleteCalendarById(String id) {
+    private void deleteCalendarById(String id, Context context) {
+
         Uri calUri = CalendarContract.Calendars.CONTENT_URI;
         calUri = calUri.buildUpon()
                 .appendPath(id)
