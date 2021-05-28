@@ -3,11 +3,14 @@ package com.focustime.android.ui.calendar;
 //import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.focustime.android.R;
 
+import com.focustime.android.data.service.FocusTimeService;
 import com.focustime.android.databinding.ActivityCalendarBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +34,9 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_calendar);
 
+
+
+
         // Check if we have permission to access the users phone calendar database
         checkPermission(CALLBACK_ID, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
 
@@ -44,7 +50,6 @@ public class CalendarActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_calendar);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
 
 
     }

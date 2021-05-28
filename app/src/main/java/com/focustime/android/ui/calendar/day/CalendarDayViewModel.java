@@ -3,6 +3,9 @@ package com.focustime.android.ui.calendar.day;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
@@ -13,8 +16,13 @@ import androidx.lifecycle.ViewModel;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
+import com.focustime.android.data.service.FocusTimeService;
+import com.focustime.android.util.TaskRunner;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import me.everything.providers.android.calendar.Calendar;
 import me.everything.providers.android.calendar.Event;
@@ -23,17 +31,36 @@ public class CalendarDayViewModel extends AndroidViewModel {
     private MutableLiveData<String> mText;
     private Context context;
 
+
     public CalendarDayViewModel(Application application) {
         super(application);
         this.context = application.getApplicationContext();
         mText = new MutableLiveData<>();
         mText.setValue("This is day fragment");
-        test();
+        testService();
+        testAPI();
+
 
 
     }
 
-    public void test() {
+    public void testService() {
+        TaskRunner taskRunner = new TaskRunner();
+        taskRunner.executeAsync(new StartServiceTask(), (result) -> {
+            makeServiceDoSomething();
+        });
+    }
+
+
+
+
+
+    public void makeServiceDoSomething(){
+        if( FocusTimeService.isRunning )
+            FocusTimeService.instance.doSomething();
+    }
+
+    public void testAPI() {
         CalendarAPI api = new CalendarAPI(this.context);
         List<Calendar> calendars = api.getAllCalendars();
         for(int i = 0; i < calendars.size(); i++) {
@@ -63,4 +90,25 @@ public class CalendarDayViewModel extends AndroidViewModel {
     public LiveData<String> getText() {
         return mText;
     }
+
+    class StartServiceTask implements Callable<Void> {
+
+        @Override
+        public Void call() {
+            if( FocusTimeService.isRunning ){
+                // Stop service
+                Intent intent = new Intent(context, FocusTimeService.class);
+                context.stopService(intent);
+            }
+            else {
+                // Start service
+                Intent intent = new Intent(context, FocusTimeService.class);
+                context.startService(intent);
+                Log.e("Service TEst", "Service Started");
+
+            }
+            return null;
+        }
+    }
+
 }

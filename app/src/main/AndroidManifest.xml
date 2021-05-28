@@ -3,10 +3,11 @@
     package="com.focustime.android">
 
     <!-- PERMISSIONS -->
-
     <!-- Read and Write Permissions for the calendar database so we can import and save Focus Times -->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -15,7 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FocusTime">
-
+        <service
+            android:name=".data.service.FocusTimeService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <activity android:name=".ui.calendar.CalendarActivity">
             <intent-filter>
