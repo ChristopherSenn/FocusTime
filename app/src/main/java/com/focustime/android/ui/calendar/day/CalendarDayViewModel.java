@@ -17,7 +17,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
@@ -32,10 +31,15 @@ import java.util.concurrent.Executors;
 
 import me.everything.providers.android.calendar.Calendar;
 import me.everything.providers.android.calendar.Event;
+import java.util.ArrayList;
+
+
 
 public class CalendarDayViewModel extends AndroidViewModel {
     private MutableLiveData<String> mText;
     private Context context;
+    private MutableLiveData<ArrayList<DayElement>> elementList;
+    private ArrayList<DayElement> daySchedule;
 
 
     public CalendarDayViewModel(Application application) {
@@ -43,6 +47,11 @@ public class CalendarDayViewModel extends AndroidViewModel {
         this.context = application.getApplicationContext();
         mText = new MutableLiveData<>();
         mText.setValue("This is day fragment");
+
+        elementList = new MutableLiveData<>();
+        daySchedule = new ArrayList<>();
+        init();
+
         Intent intent = new Intent(context, CalendarService.class);
         context.startService(intent);
         //testService();
@@ -62,7 +71,22 @@ public class CalendarDayViewModel extends AndroidViewModel {
 
     }
 
+    public void init(){
+        //TODO getData daySchedule = data;
+        fillWithTestData();
+        System.out.println("fill it");
+        elementList.setValue(daySchedule);
+    }
 
+    public void fillWithTestData(){
+        daySchedule.add(new DayElement("blub", 13, 14, 240, "2012-01-13"));
+        daySchedule.add(new DayElement("blub1", 11, 24, 120, "2015-01-13"));
+        System.out.println(daySchedule.size());
+    }
+
+    public LiveData<ArrayList<DayElement>> getToday() {
+        return elementList;
+    }
 
     public void testService() {
         TaskRunner taskRunner = new TaskRunner();

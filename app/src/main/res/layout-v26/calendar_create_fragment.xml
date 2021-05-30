@@ -69,15 +69,18 @@
                 android:padding="2dp"
                 android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:padding="10dp"
+            android:layout_below="@id/duration"
+            android:background="#C01831"
+            android:textColor="#ffffff"
+            android:text="Add Focus Time" />
     </RelativeLayout>
-    <Button
-    android:id="@+id/button1"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:layout_gravity="center|bottom"
-    android:background="#C01831"
-    android:textColor="#ffffff"
-        android:text="Talk to Developer" />
+
 
 </FrameLayout>

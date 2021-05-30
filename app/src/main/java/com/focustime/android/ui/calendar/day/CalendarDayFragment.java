@@ -8,11 +8,14 @@ import androidx.lifecycle.ViewModelProvider;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.CalendarContract;
 import android.util.Log;
@@ -28,6 +31,8 @@ import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
 import com.focustime.android.databinding.CalendarDayFragmentBinding;
 
+import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,7 +44,8 @@ public class CalendarDayFragment extends Fragment {
 
     private CalendarDayViewModel mViewModel;
     private CalendarDayFragmentBinding binding;
-
+    private CalenderDayAdapter adapter;
+    private RecyclerView resview;
     public static CalendarDayFragment newInstance() {
         return new CalendarDayFragment();
     }
@@ -52,38 +58,23 @@ public class CalendarDayFragment extends Fragment {
         binding = CalendarDayFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.dayTextview;
-        mViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
+        resview = binding.dayView;
+
+        mViewModel.getToday().observe(getViewLifecycleOwner(), d -> {
+            adapter = new CalenderDayAdapter((Activity) root.getContext(), d);
+            resview.setLayoutManager(new LinearLayoutManager(root.getContext()));
+            resview.setAdapter(adapter);
         });
-
-
-
-
 
         return root;
     }
-
-    /*@Override
-    public void onRequestPermissionsResult(String requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == Manifest.permission.READ_CALENDAR) {
-            if (!Arrays.asList(grantResults).contains(PackageManager.PERMISSION_DENIED)) {
-                //all permissions have been granted
-                mViewModel.testAPI(); //call your dependent logic
-            }
-        }
-    }*/
-
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // TODO: Use the ViewModel
+        mViewModel.getToday();
     }
 
     @Override
@@ -91,7 +82,5 @@ public class CalendarDayFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-
 
 }

@@ -4,15 +4,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.focustime.android.ui.calendar.day.DayElement;
+
 public class CalendarCreateViewModel extends ViewModel {
-    private MutableLiveData<String> mText;
+
 
     public CalendarCreateViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is create fragment");
+
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void saveScheduleItem(DayElement d){
+        //TODO Save d to Model
     }
+
 }
