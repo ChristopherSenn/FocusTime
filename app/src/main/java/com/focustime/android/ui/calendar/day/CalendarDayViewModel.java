@@ -7,30 +7,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
 import com.focustime.android.data.service.FocusTimeService;
 import com.focustime.android.util.TaskRunner;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import me.everything.providers.android.calendar.Calendar;
-import me.everything.providers.android.calendar.Event;
 import java.util.ArrayList;
 
 
@@ -45,8 +37,6 @@ public class CalendarDayViewModel extends AndroidViewModel {
     public CalendarDayViewModel(Application application) {
         super(application);
         this.context = application.getApplicationContext();
-        mText = new MutableLiveData<>();
-        mText.setValue("This is day fragment");
 
         elementList = new MutableLiveData<>();
         daySchedule = new ArrayList<>();
