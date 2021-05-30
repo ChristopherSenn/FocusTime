@@ -52,7 +52,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
             try{Thread.sleep(10);}
             catch (Exception e){}
         }
-        //testAPI();
+        testAPI();
         context.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

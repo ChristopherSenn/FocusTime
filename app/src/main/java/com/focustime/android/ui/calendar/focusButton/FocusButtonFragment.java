@@ -131,6 +131,11 @@ public class FocusButtonFragment extends Fragment {
             mMinute = Integer.parseInt(time[1]);
             mTimeLeftInMillis = (mHour * 60 + mMinute) * 60 * 1000;
 
+            mTimerRunning = true;
+            mButtonStartStop.setText("give up");
+
+            mTextViewCountdown.setClickable(false);
+
             mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -140,7 +145,10 @@ public class FocusButtonFragment extends Fragment {
 
                 @Override
                 public void onFinish() {
-                    mCountDownTimer.cancel();
+                    if(mCountDownTimer != null) {
+                        mCountDownTimer.cancel();
+                    }
+
                     mTimerRunning = false;
                     mButtonStartStop.setText("start");
 
@@ -149,10 +157,7 @@ public class FocusButtonFragment extends Fragment {
                 }
             }.start();
 
-            mTimerRunning = true;
-            mButtonStartStop.setText("give up");
 
-            mTextViewCountdown.setClickable(false);
         }
     }
 
