@@ -1,1 +1,44 @@
-/build
+# built application files
+bin/*
+gen/*
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated GUI files
+*R.java
+*BuildConfig.java
+
+# vim backup files
+*~
+
+# ant local settings
+local.properties
+
+# proguard generated files
+proguard/*
+
+# log files
+system.txt
+radio.txt
+main.txt
+traces.txt
+traces.txt.bugreport
+
+# Thumbs.db
+Thumbs.db
+
+# Android Studio
+*.iml
+*.iws
+*.ipr
+.idea/
+.gradle/
+
+*/build/
+build
+*~
+*.swp
