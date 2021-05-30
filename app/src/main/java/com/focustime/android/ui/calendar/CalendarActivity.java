@@ -21,7 +21,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-
+import java.util.Arrays;
 
 
 public class CalendarActivity extends AppCompatActivity {
@@ -69,4 +69,5 @@ public class CalendarActivity extends AppCompatActivity {
         if (!permissions)
             ActivityCompat.requestPermissions(this, permissionsId, callbackId);
     }
+
 }

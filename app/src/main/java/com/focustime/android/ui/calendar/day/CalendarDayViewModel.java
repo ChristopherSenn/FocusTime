@@ -1,13 +1,16 @@
 package com.focustime.android.ui.calendar.day;
 
+import android.Manifest;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -19,6 +22,7 @@ import com.focustime.android.data.service.CalendarService;
 import com.focustime.android.data.service.FocusTimeService;
 import com.focustime.android.util.TaskRunner;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
@@ -38,11 +42,18 @@ public class CalendarDayViewModel extends AndroidViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("This is day fragment");
         testService();
+
+        // TODO: Find a workaround for blocking the UI Thread
+        while(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            try{Thread.sleep(10);}
+            catch (Exception e){}
+        }
         testAPI();
 
 
-
     }
+
+
 
     public void testService() {
         TaskRunner taskRunner = new TaskRunner();
@@ -61,6 +72,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
     }
 
     public void testAPI() {
+
         CalendarAPI api = new CalendarAPI(this.context);
         List<Calendar> calendars = api.getAllCalendars();
         for(int i = 0; i < calendars.size(); i++) {

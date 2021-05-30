@@ -1,9 +1,13 @@
 package com.focustime.android.ui.calendar.day;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,12 +28,14 @@ import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
 import com.focustime.android.databinding.CalendarDayFragmentBinding;
 
+import java.util.Arrays;
 import java.util.List;
 
 import me.everything.providers.android.calendar.Calendar;
 import me.everything.providers.android.calendar.Event;
 
 public class CalendarDayFragment extends Fragment {
+
 
     private CalendarDayViewModel mViewModel;
     private CalendarDayFragmentBinding binding;
@@ -56,8 +62,22 @@ public class CalendarDayFragment extends Fragment {
 
 
 
+
+
         return root;
     }
+
+    /*@Override
+    public void onRequestPermissionsResult(String requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == Manifest.permission.READ_CALENDAR) {
+            if (!Arrays.asList(grantResults).contains(PackageManager.PERMISSION_DENIED)) {
+                //all permissions have been granted
+                mViewModel.testAPI(); //call your dependent logic
+            }
+        }
+    }*/
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
