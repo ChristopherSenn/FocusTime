@@ -17,6 +17,7 @@ import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
 import com.focustime.android.data.service.FocusTimeService;
+import com.focustime.android.ui.calendar.CalendarActivity;
 import com.focustime.android.util.TaskRunner;
 
 import java.util.List;
@@ -32,11 +33,13 @@ public class CalendarDayViewModel extends AndroidViewModel {
     private Context context;
     private MutableLiveData<ArrayList<DayElement>> elementList;
     private ArrayList<DayElement> daySchedule;
+    private CalendarAPI api;
 
 
     public CalendarDayViewModel(Application application) {
         super(application);
         this.context = application.getApplicationContext();
+        api = new CalendarAPI(this.context);
 
         elementList = new MutableLiveData<>();
         daySchedule = new ArrayList<>();
@@ -44,6 +47,8 @@ public class CalendarDayViewModel extends AndroidViewModel {
 
         Intent intent = new Intent(context, CalendarService.class);
         context.startService(intent);
+
+
         //testService();
 
         // TODO: Find a workaround for blocking the UI Thread
@@ -55,15 +60,23 @@ public class CalendarDayViewModel extends AndroidViewModel {
         context.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.e("klajsklj", "lkjase");
+                Log.e("Broadcast Receiver", "Received");
             }
         }, new IntentFilter(CalendarService.SERVICE_RECEIVER_ID));
 
     }
 
     public void init(){
-        //TODO getData daySchedule = data;
-        fillWithTestData();
+        List<FocusTime> focusTimes = api.getFocusTimes();
+        for(FocusTime f: focusTimes) {
+            int beginHour = f.getBeginTime().get(java.util.Calendar.HOUR_OF_DAY);
+            int beginMinute = f.getBeginTime().get(java.util.Calendar.MINUTE);
+            String date = f.getBeginTime().get(java.util.Calendar.YEAR) + "-" + f.getBeginTime().get(java.util.Calendar.MONTH)
+                    + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
+            //Log.e("date",  date);
+            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, 60, date ));
+        }
+        //fillWithTestData();
         System.out.println("fill it");
         elementList.setValue(daySchedule);
     }
@@ -96,7 +109,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
 
     public void testAPI() {
 
-        CalendarAPI api = new CalendarAPI(this.context);
+
         List<Calendar> calendars = api.getAllCalendars();
         for(int i = 0; i < calendars.size(); i++) {
             Log.e("ase", calendars.get(i).toString());
