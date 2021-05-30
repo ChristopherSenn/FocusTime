@@ -1,38 +1,61 @@
 package com.focustime.android.ui.calendar.day;
 
+import java.util.Date;
+
 public class DayElement {
 
     private String title;
-    private String comment;
-    private String type;
+    private Integer startHour;
+    private Integer startMinute;
+    private Integer duration; //in Minutes
+    private String date; //DateTimeFormatter.ISO_LOCAL_DATE
 
-    public DayElement(String newTitle, String newComment, String newType){
+
+    public DayElement(String newTitle, Integer sH, Integer sM, Integer dur, String d){
         title = newTitle;
-        comment = newComment;
-        type = newType;
+        startHour = sH;
+        startMinute = sM;
+        duration = dur;
+        date = d;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getComment() {
-        return comment;
+    public Integer getStartHour() {
+        return startHour;
     }
 
-    public String getType() {
-        return type;
+    public Integer getStartMinute() {
+        return startMinute;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setStartHour(Integer startHour) {
+        this.startHour = startHour;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setStartMinute(Integer startMinute) {
+        this.startMinute = startMinute;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

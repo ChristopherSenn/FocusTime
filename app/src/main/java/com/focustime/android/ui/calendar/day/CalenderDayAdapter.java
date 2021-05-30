@@ -37,8 +37,10 @@ public class CalenderDayAdapter extends RecyclerView.Adapter <CalenderDayAdapter
         DayElement dayElement = dayElements.get(position);
 
         holder.title.setText(dayElement.getTitle());
-        holder.comment.setText(dayElement.getComment());
-        holder.type.setText(dayElement.getType());
+        holder.date.setText(dayElement.getDate());
+        String t = dayElement.getStartHour() + ":" + dayElement.getStartMinute();
+        holder.time.setText(t);
+        holder.duration.setText(dayElement.getDuration().toString());
     }
 
     @Override
@@ -48,14 +50,16 @@ public class CalenderDayAdapter extends RecyclerView.Adapter <CalenderDayAdapter
 
     class RecyclerViewViewHolder extends RecyclerView.ViewHolder {
         TextView title;
-        TextView comment;
-        TextView type;
+        TextView time;
+        TextView duration;
+        TextView date;
 
         public RecyclerViewViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.textView1);
-            comment = itemView.findViewById(R.id.textView2);
-            type = itemView.findViewById(R.id.type);
+            title = itemView.findViewById(R.id.title1);
+            time = itemView.findViewById(R.id.time1);
+            duration = itemView.findViewById(R.id.focusDuration);
+            date = itemView.findViewById(R.id.date1);
 
         }
     }

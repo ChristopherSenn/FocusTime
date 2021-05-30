@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.focustime.android.data.Schedule;
-
 import java.util.ArrayList;
 
 public class CalendarDayViewModel extends ViewModel {
@@ -21,20 +19,13 @@ public class CalendarDayViewModel extends ViewModel {
     public void init(){
         //TODO getData daySchedule = data;
         fillWithTestData();
-
+        System.out.println("fill it");
         elementList.setValue(daySchedule);
     }
 
     public void fillWithTestData(){
-        daySchedule.add(new DayElement("a", "b", "c"));
-        daySchedule.add(new DayElement("abb", "asdfb", "cafgds"));
-        daySchedule.add(new DayElement("adfgbnbtdgaha", "babfgdagbfdr", "cfgbdabagfd"));
-        daySchedule.add(new DayElement("abfgadabfg", "bafbdgafbgd", "afgbdabfgdc"));
-        daySchedule.add(new DayElement("a", "b", "afgbdabgfdc"));
-        daySchedule.add(new DayElement("a", "bfabgdabfgd", "c"));
-        daySchedule.add(new DayElement("aabfgdabfgd", "b", "c"));
-        daySchedule.add(new DayElement("abfagdbafgd", "b", "cabdfg"));
-        daySchedule.add(new DayElement("afgba", "b", "cadfgb"));
+        daySchedule.add(new DayElement("blub", 13, 14, 240, "2012-01-13"));
+        daySchedule.add(new DayElement("blub1", 11, 24, 120, "2015-01-13"));
         System.out.println(daySchedule.size());
     }
 
