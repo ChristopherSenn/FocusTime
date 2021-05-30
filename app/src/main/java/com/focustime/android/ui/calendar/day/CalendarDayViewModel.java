@@ -2,8 +2,10 @@ package com.focustime.android.ui.calendar.day;
 
 import android.Manifest;
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -41,15 +43,22 @@ public class CalendarDayViewModel extends AndroidViewModel {
         this.context = application.getApplicationContext();
         mText = new MutableLiveData<>();
         mText.setValue("This is day fragment");
-        testService();
+        Intent intent = new Intent(context, CalendarService.class);
+        context.startService(intent);
+        //testService();
 
         // TODO: Find a workaround for blocking the UI Thread
         while(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             try{Thread.sleep(10);}
             catch (Exception e){}
         }
-        testAPI();
-
+        //testAPI();
+        context.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.e("klajsklj", "lkjase");
+            }
+        }, new IntentFilter(CalendarService.SERVICE_RECEIVER_ID));
 
     }
 

@@ -22,6 +22,10 @@
             android:name=".data.service.FocusTimeService"
             android:enabled="true"
             android:exported="true"></service>
+        <service
+            android:name=".data.service.CalendarService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <activity android:name=".ui.calendar.CalendarActivity">
             <intent-filter>

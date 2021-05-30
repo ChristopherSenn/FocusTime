@@ -1,8 +1,10 @@
 package com.focustime.android.data.service;
 
-/*import android.app.Service;
+import android.app.IntentService;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -19,6 +21,8 @@ import me.everything.providers.android.calendar.Calendar;
 import me.everything.providers.android.calendar.CalendarProvider;
 
 public class CalendarService extends Service {
+    public static final String SERVICE_RECEIVER_ID = FocusTimeService.NOTIFICATION_CHANNEL_ID + ".customIntent";
+
     private Looper serviceLooper;
     private ServiceHandler serviceHandler;
 
@@ -28,12 +32,13 @@ public class CalendarService extends Service {
 
     }
 
+
     @Override
     public void onCreate() {
         HandlerThread thread = new HandlerThread("CalendarServiceThread", android.os.Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         serviceLooper = thread.getLooper();
-        serviceHandler = new ServiceHandler(serviceLooper, this);
+        serviceHandler = new ServiceHandler(serviceLooper);
     }
 
     @Override
@@ -42,8 +47,8 @@ public class CalendarService extends Service {
 
         Message msg = serviceHandler.obtainMessage();
         msg.arg1 = startId;
-        Log.e("asekj", startId+"");
-        msg.what = serviceHandler.GET_ALL_CALENDARS;
+
+        //msg.what = serviceHandler.GET_ALL_CALENDARS;
         serviceHandler.sendMessage(msg);
 
         return START_STICKY;
@@ -58,6 +63,10 @@ public class CalendarService extends Service {
 
     @Override
     public void onDestroy() {
+        Intent intent = new Intent();
+        intent.setAction(SERVICE_RECEIVER_ID);
+        sendBroadcast(intent);
+
         Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
     }
 
@@ -67,36 +76,25 @@ public class CalendarService extends Service {
         public final int GET_ALL_CALENDARS = 1;
 
         private CalendarProvider calendarProvider;
-        private Context context;
 
-        public ServiceHandler(Looper looper, Context context) {
+        public ServiceHandler(Looper looper) {
             super(looper);
-            this.context =  context;
-            this.calendarProvider = new CalendarProvider(this.context);
+
         }
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case GET_ALL_CALENDARS:
-                    List<Calendar> result = this.getAllCalendars();
-                    Log.e("lakhjekla", "lkajseklajse");
-                    Intent in = new Intent(GET_ALL_CALENDARS);
-                    in.putExtra(GET_ALL_CALENDARS, result);
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(in);
-                    //sendMessage(obtainMessage(GET_ALL_CALENDARS, "IDK"));
-                    break;
-            }
 
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                // Restore interrupt status.
+                Thread.currentThread().interrupt();
+            }
+            // Stop the service using the startId, so that we don't stop
+            // the service in the middle of handling another job
             stopSelf(msg.arg1);
         }
 
-        private List<Calendar> getAllCalendars() {
-            List<Calendar> calendars = calendarProvider.getCalendars().getList();
-            return calendars;
-        }
     }
-
-}*/
-public class CalendarService {
 
 }

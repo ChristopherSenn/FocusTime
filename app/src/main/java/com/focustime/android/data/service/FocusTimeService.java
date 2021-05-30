@@ -21,7 +21,7 @@ import com.focustime.android.R;
 import com.focustime.android.ui.calendar.CalendarActivity;
 
 public class FocusTimeService extends Service {
-    private final String NOTIFICATION_CHANNEL_ID = "com.example.focustime";
+    public static final String NOTIFICATION_CHANNEL_ID = "com.example.focustime";
 
     public static boolean isRunning = false;
     public static FocusTimeService instance = null;
