@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
@@ -61,6 +62,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.e("Broadcast Receiver", "Received");
+                //Toast.makeText(context, "service done", Toast.LENGTH_SHORT).show();
             }
         }, new IntentFilter(CalendarService.SERVICE_RECEIVER_ID));
 

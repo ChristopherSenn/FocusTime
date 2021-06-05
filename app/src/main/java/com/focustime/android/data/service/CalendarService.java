@@ -67,7 +67,7 @@ public class CalendarService extends Service {
         intent.setAction(SERVICE_RECEIVER_ID);
         sendBroadcast(intent);
 
-        Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -92,6 +92,7 @@ public class CalendarService extends Service {
             }
             // Stop the service using the startId, so that we don't stop
             // the service in the middle of handling another job
+            Toast.makeText(getApplicationContext(), "service done", Toast.LENGTH_SHORT).show();
             stopSelf(msg.arg1);
         }
 

@@ -11,6 +11,7 @@ import android.util.Log;
 import com.focustime.android.data.model.FocusTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import me.everything.providers.android.calendar.Calendar;
@@ -80,6 +81,7 @@ public class CalendarAPI {
         for(Event event: e) {
             focusTimes.add(getFocusTimeById(event.id));
         }
+        Collections.sort(focusTimes, ((o1, o2) -> o1.getBeginTime().compareTo(o2.getBeginTime())));
 
         return focusTimes;
     }

@@ -42,6 +42,7 @@ public class CalendarCreateFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         //return inflater.inflate(R.layout.calendar_create_fragment, container, false);
         mViewModel = new ViewModelProvider(this).get(CalendarCreateViewModel.class);
         binding = CalendarCreateFragmentBinding.inflate(inflater, container, false);
@@ -74,6 +75,7 @@ public class CalendarCreateFragment extends Fragment {
                     String d = duration.getEditText().getText().toString();
                     dur = Integer.parseInt(d);
                 }
+
                 LocalDateTime dateNow = LocalDateTime.now();
                 DateTimeFormatter df = DateTimeFormatter.ISO_LOCAL_DATE;
                 String formatDate = dateNow.format(df);
