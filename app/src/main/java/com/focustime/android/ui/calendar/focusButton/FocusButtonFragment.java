@@ -1,16 +1,14 @@
 package com.focustime.android.ui.calendar.focusButton;
 
-import android.Manifest;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,27 +21,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
+
 import androidx.lifecycle.ViewModelProvider;
 
 import com.focustime.android.R;
-import com.focustime.android.databinding.CalendarDayFragmentBinding;
 import com.focustime.android.databinding.FocusButtonFragmentBinding;
-import com.focustime.android.ui.calendar.day.CalendarDayViewModel;
 
-import java.io.File;
 import java.util.Locale;
-import java.util.Objects;
 
 
 public class FocusButtonFragment extends Fragment {
-    private static final int REQUEST_CODE_NOTIFICATION_POLICY_PERMISSION = 1;
 
     private FocusButtonViewModel mViewModel;
     private FocusButtonFragmentBinding binding;
@@ -57,7 +46,7 @@ public class FocusButtonFragment extends Fragment {
     private boolean mTimerRunning;
     private long mTimeLeftInMillis;
 
-    private int mHour, mMinute;
+    private int mHour = 0, mMinute = 10;
 
     public static FocusButtonFragment newInstance() {
         return new FocusButtonFragment();
@@ -73,7 +62,7 @@ public class FocusButtonFragment extends Fragment {
         View root = binding.getRoot();
 
         mTextViewCountdown = binding.textViewCountdown;
-        mButtonStartStop  = binding.buttonStartStop;
+        mButtonStartStop = binding.buttonStartStop;
         mImageView = binding.imageView;
 
         mButtonStartStop.setOnClickListener(new View.OnClickListener() {
@@ -94,18 +83,19 @@ public class FocusButtonFragment extends Fragment {
                 CustomTimePickerDialog customTimePickerDialog = new CustomTimePickerDialog(FocusButtonFragment.this.getContext(),
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    // Display Selected time in textbox
-                    if (hourOfDay == 0 && minute < 10) {
-                        mHour = hourOfDay;
-                        mTextViewCountdown.setText("0" + minute + ":" + "00");
-                    } else {
-                        mMinute = minute;
-                        mTextViewCountdown.setText(hourOfDay * 60 + minute + ":" + "00");
-                    }
-                }
-            }, mHour, mMinute, true);
-                //customTimePickerDialog.updateTime(5, 5);
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                // Display Selected time in textbox
+                                if (hourOfDay == 0 && minute < 10) {
+                                    mHour = hourOfDay;
+                                    mMinute = minute;
+                                    mTextViewCountdown.setText("0" + minute + ":" + "00");
+                                } else {
+                                    mHour = hourOfDay;
+                                    mMinute = minute;
+                                    mTextViewCountdown.setText(hourOfDay * 60 + minute + ":" + "00");
+                                }
+                            }
+                        }, mHour, mMinute, true);
                 customTimePickerDialog.show();
             }
         });
@@ -127,7 +117,7 @@ public class FocusButtonFragment extends Fragment {
             mTimeLeftInMillis = mMinute * 60 * 1000;
 
             if (mTimeLeftInMillis == 0) {
-                Toast.makeText(FocusButtonFragment.this.getContext(),"please set a focustime", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FocusButtonFragment.this.getContext(), "please set a focustime", Toast.LENGTH_SHORT).show();
             } else {
                 mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
 
@@ -164,7 +154,7 @@ public class FocusButtonFragment extends Fragment {
         int minutes = (int) mTimeLeftInMillis / 1000 / 60;
         int seconds = (int) mTimeLeftInMillis / 1000 % 60;
 
-        String timeLeftFormatted = String.format(Locale.getDefault(),"%02d:%02d", minutes, seconds);
+        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
         mTextViewCountdown.setText(timeLeftFormatted);
     }
 
