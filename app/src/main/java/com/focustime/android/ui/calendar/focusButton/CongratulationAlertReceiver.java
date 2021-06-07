@@ -9,8 +9,11 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.focustime.android.data.service.AlarmCongratulationService;
+
 public class CongratulationAlertReceiver extends BroadcastReceiver {
     private NotificationManager mNotificationManager;
+    private Intent notificationIntent;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -21,5 +24,8 @@ public class CongratulationAlertReceiver extends BroadcastReceiver {
         NotificationHelper notificationHelper = new NotificationHelper(context);
         NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
         notificationHelper.getManager().notify(1, nb.build());
+
+        notificationIntent = new Intent(context, AlarmCongratulationService.class);
+        context.stopService(notificationIntent);
     }
 }
