@@ -104,7 +104,7 @@ public class CalendarAPI {
         java.util.Calendar endTime = java.util.Calendar.getInstance();
         beginTime.setTimeInMillis(event.dTend);
 
-        return new FocusTime(event.title, event.description, beginTime, endTime, event.id);
+        return new FocusTime(event.title, beginTime, endTime, event.id);
     }
 
     /**
@@ -115,7 +115,6 @@ public class CalendarAPI {
     public void updateFocusTime(FocusTime newFocusTime) {
         Event e = calendarProvider.getEvent(newFocusTime.getId());
         e.title = newFocusTime.getTitle();
-        e.description = newFocusTime.getDescription();
         e.dTStart = newFocusTime.getBeginTime().getTimeInMillis();
         e.dTend = newFocusTime.getEndTime().getTimeInMillis();
 
@@ -136,7 +135,6 @@ public class CalendarAPI {
         values.put(Events.DTSTART, focusTime.getBeginTime().getTimeInMillis());
         values.put(Events.DTEND, focusTime.getEndTime().getTimeInMillis());
         values.put(Events.TITLE, focusTime.getTitle());
-        values.put(Events.DESCRIPTION, focusTime.getDescription());
         values.put(Events.CALENDAR_ID, this.getFocusTimeCalendar().id);
         values.put(Events.EVENT_TIMEZONE, "UTC"); //TODO: Add support for different timezones
         Uri uri = cr.insert(Events.CONTENT_URI, values);

@@ -4,22 +4,20 @@ import java.util.Calendar;
 
 public class FocusTime {
     private Calendar beginTime, endTime;
-    private String title, description;
+    private String title;
     private long id;
 
     /**
      * The default Constructor for creating custom FocusTimes
      *
      * @param title Title of the Focus Time
-     * @param description Description of the FocusTime
      * @param beginTime BeginTime of the FocusTime
      * @param endTime EndTime of the FocusTime
      */
-    public FocusTime(String title, String description, Calendar beginTime, Calendar endTime) {
+    public FocusTime(String title, Calendar beginTime, Calendar endTime) {
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.title = title;
-        this.description = description;
     }
 
     /**
@@ -27,13 +25,12 @@ public class FocusTime {
      * Never just select a random ID!
      *
      * @param title Title of the Focus Time
-     * @param description Description of the FocusTime
      * @param beginTime BeginTime of the FocusTime
      * @param endTime EndTime of the FocusTime
      * @param id Internal ID of the FocusTime
      */
-    public FocusTime(String title, String description, Calendar beginTime, Calendar endTime, long id) {
-        this(title, description, beginTime, endTime);
+    public FocusTime(String title, Calendar beginTime, Calendar endTime, long id) {
+        this(title, beginTime, endTime);
         this.id = id;
     }
 
@@ -61,9 +58,6 @@ public class FocusTime {
         this.title = title;
     }
 
-    public String getDescription() {
-        return this.description;
-    }
 
     public long getId() {
         return this.id;
