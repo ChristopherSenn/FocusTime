@@ -1,5 +1,6 @@
 package com.focustime.android.data.service;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -10,49 +11,72 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
 
-
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.focustime.android.R;
-import com.focustime.android.ui.calendar.CalendarActivity;
+import com.focustime.android.ui.calendar.focusButton.CongratulationAlertReceiver;
 
-public class FocusTimeService extends Service {
+public class AlarmCongratulationService extends Service {
     public static final String NOTIFICATION_CHANNEL_ID = "com.example.focustime";
+    private final static String TAG = "AlarmCService";
 
-    public static boolean isRunning = false;
-    public static FocusTimeService instance = null;
+    private static final String CHANNEL_ID = "countdown";
+    private NotificationManager manager;
+    private Notification notification;
 
+    private long mStartTimeInMills;
 
-
-
+    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
     @Override
-    public void onCreate(){
-
-        instance = this;
-        isRunning = true;
-
-
+    public void onCreate() {
         super.onCreate();
     }
 
-
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
+    public void onDestroy() {
+        Log.i(TAG, "AlarmCongratulationService is destroyed");
+        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent i =  new Intent(this, CongratulationAlertReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(this,0, i,0);
+        manager.cancel(pi);
+
+        super.onDestroy();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startMyOwnForeground();
         else
             startForeground(1, new Notification());
 
-        return START_STICKY;
+        Log.i(TAG, "AlarmCongratulationService is created");
+
+        mStartTimeInMills = intent.getLongExtra("mStartTimeInMills", 600000);
+
+        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        long triggerAtTime = SystemClock.elapsedRealtime() + mStartTimeInMills;
+
+        //Here set to open the service AlarmReceiver
+        Intent congratulationIntent =  new Intent(this, CongratulationAlertReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(this,0, congratulationIntent,0);
+
+        //ELAPSED_REALTIME_WAKEUP means let the departure time of the timed task count
+        // from the system power on and will wake up the CPU.
+        manager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -68,31 +92,10 @@ public class FocusTimeService extends Service {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("App is running in background")
+                .setContentTitle("AlarmCongratulation Service in background")
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
         startForeground(2, notification);
-    }
-
-
-    @Override
-    public void onDestroy(){
-        isRunning = false;
-        instance = null;
-        //NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        //manager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
-        //notificationManager.cancel(NOTIFICATION); // Remove notification
-
-        super.onDestroy();
-    }
-
-
-    public void doSomething(){
-        //try {
-         //   Thread.sleep(10000);
-            Toast.makeText(getApplicationContext(), "Doing stuff from service...", Toast.LENGTH_SHORT).show();
-        //} catch (Exception e) {}
-
     }
 }

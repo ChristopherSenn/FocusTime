@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.focustime.android.R;
+import com.focustime.android.data.service.AlarmCongratulationService;
 import com.focustime.android.databinding.FocusButtonFragmentBinding;
 
 
@@ -43,6 +43,7 @@ public class FocusButtonFragment extends Fragment {
 
     private TextView mTextViewCountdown;
     private Button mButtonStartStop;
+    private Button mTestButton;
     private ImageView mImageView;
 
     private CountDownTimer mCountDownTimer;
@@ -52,6 +53,8 @@ public class FocusButtonFragment extends Fragment {
     private long mEndTime;
 
     private int mHour, mMinute;
+
+    private Intent notificationIntent;
 
     public static FocusButtonFragment newInstance() {
         return new FocusButtonFragment();
@@ -68,15 +71,34 @@ public class FocusButtonFragment extends Fragment {
         mTextViewCountdown = binding.textViewCountdown;
         mButtonStartStop = binding.buttonStartStop;
         mImageView = binding.imageView;
+        mTestButton = binding.buttonTest;
 
         mButtonStartStop.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 if (mTimerRunning) {
                     stopTimer();
+                    stopAlarmCongratulationService();
                 } else {
                     startTimer();
+                    startAlarmCongratulationService();
+                }
+            }
+        });
+
+        mTestButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                if (mTimerRunning) {
+                    stopTimer();
+                    stopAlarmCongratulationService();
+                } else {
+                    mStartTimeInMills = 10000;
+                    mTimeLeftInMillis = 10000;
+                    startTimer();
+                    startAlarmCongratulationService();
                 }
             }
         });
@@ -114,6 +136,22 @@ public class FocusButtonFragment extends Fragment {
         return root;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startAlarmCongratulationService() {
+        notificationIntent = new Intent(getActivity(), AlarmCongratulationService.class);
+
+        if (mStartTimeInMills != 0) {
+            notificationIntent.putExtra("mStartTimeInMills", mStartTimeInMills);
+            getActivity().startForegroundService(notificationIntent);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void stopAlarmCongratulationService() {
+        notificationIntent = new Intent(getActivity(), AlarmCongratulationService.class);
+        getActivity().stopService(notificationIntent);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startTimer() {
         mNotificationManager = (NotificationManager) FocusButtonFragment.this.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -138,13 +176,14 @@ public class FocusButtonFragment extends Fragment {
 
                     @Override
                     public void onFinish() {
+                        cancelDND();
+
                         mCountDownTimer.cancel();
                         mTimerRunning = false;
                         mImageView.setImageResource(R.drawable.congratulation);
 
                         updateCountDownText(mStartTimeInMills);
                         updateComponents();
-                        cancelDND();
                     }
                 }.start();
 
