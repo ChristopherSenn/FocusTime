@@ -155,7 +155,7 @@ public class FocusButtonFragment extends Fragment {
             if (mStartTimeInMills == 0) {
                 Toast.makeText(FocusButtonFragment.this.getContext(), "please set a focustime", Toast.LENGTH_SHORT).show();
             } else {
-                activateDND();
+                focusTimeServiceStarter.activateDND(getContext());
                 mImageView.setImageResource(0);
 
                 mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
@@ -168,7 +168,7 @@ public class FocusButtonFragment extends Fragment {
 
                     @Override
                     public void onFinish() {
-                        cancelDND();
+                        focusTimeServiceStarter.cancelDND(getContext());
 
                         mCountDownTimer.cancel();
                         mTimerRunning = false;
@@ -196,7 +196,7 @@ public class FocusButtonFragment extends Fragment {
         mCountDownTimer.cancel();
         updateCountDownText(mStartTimeInMills);
         updateComponents();
-        cancelDND();
+        focusTimeServiceStarter.cancelDND(getContext());
     }
 
     private void updateCountDownText() {
@@ -263,7 +263,7 @@ public class FocusButtonFragment extends Fragment {
 
                 updateCountDownText(mStartTimeInMills);
                 updateComponents();
-                cancelDND();
+                focusTimeServiceStarter.cancelDND(getContext());
 
                 mImageView.setImageResource(R.drawable.congratulation);
             } else {
