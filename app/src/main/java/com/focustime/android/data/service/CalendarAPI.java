@@ -27,6 +27,7 @@ public class CalendarAPI {
 
     public CalendarAPI(Context context) {
         calendarProvider = new CalendarProvider(context);
+        //this.deleteFocusTimeCalendar(context);
         this.createFocusTimeCalendar(context);
 
 
@@ -136,6 +137,7 @@ public class CalendarAPI {
         values.put(Events.DTSTART, focusTime.getBeginTime().getTimeInMillis());
         values.put(Events.DTEND, focusTime.getEndTime().getTimeInMillis());
         values.put(Events.TITLE, focusTime.getTitle());
+        values.put(Events.ACCESS_LEVEL, Events.ACCESS_PUBLIC);
         values.put(Events.DESCRIPTION, focusTime.getDescription());
         values.put(Events.CALENDAR_ID, this.getFocusTimeCalendar().id);
         values.put(Events.EVENT_TIMEZONE, "UTC"); //TODO: Add support for different timezones
@@ -173,7 +175,7 @@ public class CalendarAPI {
             values.put(CalendarContract.Calendars.NAME, FOCUS_TIME_CALENDAR_NAME);
             values.put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, FOCUS_TIME_CALENDAR_NAME);
             values.put(CalendarContract.Calendars.CALENDAR_COLOR, 0x00FF00);
-            values.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_ROOT);
+            values.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_EDITOR);
             values.put(CalendarContract.Calendars.OWNER_ACCOUNT, FOCUS_TIME_ACCOUNT_NAME);
             values.put(CalendarContract.Calendars.VISIBLE, 1);
             values.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
@@ -187,6 +189,7 @@ public class CalendarAPI {
             values.put(CalendarContract.Calendars.CAL_SYNC8, System.currentTimeMillis());
 
             Uri newCalendar = context.getContentResolver().insert(target, values);
+            Log.e("CalendarAPI", "NEW FOCUS TIME CALENDAR WAS CREATED");
         }
 
     }

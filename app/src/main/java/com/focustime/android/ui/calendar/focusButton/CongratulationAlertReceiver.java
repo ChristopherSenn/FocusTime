@@ -18,8 +18,7 @@ public class CongratulationAlertReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
-        mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL);
+        cancelDND(context);
 
         NotificationHelper notificationHelper = new NotificationHelper(context);
         NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
@@ -27,5 +26,11 @@ public class CongratulationAlertReceiver extends BroadcastReceiver {
 
         notificationIntent = new Intent(context, AlarmCongratulationService.class);
         context.stopService(notificationIntent);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void cancelDND(Context context) {
+        mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL);
     }
 }

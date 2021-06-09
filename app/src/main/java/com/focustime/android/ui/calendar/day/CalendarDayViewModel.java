@@ -25,6 +25,10 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import me.everything.providers.android.calendar.Calendar;
+import me.everything.providers.android.calendar.CalendarProvider;
+import me.everything.providers.android.calendar.Event;
+import me.everything.providers.core.Data;
+
 import java.util.ArrayList;
 
 
@@ -129,10 +133,15 @@ public class CalendarDayViewModel extends AndroidViewModel {
 
 
         Log.e("Events length", api.getFocusTimes().size()+"");
-        for(FocusTime ft: api.getFocusTimes()) {
 
+
+        for(FocusTime ft: api.getFocusTimes()) {
+            //Log.e("a", ft.toString());
             Log.e("alksje", ft.getId() + "  " + ft.getTitle());
         }
+
+
+
 
 
     }
