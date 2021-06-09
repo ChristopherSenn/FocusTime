@@ -1,7 +1,9 @@
 package com.focustime.android.ui.calendar.day;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,12 +16,17 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
 import com.focustime.android.data.service.FocusTimeService;
 import com.focustime.android.ui.calendar.CalendarActivity;
 import com.focustime.android.util.TaskRunner;
+import com.focustime.android.util.TestWorker;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -30,7 +37,7 @@ import me.everything.providers.android.calendar.Event;
 import me.everything.providers.core.Data;
 
 import java.util.ArrayList;
-
+import java.util.concurrent.TimeUnit;
 
 
 public class CalendarDayViewModel extends AndroidViewModel {
@@ -50,10 +57,10 @@ public class CalendarDayViewModel extends AndroidViewModel {
         daySchedule = new ArrayList<>();
         init();
 
-        Intent intent = new Intent(context, CalendarService.class);
-        context.startService(intent);
+        //Intent intent = new Intent(context, CalendarService.class);
+        //context.startService(intent);
 
-
+        testFocusTimeService();
         //testService();
 
         // TODO: Find a workaround for blocking the UI Thread
@@ -61,7 +68,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
             try{Thread.sleep(10);}
             catch (Exception e){}
         }
-        testAPI();
+        //testAPI();
         context.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -87,31 +94,31 @@ public class CalendarDayViewModel extends AndroidViewModel {
         elementList.setValue(daySchedule);
     }
 
-    public void fillWithTestData(){
-        daySchedule.add(new DayElement("blub", 13, 14, 240, "2012-01-13"));
-        daySchedule.add(new DayElement("blub1", 11, 24, 120, "2015-01-13"));
-        System.out.println(daySchedule.size());
+    private void testFocusTimeService() {
+        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(TestWorker.class, 15, TimeUnit.MINUTES).build();
+        WorkManager.getInstance().enqueueUniquePeriodicWork("NextFocusTime", ExistingPeriodicWorkPolicy.REPLACE ,periodicWork);
+
     }
 
     public LiveData<ArrayList<DayElement>> getToday() {
         return elementList;
     }
 
-    public void testService() {
+    /*public void testService() {
         TaskRunner taskRunner = new TaskRunner();
         taskRunner.executeAsync(new StartServiceTask(), (result) -> {
             makeServiceDoSomething();
         });
-    }
+    }*/
 
 
 
 
 
-    public void makeServiceDoSomething(){
+    /*public void makeServiceDoSomething(){
         if( FocusTimeService.isRunning )
             FocusTimeService.instance.doSomething();
-    }
+    }*/
 
     public void testAPI() {
 
@@ -150,7 +157,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
         return mText;
     }
 
-    class StartServiceTask implements Callable<Void> {
+    /*class StartServiceTask implements Callable<Void> {
 
         @Override
         public Void call() {
@@ -168,6 +175,6 @@ public class CalendarDayViewModel extends AndroidViewModel {
             }
             return null;
         }
-    }
+    }*/
 
 }

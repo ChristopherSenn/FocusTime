@@ -70,7 +70,7 @@ public class CalendarAPI {
     }
 
     /**
-     * Returns a List of every FocusTime Event
+     * Returns a List of every FocusTime Event that is happening from today on
      *
      * @return List of every FocusTime Event.
      */
@@ -80,7 +80,11 @@ public class CalendarAPI {
         ArrayList<FocusTime> focusTimes = new ArrayList<>();
 
         for(Event event: e) {
-            focusTimes.add(getFocusTimeById(event.id));
+            FocusTime f = getFocusTimeById(event.id);
+            if(!f.getBeginTime().before(java.util.Calendar.getInstance())){
+                focusTimes.add(f);
+            }
+            //focusTimes.add(getFocusTimeById(event.id));
         }
         Collections.sort(focusTimes, ((o1, o2) -> o1.getBeginTime().compareTo(o2.getBeginTime())));
 

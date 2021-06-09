@@ -30,6 +30,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.focustime.android.R;
 import com.focustime.android.data.service.AlarmCongratulationService;
 import com.focustime.android.databinding.FocusButtonFragmentBinding;
+import com.focustime.android.util.FocusTimeServiceStarter;
 
 
 import java.util.Locale;
@@ -55,6 +56,7 @@ public class FocusButtonFragment extends Fragment {
     private int mHour, mMinute;
 
     private Intent notificationIntent;
+    private FocusTimeServiceStarter focusTimeServiceStarter;
 
     public static FocusButtonFragment newInstance() {
         return new FocusButtonFragment();
@@ -68,6 +70,7 @@ public class FocusButtonFragment extends Fragment {
         binding = FocusButtonFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        focusTimeServiceStarter = new FocusTimeServiceStarter();
         mTextViewCountdown = binding.textViewCountdown;
         mButtonStartStop = binding.buttonStartStop;
         mImageView = binding.imageView;
@@ -79,10 +82,12 @@ public class FocusButtonFragment extends Fragment {
             public void onClick(View v) {
                 if (mTimerRunning) {
                     stopTimer();
-                    stopAlarmCongratulationService();
+                    //stopAlarmCongratulationService();
+                    focusTimeServiceStarter.stopAlarmCongratulationService(getContext());
                 } else {
                     startTimer();
-                    startAlarmCongratulationService();
+                    //startAlarmCongratulationService();
+                    focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
                 }
             }
         });
@@ -93,12 +98,14 @@ public class FocusButtonFragment extends Fragment {
             public void onClick(View v) {
                 if (mTimerRunning) {
                     stopTimer();
-                    stopAlarmCongratulationService();
+                    //stopAlarmCongratulationService();
+                    focusTimeServiceStarter.stopAlarmCongratulationService(getContext());
                 } else {
                     mStartTimeInMills = 10000;
                     mTimeLeftInMillis = 10000;
                     startTimer();
-                    startAlarmCongratulationService();
+                    //startAlarmCongratulationService();
+                    focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
                 }
             }
         });
@@ -136,21 +143,6 @@ public class FocusButtonFragment extends Fragment {
         return root;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void startAlarmCongratulationService() {
-        notificationIntent = new Intent(getActivity(), AlarmCongratulationService.class);
-
-        if (mStartTimeInMills != 0) {
-            notificationIntent.putExtra("mStartTimeInMills", mStartTimeInMills);
-            getActivity().startForegroundService(notificationIntent);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void stopAlarmCongratulationService() {
-        notificationIntent = new Intent(getActivity(), AlarmCongratulationService.class);
-        getActivity().stopService(notificationIntent);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startTimer() {
