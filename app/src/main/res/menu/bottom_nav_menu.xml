@@ -12,8 +12,8 @@
 
     <item
         android:id="@+id/navigation_monthView"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="@string/title_create" />
+        android:icon="@drawable/calendar_icon"
+        android:title="Month View" />
 
     <item
         android:id="@+id/navigation_create"

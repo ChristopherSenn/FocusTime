@@ -66,6 +66,8 @@ public class CalendarActivity extends AppCompatActivity implements MonthAdapter.
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        initWidgets();
+
 
     }
 

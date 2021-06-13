@@ -24,6 +24,6 @@
     <fragment
         android:id="@+id/navigation_monthView"
         android:name="com.focustime.android.ui.calendar.month.MonthViewFragment"
-        android:label="@string/title_create"
+        android:label="Month View"
         tools:layout="@layout/month_view" />
 </navigation>
