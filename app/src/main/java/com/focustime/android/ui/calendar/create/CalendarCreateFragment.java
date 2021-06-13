@@ -35,6 +35,8 @@ public class CalendarCreateFragment extends Fragment {
     private CalendarCreateViewModel mViewModel;
     private CalendarCreateFragmentBinding binding;
     private Calendar inputDate;
+    private Button button;
+    private Button date;
     public static CalendarCreateFragment newInstance() {
         return new CalendarCreateFragment();
     }
@@ -71,8 +73,8 @@ public class CalendarCreateFragment extends Fragment {
         tp1.setCurrentHour(hour);
         tp1.setCurrentMinute(minute);
         final TextInputLayout text = binding.textInput;
-        final Button button = binding.saveFocusTime;
-        final Button date = binding.dateInput;
+        button = binding.saveFocusTime;
+        date = binding.dateInput;
         final TextInputLayout duration = binding.duration;
 
         inputDate = c;
@@ -82,7 +84,7 @@ public class CalendarCreateFragment extends Fragment {
             @Override
             public void onClick(View view) {
                     Intent intent = new Intent(root.getContext(), CalendarDayPickDateFragment.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 100);
 
                     /*Intent intent = new Intent(root.getContext(), CalendarDayPickDateFragment.class);
                     datePicker.launch(intent);*/
@@ -128,23 +130,6 @@ public class CalendarCreateFragment extends Fragment {
         return root;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // TODO: Use the ViewModel
-    }
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1111 && resultCode == -1 &&  data != null && data.getData() != null){
-            String d = data.getStringExtra("date");
-
-
-        }
-    }*/
-
     /**
      *
      * @param c
@@ -159,12 +144,16 @@ public class CalendarCreateFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data.getData() != null) {
-            inputDate.set(Calendar.YEAR, Integer.parseInt(data.getStringExtra("year")));
-            inputDate.set(Calendar.MONTH, Integer.parseInt(data.getStringExtra("month")));
-            inputDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(data.getStringExtra("day")));
+        System.out.println((resultCode == Activity.RESULT_OK)  + "  " + requestCode + (data.getExtras() != null) + "------------------------------------------------------------------");
+        if (resultCode == Activity.RESULT_OK && data.getExtras() != null) {
+            System.out.println(data.getIntExtra("year", 0));
+            inputDate.set(Calendar.YEAR, data.getIntExtra("year", 0));
+            inputDate.set(Calendar.MONTH, data.getIntExtra("month", 0));
+            inputDate.set(Calendar.DAY_OF_MONTH, data.getIntExtra("day", 0));
+            System.out.println(getStringDateFromCalendar(inputDate));
+            date.setText(getStringDateFromCalendar(inputDate));
         }
     }
 }

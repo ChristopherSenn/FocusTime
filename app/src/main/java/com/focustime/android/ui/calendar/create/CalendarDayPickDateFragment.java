@@ -41,6 +41,7 @@ public class CalendarDayPickDateFragment extends Activity {
             public void onClick(View view) {
                 Calendar c = Calendar.getInstance();
                 Calendar startDate = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+                System.out.println(datePicker.getDayOfMonth());
                 if(startDate.before(c)){
                     String msg = "Date has to be at least current Date";
                     Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
