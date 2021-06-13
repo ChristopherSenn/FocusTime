@@ -60,7 +60,6 @@ public class CalenderDayAdapter extends RecyclerView.Adapter <CalenderDayAdapter
             time = itemView.findViewById(R.id.time1);
             duration = itemView.findViewById(R.id.focusDuration);
             date = itemView.findViewById(R.id.date1);
-
         }
     }
 }

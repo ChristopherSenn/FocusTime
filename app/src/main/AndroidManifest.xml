@@ -34,6 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.calendar.create.CalendarDayPickDateFragment">
+        </activity>
 
         <receiver android:name=".ui.calendar.day.ScheduleFocusTimeReceiver"/>
         <receiver android:name=".ui.calendar.focusButton.CongratulationAlertReceiver"/>

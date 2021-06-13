@@ -70,4 +70,5 @@ public class CalendarActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, permissionsId, callbackId);
     }
 
+
 }

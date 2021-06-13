@@ -140,15 +140,10 @@ public class CalendarDayViewModel extends AndroidViewModel {
 
 
         Log.e("Events length", api.getFocusTimes().size()+"");
-
-
         for(FocusTime ft: api.getFocusTimes()) {
             //Log.e("a", ft.toString());
             Log.e("alksje", ft.getId() + "  " + ft.getTitle());
         }
-
-
-
 
 
     }

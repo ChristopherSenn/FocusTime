@@ -27,7 +27,6 @@ public class CalendarAPI {
 
     public CalendarAPI(Context context) {
         calendarProvider = new CalendarProvider(context);
-        //this.deleteFocusTimeCalendar(context);
         this.createFocusTimeCalendar(context);
 
 
@@ -109,7 +108,7 @@ public class CalendarAPI {
         java.util.Calendar endTime = java.util.Calendar.getInstance();
         beginTime.setTimeInMillis(event.dTend);
 
-        return new FocusTime(event.title, event.description, beginTime, endTime, event.id);
+        return new FocusTime(event.title, beginTime, endTime, event.id);
     }
 
     /**
@@ -142,7 +141,6 @@ public class CalendarAPI {
         values.put(Events.DTEND, focusTime.getEndTime().getTimeInMillis());
         values.put(Events.TITLE, focusTime.getTitle());
         values.put(Events.ACCESS_LEVEL, Events.ACCESS_PUBLIC);
-        values.put(Events.DESCRIPTION, focusTime.getDescription());
         values.put(Events.CALENDAR_ID, this.getFocusTimeCalendar().id);
         values.put(Events.EVENT_TIMEZONE, "UTC"); //TODO: Add support for different timezones
         Uri uri = cr.insert(Events.CONTENT_URI, values);
