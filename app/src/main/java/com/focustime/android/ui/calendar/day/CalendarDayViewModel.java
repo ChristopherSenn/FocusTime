@@ -24,7 +24,7 @@ import com.focustime.android.util.TaskRunner;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import me.everything.providers.android.calendar.Calendar;
+//import me.everything.providers.android.calendar.Calendar;
 import java.util.ArrayList;
 
 
@@ -57,7 +57,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
             try{Thread.sleep(10);}
             catch (Exception e){}
         }
-        testAPI();
+        //testAPI();
         context.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -109,7 +109,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
             FocusTimeService.instance.doSomething();
     }
 
-    public void testAPI() {
+    /*public void testAPI() {
 
 
         List<Calendar> calendars = api.getAllCalendars();
@@ -124,7 +124,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
 
         /*long id = api.createFocusTime(new FocusTime("Test Title3", "Test Description",
                 beginTime,
-                endTime));*/
+                endTime));*//*
         //Log.e("asljealksejas     ID", id+"");
 
 
@@ -136,7 +136,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
 
 
     }
-
+*/
     public LiveData<String> getText() {
         return mText;
     }

@@ -4,11 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.calendar.create.CalendarCreateFragment">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/start"
+        android:id="@+id/dateInput"
+        android:text="#date"
+        android:backgroundTint="@android:color/darker_gray"
+        android:textColor="@color/black" >
+
+    </Button>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:layout_marginTop="60dp">
 
         <TimePicker
             android:layout_width="wrap_content"
@@ -18,6 +31,8 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/start"
             android:tooltipText="Start Time"/>
+
+
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -30,10 +45,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:hint="Aktivity Name for Focus Time"
+                android:hint="Name your Focus Time"
                 tools:layout_editor_absoluteX="16dp"
                 android:padding="2dp" />
         </com.google.android.material.textfield.TextInputLayout>
+
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -41,25 +58,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:layout_below="@id/textInput"
-            android:id="@+id/dateInput">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:hint="Date JJJJMMDD (Standart Today)"
-                tools:layout_editor_absoluteX="16dp"
-                android:padding="2dp"
-                android:inputType="number"
-                android:maxLength="8"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:layout_below="@id/dateInput"
             android:id="@+id/duration">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -70,14 +68,16 @@
                 android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
     </RelativeLayout>
+
     <Button
-    android:id="@+id/button1"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:layout_gravity="center|bottom"
-    android:background="#C01831"
-    android:textColor="#ffffff"
-        android:text="Talk to Developer" />
+        android:id="@+id/saveFocusTime"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="80dp"
+        android:background="#C01831"
+        android:text="Save Scheduled Focustime"
+        android:textColor="#ffffff" />
 
 </FrameLayout>

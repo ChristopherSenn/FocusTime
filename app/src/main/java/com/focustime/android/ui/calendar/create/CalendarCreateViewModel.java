@@ -33,5 +33,4 @@ public class CalendarCreateViewModel extends AndroidViewModel {
         FocusTime f = new FocusTime(d.getTitle(), beginTime, endTime);
         api.createFocusTime(f, context);
     }
-
 }
