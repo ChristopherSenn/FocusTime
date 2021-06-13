@@ -36,7 +36,6 @@ public class CalendarActivity extends AppCompatActivity {
 
 
 
-
         // Check if we have permission to access the users phone calendar database
         checkPermission(CALLBACK_ID, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
 

@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.focustime.android"
-        minSdkVersion 16
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -52,4 +52,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     compile 'me.everything:providers-android:1.0.1' //Package to easier Get from the internal calendar database
+
+   
 }
