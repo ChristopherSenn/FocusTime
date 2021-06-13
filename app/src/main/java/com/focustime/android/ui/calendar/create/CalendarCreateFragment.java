@@ -100,7 +100,7 @@ public class CalendarCreateFragment extends Fragment {
                     }
                 }
                 else{
-                    String msg = "Aktivity Name Field must contain at least one Character";
+                    String msg = "Activity Name Field must contain at least one Character";
                     Toast toast = Toast.makeText(root.getContext(), msg, Toast.LENGTH_SHORT);
                     toast.show();
                 }
