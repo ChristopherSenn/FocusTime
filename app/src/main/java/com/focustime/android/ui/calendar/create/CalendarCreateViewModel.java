@@ -27,9 +27,21 @@ public class CalendarCreateViewModel extends AndroidViewModel {
         CalendarAPI api = new CalendarAPI(context);
         Calendar beginTime = java.util.Calendar.getInstance();
         String[] splitDate =  d.getDate().split("-");
-        beginTime.set(Integer.parseInt(splitDate[0]), Integer.parseInt(splitDate[1]), Integer.parseInt(splitDate[2]), d.getStartHour(), d.getStartMinute());
+        beginTime.set(Calendar.YEAR, Integer.parseInt(splitDate[0]));
+        beginTime.set(Calendar.MONTH, Integer.parseInt(splitDate[1]));
+        beginTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[2]));
+        beginTime.set(Calendar.HOUR, d.getStartHour());
+        beginTime.set(Calendar.MINUTE, d.getStartMinute());
+
         Calendar endTime = Calendar.getInstance();
-        endTime.set(Integer.parseInt(splitDate[0]), Integer.parseInt(splitDate[1]), Integer.parseInt(splitDate[2]), d.getStartHour(), d.getStartMinute()+d.getDuration());
+        endTime.set(Calendar.YEAR, Integer.parseInt(splitDate[0]));
+        endTime.set(Calendar.MONTH, Integer.parseInt(splitDate[1]));
+        endTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[2]));
+        endTime.set(Calendar.HOUR, d.getStartHour());
+        endTime.set(Calendar.MINUTE, d.getStartMinute());
+        endTime.add(Calendar.MINUTE, d.getDuration());
+        System.out.println(d.getDuration());
+        System.out.println("Inserting in API (Begin End Diff): " + beginTime.getTimeInMillis() + " " + endTime.getTimeInMillis() + " Diff:" + (endTime.getTimeInMillis()-beginTime.getTimeInMillis()));
         FocusTime f = new FocusTime(d.getTitle(), beginTime, endTime);
         api.createFocusTime(f, context);
     }

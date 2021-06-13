@@ -21,6 +21,7 @@ import com.focustime.android.data.service.FocusTimeService;
 import com.focustime.android.ui.calendar.CalendarActivity;
 import com.focustime.android.util.TaskRunner;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -71,15 +72,16 @@ public class CalendarDayViewModel extends AndroidViewModel {
     public void init(){
         List<FocusTime> focusTimes = api.getFocusTimes();
         for(FocusTime f: focusTimes) {
-            int beginHour = f.getBeginTime().get(java.util.Calendar.HOUR_OF_DAY);
-            int beginMinute = f.getBeginTime().get(java.util.Calendar.MINUTE);
-            String date = f.getBeginTime().get(java.util.Calendar.YEAR) + "-" + f.getBeginTime().get(java.util.Calendar.MONTH)
-                    + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
-            //Log.e("date",  date);
-            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, 60, date ));
+            int beginHour = f.getBeginTime().get(Calendar.HOUR_OF_DAY);
+            int beginMinute = f.getBeginTime().get(Calendar.MINUTE);
+            String date = f.getBeginTime().get(Calendar.YEAR) + "-" + f.getBeginTime().get(java.util.Calendar.MONTH) + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
+            long diffInMS = f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis();
+            int diff = (int) (diffInMS / 60000);
+            System.out.println("Begintime in MS: " + f.getBeginTime().getTimeInMillis() + ", EndTime ins MS: " + f.getEndTime().getTimeInMillis());
+            System.out.println("diff in MS: " + diffInMS + ", Diff in Min: " + diff);
+            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, diff, date ));
         }
         //fillWithTestData();
-        System.out.println("fill it");
         elementList.setValue(daySchedule);
     }
 
