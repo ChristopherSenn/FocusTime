@@ -28,7 +28,8 @@ public class TestWorker extends Worker {
         super(context, params);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
+
     @Override
     public Result doWork() {
         //TODO: FIx Months
@@ -43,7 +44,7 @@ public class TestWorker extends Worker {
 
             Calendar c2 = nextFocusTime.getEndTime();
             //c2.set(Calendar.MONTH, c2.get(Calendar.MONTH)-1);
-            //Log.e("Schedule Time", c.getTimeInMillis()-7200000+"");
+            //Log.e("Schedule Time", c.getTimeInMillis()+"");
             //Log.e("Schedule Time Offset", c.getTimeZone().getDisplayName()+"");
             Intent notifyIntent = new Intent(getApplicationContext(), ScheduleFocusTimeReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast
@@ -51,7 +52,7 @@ public class TestWorker extends Worker {
             AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 
             alarmManager.cancel(pendingIntent);
-            alarmManager.set(AlarmManager.RTC_WAKEUP,  c.getTimeInMillis()-7200000 , pendingIntent);
+            alarmManager.set(AlarmManager.RTC_WAKEUP,  c.getTimeInMillis() , pendingIntent);
         }
 
 
