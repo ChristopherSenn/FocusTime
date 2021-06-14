@@ -88,7 +88,9 @@ public class CalendarDayViewModel extends AndroidViewModel {
                     + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
             //Log.e("date",  date);
 
-            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, 60, date ));
+            int duration = (int)(f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis()) / 1000 / 60;
+
+            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date ));
         }
         //fillWithTestData();
         System.out.println("fill it");
