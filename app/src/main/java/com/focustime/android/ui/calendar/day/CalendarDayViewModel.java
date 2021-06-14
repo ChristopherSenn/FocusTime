@@ -28,10 +28,10 @@ import com.focustime.android.ui.calendar.CalendarActivity;
 import com.focustime.android.util.TaskRunner;
 import com.focustime.android.util.TestWorker;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import me.everything.providers.android.calendar.Calendar;
 import me.everything.providers.android.calendar.CalendarProvider;
 import me.everything.providers.android.calendar.Event;
 import me.everything.providers.core.Data;
@@ -93,7 +93,6 @@ public class CalendarDayViewModel extends AndroidViewModel {
             daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date ));
         }
         //fillWithTestData();
-        System.out.println("fill it");
         elementList.setValue(daySchedule);
     }
 
@@ -123,7 +122,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
             FocusTimeService.instance.doSomething();
     }*/
 
-    public void testAPI() {
+    /*public void testAPI() {
 
 
         List<Calendar> calendars = api.getAllCalendars();
@@ -136,9 +135,9 @@ public class CalendarDayViewModel extends AndroidViewModel {
         java.util.Calendar endTime = java.util.Calendar.getInstance();
         endTime.set(2021, 5, 28, 15, 30);
 
-        /*long id = api.createFocusTime(new FocusTime("Test Title3", "Test Description",
+        long id = api.createFocusTime(new FocusTime("Test Title3", "Test Description",
                 beginTime,
-                endTime));*/
+                endTime));
         //Log.e("asljealksejas     ID", id+"");
 
 
@@ -149,7 +148,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
         }
 
 
-    }
+    }*/
 
     public LiveData<String> getText() {
         return mText;
