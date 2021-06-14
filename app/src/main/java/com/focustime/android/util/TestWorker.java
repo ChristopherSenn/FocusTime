@@ -43,14 +43,15 @@ public class TestWorker extends Worker {
 
             Calendar c2 = nextFocusTime.getEndTime();
             //c2.set(Calendar.MONTH, c2.get(Calendar.MONTH)-1);
-
+            //Log.e("Schedule Time", c.getTimeInMillis()-7200000+"");
+            //Log.e("Schedule Time Offset", c.getTimeZone().getDisplayName()+"");
             Intent notifyIntent = new Intent(getApplicationContext(), ScheduleFocusTimeReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast
                     (getApplicationContext(), 3, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 
             alarmManager.cancel(pendingIntent);
-            alarmManager.set(AlarmManager.RTC_WAKEUP,  c.getTimeInMillis() , pendingIntent);
+            alarmManager.set(AlarmManager.RTC_WAKEUP,  c.getTimeInMillis()-7200000 , pendingIntent);
         }
 
 

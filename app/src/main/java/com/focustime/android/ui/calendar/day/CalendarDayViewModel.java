@@ -84,7 +84,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
         for(FocusTime f: focusTimes) {
             int beginHour = f.getBeginTime().get(java.util.Calendar.HOUR_OF_DAY);
             int beginMinute = f.getBeginTime().get(java.util.Calendar.MINUTE);
-            String date = f.getBeginTime().get(java.util.Calendar.YEAR) + "-" + f.getBeginTime().get(java.util.Calendar.MONTH)
+            String date = f.getBeginTime().get(java.util.Calendar.YEAR) + "-" + (f.getBeginTime().get(java.util.Calendar.MONTH) + 1)
                     + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
             //Log.e("date",  date);
 
