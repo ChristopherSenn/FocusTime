@@ -27,6 +27,7 @@ public class CalendarAPI {
 
     public CalendarAPI(Context context) {
         calendarProvider = new CalendarProvider(context);
+        //this.deleteFocusTimeCalendar(context);
         this.createFocusTimeCalendar(context);
 
 
@@ -106,7 +107,7 @@ public class CalendarAPI {
         java.util.Calendar beginTime = java.util.Calendar.getInstance();
         beginTime.setTimeInMillis(event.dTStart);
         java.util.Calendar endTime = java.util.Calendar.getInstance();
-        beginTime.setTimeInMillis(event.dTend);
+        endTime.setTimeInMillis(event.dTend);
 
         return new FocusTime(event.title, beginTime, endTime, event.id);
     }
