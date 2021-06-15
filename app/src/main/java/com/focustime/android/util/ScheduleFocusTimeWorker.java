@@ -21,45 +21,41 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class TestWorker extends Worker {
-    public TestWorker(
+/**
+ * Worker that periodically checks what the next FocusTime is and then sets an AlarmManager to Trigger a Broadcast Receiver at that time
+ */
+public class ScheduleFocusTimeWorker extends Worker {
+
+    public ScheduleFocusTimeWorker(
             @NonNull Context context,
             @NonNull WorkerParameters params) {
         super(context, params);
     }
 
 
-
+    /**
+     * Checks what the next FocusTime is and then sets an AlarmManager to Trigger a Broadcast Receiver at that time
+     * @return Returns if work was done successfully or not
+     */
     @Override
     public Result doWork() {
-        //TODO: FIx Months
-
-        // Do the work here--in this case, upload the images.
-        Log.e("WORKER", "DOING SOMETHING");
         CalendarAPI api = new CalendarAPI(getApplicationContext());
-        if(api.getFocusTimes().size() > 0) {
-            FocusTime nextFocusTime = api.getFocusTimes().get(0);
-            Calendar c = nextFocusTime.getBeginTime();
-            //c.set(Calendar.MONTH, c.get(Calendar.MONTH)-1);
 
-            Calendar c2 = nextFocusTime.getEndTime();
-            //c2.set(Calendar.MONTH, c2.get(Calendar.MONTH)-1);
-            //Log.e("Schedule Time", c.getTimeInMillis()+"");
-            //Log.e("Schedule Time Offset", c.getTimeZone().getDisplayName()+"");
-            Intent notifyIntent = new Intent(getApplicationContext(), ScheduleFocusTimeReceiver.class);
+        if(api.getFocusTimes().size() > 0) { // If size <= 0 there are no FocusTimes to schedule
+            FocusTime nextFocusTime = api.getFocusTimes().get(0);
+
+            Calendar c = nextFocusTime.getBeginTime();
+
+            Intent notifyIntent = new Intent(getApplicationContext(), ScheduleFocusTimeReceiver.class); // Create an Intent to the Receiver
             PendingIntent pendingIntent = PendingIntent.getBroadcast
-                    (getApplicationContext(), 3, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    (getApplicationContext(), 3, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT); // Make it a pending Intent
+
             AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 
-            alarmManager.cancel(pendingIntent);
-            alarmManager.set(AlarmManager.RTC_WAKEUP,  c.getTimeInMillis() , pendingIntent);
+            alarmManager.cancel(pendingIntent); // As this worker gets called regularly, the current alarm has to be canceled to avoid duplicates
+            alarmManager.set(AlarmManager.RTC_WAKEUP,  c.getTimeInMillis() , pendingIntent); // Set alarm when the next FocusTime starts with the PendingIntent to the Receiver
         }
 
-
-
-
-
-        // Indicate whether the work finished successfully with the Result
         return Result.success();
     }
 }

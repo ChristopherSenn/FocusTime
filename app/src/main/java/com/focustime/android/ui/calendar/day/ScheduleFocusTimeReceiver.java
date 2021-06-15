@@ -20,25 +20,28 @@ public class ScheduleFocusTimeReceiver extends BroadcastReceiver {
 
     }
 
+    /**
+     * Starts the next FocusTime
+     * That FocusTime should start right when the Receiver is called, as it gets set by the Worker to that specific time
+     * @param context Application context
+     * @param intent Start Intent
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
-        //Log.e("lakje", "j");
+
         CalendarAPI calendarAPI = new CalendarAPI(context);
-        if(calendarAPI.getFocusTimes().size() > 0) {
+
+        if(calendarAPI.getFocusTimes().size() > 0) { // Check if there are any FocusTime to be started
             FocusTime next = calendarAPI.getFocusTimes().get(0);
-            long duration = next.getEndTime().getTimeInMillis() - next.getBeginTime().getTimeInMillis();
-            Log.e("Time Duration", duration+"");
-            Log.e("Start", next.getBeginTime().getTimeInMillis()+"");
-            Log.e("End", next.getEndTime().getTimeInMillis()+"");
+            long duration = next.getEndTime().getTimeInMillis() - next.getBeginTime().getTimeInMillis(); // Calculate duration of the FocusTime
+
 
             FocusTimeServiceStarter starter = new FocusTimeServiceStarter();
             starter.activateDND(context);
-            starter.startAlarmCongratulationService(context, duration);
+            starter.startAlarmCongratulationService(context, duration); // Start the FocusTimeService with the calculated duration
         }
 
-        Toast.makeText(context, "Worker is Working", Toast.LENGTH_LONG).show();
-        //Intent intent1 = new Intent(context, FocusTimeService.class);
-        //context.startService(intent1);
+        //Toast.makeText(context, "Worker is Working", Toast.LENGTH_LONG).show();
     }
 }

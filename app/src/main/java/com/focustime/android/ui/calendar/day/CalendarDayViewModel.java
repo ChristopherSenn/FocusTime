@@ -1,16 +1,13 @@
 package com.focustime.android.ui.calendar.day;
 
 import android.Manifest;
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
@@ -23,18 +20,9 @@ import androidx.work.WorkManager;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
-import com.focustime.android.data.service.FocusTimeService;
-import com.focustime.android.ui.calendar.CalendarActivity;
-import com.focustime.android.util.TaskRunner;
-import com.focustime.android.util.TestWorker;
+import com.focustime.android.util.ScheduleFocusTimeWorker;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.Callable;
-
-import me.everything.providers.android.calendar.CalendarProvider;
-import me.everything.providers.android.calendar.Event;
-import me.everything.providers.core.Data;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -60,7 +48,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
         //Intent intent = new Intent(context, CalendarService.class);
         //context.startService(intent);
 
-        testFocusTimeService();
+        scheduleFocusTimeWorker();
         //testService();
 
         // TODO: Find a workaround for blocking the UI Thread
@@ -96,8 +84,11 @@ public class CalendarDayViewModel extends AndroidViewModel {
         elementList.setValue(daySchedule);
     }
 
-    private void testFocusTimeService() {
-        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(TestWorker.class, 15, TimeUnit.MINUTES).build();
+    /**
+     * Schedules a Worker to check every 15 Minutes what the next upcoming FocusTime is and to set an alarm at it's start Time
+     */
+    private void scheduleFocusTimeWorker() {
+        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(ScheduleFocusTimeWorker.class, 15, TimeUnit.MINUTES).build();
         WorkManager.getInstance().enqueueUniquePeriodicWork("NextFocusTime", ExistingPeriodicWorkPolicy.REPLACE ,periodicWork);
 
     }
