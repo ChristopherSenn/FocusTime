@@ -1,6 +1,7 @@
 package com.focustime.android.ui.calendar.importEvents;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.ui.calendar.day.DayElement;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import me.everything.providers.android.calendar.Event;
@@ -43,10 +45,28 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
         Event event = events.get(position);
 
         holder.title.setText(event.title);
-        holder.date.setText(event.title);
-        String t = event.title + ":" + event.title;
-        holder.time.setText(t);
+
+        Calendar beginDate = Calendar.getInstance();
+        beginDate.setTimeInMillis(event.dTStart);
+        String stringDate = beginDate.get(Calendar.DAY_OF_MONTH) + "." + (beginDate.get(Calendar.MONTH) + 1) + "." + beginDate.get(Calendar.YEAR);
+        Log.e("asdlkj", event.dTStart+"");
+        holder.date.setText(stringDate);
+
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTimeInMillis(event.dTend);
+        String beginHour = formatHourMinute(beginDate.get(Calendar.HOUR_OF_DAY));
+        String beginMinute = formatHourMinute(beginDate.get(Calendar.MINUTE));
+        String endHour = formatHourMinute(endDate.get(Calendar.HOUR_OF_DAY));
+        String endMinute = formatHourMinute(endDate.get(Calendar.MINUTE));
+        String stringTime = beginHour + ":" + beginMinute + " - " + endHour + ":" + endMinute;
+        holder.time.setText(stringTime);
+
         holder.description.setText(event.description);
+    }
+
+    private String formatHourMinute(int i) {
+        if(i < 10) return "0"+i;
+        return i+"";
     }
 
     @Override
