@@ -20,6 +20,11 @@
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_create" />
 
+    <item
+        android:id="@+id/navigation_import"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Import Events" />
+
 
 
 </menu>

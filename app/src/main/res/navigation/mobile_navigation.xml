@@ -26,4 +26,10 @@
         android:name="com.focustime.android.ui.calendar.month.MonthViewFragment"
         android:label="Month View"
         tools:layout="@layout/month_view" />
+
+    <fragment
+        android:id="@+id/navigation_import"
+        android:name="com.focustime.android.ui.calendar.importEvents.ImportEventsFragment"
+        android:label="Import Events View"
+        tools:layout="@layout/import_events_fragment" />
 </navigation>

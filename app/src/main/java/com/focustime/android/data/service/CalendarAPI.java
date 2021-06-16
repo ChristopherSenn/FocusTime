@@ -306,5 +306,27 @@ public class CalendarAPI {
         calendarProvider.update(newCalendar);
     }
 
+    public List<Event> getFocusEventsForImport() {
+        List<Calendar> calendars = getAllCalendars();
+        List<Event> events, upcomingEvents = new ArrayList<Event>();
+        for(Calendar c: calendars) {
+            if(c.accountName.equals(c.ownerAccount) && !c.accountName.equals(FOCUS_TIME_ACCOUNT_NAME)) {
+                events = getEventsByCalendar(c);
+                for(Event event: events) {
+                    if(event.dTStart > java.util.Calendar.getInstance().getTimeInMillis()) {
+                        upcomingEvents.add(event);
+                    }
+
+
+                }
+                Collections.sort(upcomingEvents, ((o1, o2) -> Long.compare(o1.dTStart, o2.dTStart)));
+                return upcomingEvents;
+            }
+
+        }
+
+        return null;
+    }
+
 
 }

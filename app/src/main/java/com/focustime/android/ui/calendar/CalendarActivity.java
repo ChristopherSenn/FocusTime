@@ -35,7 +35,6 @@ public class CalendarActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_calendar);
 
 
-
         // Check if we have permission to access the users phone calendar database
         checkPermission(CALLBACK_ID, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
 
@@ -45,7 +44,7 @@ public class CalendarActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_day, R.id.navigation_create, R.id.navigation_focusButton).build();
+                R.id.navigation_day, R.id.navigation_create, R.id.navigation_focusButton, R.id.navigation_import).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_calendar);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);

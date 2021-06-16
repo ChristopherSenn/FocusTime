@@ -4,4 +4,6 @@
     <string name="title_create">Create Focus Time</string>
     <string name="title_calendar_day">Day View</string>
     <string name="title_focusButton">Focus</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
