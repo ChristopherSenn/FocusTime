@@ -3,6 +3,8 @@ package com.focustime.android.data.model;
 import java.util.Calendar;
 
 public class FocusTime {
+    public static long UNDEFINED_ID = -1;
+
     private Calendar beginTime, endTime;
     private String title;
     private long id;
@@ -18,6 +20,7 @@ public class FocusTime {
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.title = title;
+        this.id = UNDEFINED_ID;
     }
 
     /**
