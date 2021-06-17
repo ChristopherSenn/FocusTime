@@ -19,6 +19,8 @@ import me.everything.providers.android.calendar.Calendar;
 import me.everything.providers.android.calendar.CalendarProvider;
 import me.everything.providers.android.calendar.Event;
 
+import static java.lang.Math.abs;
+
 // Fuck this piece of shit Framework and its piece of shit documentation. We are doing this synchronous now.
 public class CalendarAPI {
     public static final String FOCUS_TIME_CALENDAR_NAME = "Focus Time Calendar";
@@ -309,12 +311,25 @@ public class CalendarAPI {
     public List<Event> getFocusEventsForImport() {
         List<Calendar> calendars = getAllCalendars();
         List<Event> events, upcomingEvents = new ArrayList<Event>();
+        List<FocusTime> focusTimes = getFocusTimes();
+
         for(Calendar c: calendars) {
             if(c.accountName.equals(c.ownerAccount) && !c.accountName.equals(FOCUS_TIME_ACCOUNT_NAME)) {
                 events = getEventsByCalendar(c);
                 for(Event event: events) {
+
                     if(event.dTStart > java.util.Calendar.getInstance().getTimeInMillis()) {
-                        upcomingEvents.add(event);
+                        boolean isAlreadyImported = false;
+
+                        for(FocusTime ft: focusTimes) { // Check if the Event has already been imported
+
+                            if(ft.getTitle().equals(event.title) && abs(ft.getBeginTime().getTimeInMillis() -event.dTStart) < 80000) {
+                                isAlreadyImported = true;
+                                break;
+                            }
+                        }
+
+                        if(!isAlreadyImported) upcomingEvents.add(event);
                     }
 
 

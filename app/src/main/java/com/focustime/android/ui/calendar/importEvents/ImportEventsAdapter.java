@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
+import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.ui.calendar.day.DayElement;
+import com.focustime.android.util.FocusTimeFactory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,18 +25,22 @@ import me.everything.providers.android.calendar.Event;
 
 public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapter.RecyclerViewViewHolder> {
 
-    Activity context;
-    List<Event> events;
+    private Activity context;
+    private List<Event> events;
+    private CalendarAPI api;
 
     public ImportEventsAdapter(Activity context, List<Event> userArrayList) {
         this.context = context;
         this.events = userArrayList;
+        api = new CalendarAPI(context);
     }
 
 
     @NonNull
     @Override
     public RecyclerViewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+
         View rootView = LayoutInflater.from(context).inflate(R.layout.import_card, parent,false);
         RecyclerViewViewHolder rvh = new RecyclerViewViewHolder(rootView);
         return rvh;
@@ -49,7 +55,7 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
         Calendar beginDate = Calendar.getInstance();
         beginDate.setTimeInMillis(event.dTStart);
         String stringDate = beginDate.get(Calendar.DAY_OF_MONTH) + "." + (beginDate.get(Calendar.MONTH) + 1) + "." + beginDate.get(Calendar.YEAR);
-        Log.e("asdlkj", event.dTStart+"");
+
         holder.date.setText(stringDate);
 
         Calendar endDate = Calendar.getInstance();
@@ -62,6 +68,24 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
         holder.time.setText(stringTime);
 
         holder.description.setText(event.description);
+
+        holder.dismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                events.remove(position);
+                notifyDataSetChanged();
+            }
+        });
+
+        holder.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FocusTime importFocusTime = FocusTimeFactory.buildFocusTime(event);
+                api.createFocusTime(importFocusTime, context);
+                events.remove(position);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     private String formatHourMinute(int i) {
