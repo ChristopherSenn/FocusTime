@@ -26,6 +26,10 @@ public class ImportEventsViewModel extends AndroidViewModel {
         this.context = application.getApplicationContext();
     }
 
+    /**
+     * Gets the List of Events to Import from the Calendar API
+     * @return List of Events to import
+     */
     public List<Event> getEvent() {
         CalendarAPI api = new CalendarAPI(context);
         return api.getFocusEventsForImport();

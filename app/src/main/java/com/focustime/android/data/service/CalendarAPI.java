@@ -308,17 +308,21 @@ public class CalendarAPI {
         calendarProvider.update(newCalendar);
     }
 
+    /**
+     * Looks through the Users Calendars, finds his personal one and returns every upcoming Event from it, that is not already imported.
+     * @return List of Events the User potentially wants to import. Returns null in case the User has no personal Calendar
+     */
     public List<Event> getFocusEventsForImport() {
         List<Calendar> calendars = getAllCalendars();
         List<Event> events, upcomingEvents = new ArrayList<Event>();
         List<FocusTime> focusTimes = getFocusTimes();
 
         for(Calendar c: calendars) {
-            if(c.accountName.equals(c.ownerAccount) && !c.accountName.equals(FOCUS_TIME_ACCOUNT_NAME)) {
+            if(c.accountName.equals(c.ownerAccount) && !c.accountName.equals(FOCUS_TIME_ACCOUNT_NAME)) { // Looks for the users personal calendar
                 events = getEventsByCalendar(c);
-                for(Event event: events) {
 
-                    if(event.dTStart > java.util.Calendar.getInstance().getTimeInMillis()) {
+                for(Event event: events) {
+                    if(event.dTStart > java.util.Calendar.getInstance().getTimeInMillis()) { // Filters for only upcoming events
                         boolean isAlreadyImported = false;
 
                         for(FocusTime ft: focusTimes) { // Check if the Event has already been imported
@@ -329,18 +333,18 @@ public class CalendarAPI {
                             }
                         }
 
-                        if(!isAlreadyImported) upcomingEvents.add(event);
+                        if(!isAlreadyImported) upcomingEvents.add(event); // Add to the return List if it fits all of the criteria
                     }
 
 
                 }
-                Collections.sort(upcomingEvents, ((o1, o2) -> Long.compare(o1.dTStart, o2.dTStart)));
+                Collections.sort(upcomingEvents, ((o1, o2) -> Long.compare(o1.dTStart, o2.dTStart))); // Sort by start date/time
                 return upcomingEvents;
             }
 
         }
 
-        return null;
+        return null; //
     }
 
 

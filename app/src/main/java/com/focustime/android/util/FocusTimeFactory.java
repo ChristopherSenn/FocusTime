@@ -7,6 +7,11 @@ import java.util.Calendar;
 import me.everything.providers.android.calendar.Event;
 
 public class FocusTimeFactory {
+    /**
+     * Builds a FocusTime from an Event
+     * @param event The given Event
+     * @return A Focus Time
+     */
     public static FocusTime buildFocusTime(Event event) {
         Calendar beginTime = java.util.Calendar.getInstance();
         beginTime.setTimeInMillis(event.dTStart);

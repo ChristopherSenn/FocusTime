@@ -36,24 +36,27 @@ public class ImportEventsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        // Init ViewModel and binding
         viewModel = new ViewModelProvider(this).get(ImportEventsViewModel.class);
         binding = ImportEventsFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // Init the import card RecyclerView
         adapter = new ImportEventsAdapter((Activity) root.getContext(), viewModel.getEvent());
         recyclerView = binding.importRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
         recyclerView.setAdapter(adapter);
+
+
         return root;
 
-        //return inflater.inflate(R.layout.import_events_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(ImportEventsViewModel.class);
-        // TODO: Use the ViewModel
+
     }
 
 }

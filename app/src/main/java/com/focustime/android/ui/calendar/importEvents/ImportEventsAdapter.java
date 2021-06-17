@@ -50,6 +50,9 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
     public void onBindViewHolder(@NonNull RecyclerViewViewHolder holder, int position) {
         Event event = events.get(position);
 
+        /**
+         * Set the Text fields according to the event information
+         */
         holder.title.setText(event.title);
 
         Calendar beginDate = Calendar.getInstance();
@@ -69,6 +72,7 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
 
         holder.description.setText(event.description);
 
+        //Remove the Event from the list
         holder.dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +81,7 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
             }
         });
 
+        // Add the Event as a FocusTime and remove it from the list
         holder.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +93,11 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
         });
     }
 
+    /**
+     * Adds a 0 to an Integer if its smaller than 10
+     * @param i Input integer
+     * @return Formatted String
+     */
     private String formatHourMinute(int i) {
         if(i < 10) return "0"+i;
         return i+"";
