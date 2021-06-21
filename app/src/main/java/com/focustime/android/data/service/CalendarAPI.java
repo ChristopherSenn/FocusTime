@@ -1,7 +1,6 @@
 package com.focustime.android.data.service;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
@@ -28,7 +27,6 @@ public class CalendarAPI {
 
     public CalendarAPI(Context context) {
         calendarProvider = new CalendarProvider(context);
-        //this.deleteFocusTimeCalendar(context);
         this.createFocusTimeCalendar(context);
 
 
@@ -71,7 +69,7 @@ public class CalendarAPI {
     }
 
     /**
-     * Returns a List of every FocusTime Event that is happening from today on
+     * Returns a List of every FocusTime Event
      *
      * @return List of every FocusTime Event.
      */
@@ -81,11 +79,7 @@ public class CalendarAPI {
         ArrayList<FocusTime> focusTimes = new ArrayList<>();
 
         for(Event event: e) {
-            FocusTime f = getFocusTimeById(event.id);
-            if(!f.getBeginTime().before(java.util.Calendar.getInstance())){
-                focusTimes.add(f);
-            }
-            //focusTimes.add(getFocusTimeById(event.id));
+            focusTimes.add(getFocusTimeById(event.id));
         }
         Collections.sort(focusTimes, ((o1, o2) -> o1.getBeginTime().compareTo(o2.getBeginTime())));
 
@@ -108,7 +102,7 @@ public class CalendarAPI {
         java.util.Calendar beginTime = java.util.Calendar.getInstance();
         beginTime.setTimeInMillis(event.dTStart);
         java.util.Calendar endTime = java.util.Calendar.getInstance();
-        endTime.setTimeInMillis(event.dTend);
+        beginTime.setTimeInMillis(event.dTend);
 
         return new FocusTime(event.title, beginTime, endTime, event.id);
     }
@@ -141,7 +135,6 @@ public class CalendarAPI {
         values.put(Events.DTSTART, focusTime.getBeginTime().getTimeInMillis());
         values.put(Events.DTEND, focusTime.getEndTime().getTimeInMillis());
         values.put(Events.TITLE, focusTime.getTitle());
-        values.put(Events.ACCESS_LEVEL, Events.ACCESS_PUBLIC);
         values.put(Events.CALENDAR_ID, this.getFocusTimeCalendar().id);
         values.put(Events.EVENT_TIMEZONE, "UTC"); //TODO: Add support for different timezones
         Uri uri = cr.insert(Events.CONTENT_URI, values);
@@ -178,7 +171,7 @@ public class CalendarAPI {
             values.put(CalendarContract.Calendars.NAME, FOCUS_TIME_CALENDAR_NAME);
             values.put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, FOCUS_TIME_CALENDAR_NAME);
             values.put(CalendarContract.Calendars.CALENDAR_COLOR, 0x00FF00);
-            values.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_EDITOR);
+            values.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_ROOT);
             values.put(CalendarContract.Calendars.OWNER_ACCOUNT, FOCUS_TIME_ACCOUNT_NAME);
             values.put(CalendarContract.Calendars.VISIBLE, 1);
             values.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
@@ -192,70 +185,9 @@ public class CalendarAPI {
             values.put(CalendarContract.Calendars.CAL_SYNC8, System.currentTimeMillis());
 
             Uri newCalendar = context.getContentResolver().insert(target, values);
-            Log.e("CalendarAPI", "NEW FOCUS TIME CALENDAR WAS CREATED");
         }
 
     }
-
-    /**
-     * Deletes a given FocusTime from the database.
-     * @param context Application Context
-     * @param focusTime Focus Thime that should be deleted
-     * @return True if FocusTime was deleted successfully, False if the FocusTime doesn't have an ID, or the ID is of a different Event than a FocusTime
-     */
-    public boolean deleteFocusTime(Context context, FocusTime focusTime) {
-        if(focusTime.getId() == FocusTime.UNDEFINED_ID) {
-            Log.e("CalendarAPI", "deleteFocusTime - Given FocusTime doesn't have a valid ID.");
-            return false;
-        } else {
-            if(getFocusTimeById(focusTime.getId()) == null) {
-                Log.e("CalendarAPI", "deleteFocusTime - The given Event is not a FocusTime!");
-                return false;
-            } else {
-                ContentResolver cr = context.getContentResolver();
-                Uri deleteUri = null;
-                deleteUri = ContentUris.withAppendedId(Events.CONTENT_URI, focusTime.getId());
-                cr.delete(deleteUri, null, null);
-                return true;
-            }
-
-        }
-
-    }
-
-    /**
-     * Updates the stored FocusTime with the values of the given FocusTime
-     * @param context Application context
-     * @param focusTime FocusTime that should be updated
-     * @return True if FocusTime was updated successfully, False if the FocusTime doesn't have an ID, or the ID is of a different Event than a FocusTime
-     */
-    public boolean updateFocusTime(Context context, FocusTime focusTime) {
-        if(focusTime.getId() == FocusTime.UNDEFINED_ID) {
-            Log.e("CalendarAPI", "updateFocusTime - Given FocusTime doesn't have a valid ID.");
-            return false;
-        } else {
-            if(getFocusTimeById(focusTime.getId()) == null) {
-                Log.e("CalendarAPI", "updateFocusTime - The given Event is not a FocusTime!");
-                return false;
-            } else {
-                ContentResolver cr = context.getContentResolver();
-                ContentValues values = new ContentValues();
-                Uri updateUri = null;
-
-                values.put(Events.TITLE, focusTime.getTitle());
-                values.put(Events.DTSTART, focusTime.getBeginTime().getTimeInMillis());
-                values.put(Events.DTEND, focusTime.getEndTime().getTimeInMillis());
-
-                updateUri = ContentUris.withAppendedId(Events.CONTENT_URI, focusTime.getId());
-                cr.update(updateUri, values, null, null);
-                return true;
-            }
-
-        }
-
-    }
-
-
 
     /**
      * Deletes the focus time calendar and every FocusTime.
@@ -285,7 +217,7 @@ public class CalendarAPI {
      * @param id ID of the calendar that should be deleted
      * @param context application context
      */
-    private void deleteCalendarById(String id, Context context) {
+    public void deleteCalendarById(String id, Context context) {
 
         Uri calUri = CalendarContract.Calendars.CONTENT_URI;
         calUri = calUri.buildUpon()

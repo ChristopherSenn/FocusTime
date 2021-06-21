@@ -26,6 +26,12 @@ public class CustomTimePickerDialog extends TimePickerDialog {
     }
 
     @Override
+    public void updateTime(int hourOfDay, int minuteOfHour) {
+        mTimePicker.setCurrentHour(hourOfDay);
+        mTimePicker.setCurrentMinute(minuteOfHour / TIME_PICKER_INTERVAL);
+    }
+
+    @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
             case BUTTON_POSITIVE:
@@ -62,8 +68,6 @@ public class CustomTimePickerDialog extends TimePickerDialog {
                     "android"
             ));
 
-            mTimePicker.setDescendantFocusability(TimePicker.FOCUS_BLOCK_DESCENDANTS);
-
             minutePicker.setMinValue(0);
             minutePicker.setMaxValue((60 / TIME_PICKER_INTERVAL) - 1);
             List<String> displayedValues = new ArrayList<>();
@@ -75,12 +79,6 @@ public class CustomTimePickerDialog extends TimePickerDialog {
 
             hourPicker.setMinValue(0);
             hourPicker.setMaxValue(5);
-            List<String> displayedValues2 = new ArrayList<>();
-            for (int i = 0; i < 6; i ++) {
-                displayedValues2.add(String.format("%02d", i));
-            }
-            hourPicker.setDisplayedValues(displayedValues2
-                    .toArray(new String[displayedValues2.size()]));
 
             //The following code is probably too old so that it can't get the picker
 //            Class<?> classForid = Class.forName("com.android.internal.R$id");

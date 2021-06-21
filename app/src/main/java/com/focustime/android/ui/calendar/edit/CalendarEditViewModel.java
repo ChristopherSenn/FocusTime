@@ -1,12 +1,9 @@
-package com.focustime.android.ui.calendar.create;
+package com.focustime.android.ui.calendar.edit;
 
 import android.app.Application;
 import android.content.Context;
 
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
@@ -14,16 +11,15 @@ import com.focustime.android.ui.calendar.day.DayElement;
 
 import java.util.Calendar;
 
-public class CalendarCreateViewModel extends AndroidViewModel {
+public class CalendarEditViewModel extends AndroidViewModel {
     private Context context;
 
-
-    public CalendarCreateViewModel(Application application) {
+    public CalendarEditViewModel(Application application) {
         super(application);
         this.context = application.getApplicationContext();
     }
 
-    public void saveScheduleItem(DayElement d){
+    public void editItem(DayElement d){
         CalendarAPI api = new CalendarAPI(context);
         Calendar beginTime = java.util.Calendar.getInstance();
         String[] splitDate =  d.getDate().split("-");
@@ -44,7 +40,7 @@ public class CalendarCreateViewModel extends AndroidViewModel {
         endTime.add(Calendar.MINUTE, d.getDuration());
         endTime.set(Calendar.SECOND, 0);
         endTime.set(Calendar.MILLISECOND, 0);
-        FocusTime f = new FocusTime(d.getTitle(), beginTime, endTime);
-        api.createFocusTime(f, context);
+        FocusTime f = new FocusTime(d.getTitle(), beginTime, endTime, d.getDbId());
+        api.updateFocusTime(f);
     }
 }

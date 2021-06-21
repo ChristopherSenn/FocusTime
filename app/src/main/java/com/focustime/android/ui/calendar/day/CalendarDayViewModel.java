@@ -8,24 +8,26 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
-
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
-import com.focustime.android.util.ScheduleFocusTimeWorker;
+import com.focustime.android.data.service.FocusTimeService;
+import com.focustime.android.ui.calendar.CalendarActivity;
+import com.focustime.android.util.TaskRunner;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Callable;
 
+//import me.everything.providers.android.calendar.Calendar;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+
 
 
 public class CalendarDayViewModel extends AndroidViewModel {
@@ -45,10 +47,10 @@ public class CalendarDayViewModel extends AndroidViewModel {
         daySchedule = new ArrayList<>();
         init();
 
-        //Intent intent = new Intent(context, CalendarService.class);
-        //context.startService(intent);
+        Intent intent = new Intent(context, CalendarService.class);
+        context.startService(intent);
 
-        scheduleFocusTimeWorker();
+
         //testService();
 
         // TODO: Find a workaround for blocking the UI Thread
@@ -70,48 +72,41 @@ public class CalendarDayViewModel extends AndroidViewModel {
     public void init(){
         List<FocusTime> focusTimes = api.getFocusTimes();
         for(FocusTime f: focusTimes) {
-            int beginHour = f.getBeginTime().get(java.util.Calendar.HOUR_OF_DAY);
-            int beginMinute = f.getBeginTime().get(java.util.Calendar.MINUTE);
-            String date = f.getBeginTime().get(java.util.Calendar.YEAR) + "-" + (f.getBeginTime().get(java.util.Calendar.MONTH) + 1)
-                    + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
-            //Log.e("date",  date);
-
-            int duration = (int)(f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis()) / 1000 / 60;
-
-            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date ));
+            int beginHour = f.getBeginTime().get(Calendar.HOUR_OF_DAY);
+            int beginMinute = f.getBeginTime().get(Calendar.MINUTE);
+            String date = f.getBeginTime().get(Calendar.YEAR) + "-" + f.getBeginTime().get(java.util.Calendar.MONTH) + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
+            long diffInMS = f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis();
+            int diff = (int) (diffInMS / 60000);
+            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, diff, date, f.getId()));
         }
         //fillWithTestData();
         elementList.setValue(daySchedule);
     }
 
-    /**
-     * Schedules a Worker to check every 15 Minutes what the next upcoming FocusTime is and to set an alarm at it's start Time
-     */
-    private void scheduleFocusTimeWorker() {
-        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(ScheduleFocusTimeWorker.class, 15, TimeUnit.MINUTES).build();
-        WorkManager.getInstance().enqueueUniquePeriodicWork("NextFocusTime", ExistingPeriodicWorkPolicy.REPLACE ,periodicWork);
-
+    public void fillWithTestData(){
+        daySchedule.add(new DayElement("blub", 13, 14, 240, "2012-01-13", 0));
+        daySchedule.add(new DayElement("blub1", 11, 24, 120, "2015-01-13", 0));
     }
 
     public LiveData<ArrayList<DayElement>> getToday() {
         return elementList;
     }
 
-    /*public void testService() {
+    public void testService() {
         TaskRunner taskRunner = new TaskRunner();
         taskRunner.executeAsync(new StartServiceTask(), (result) -> {
             makeServiceDoSomething();
         });
-    }*/
+    }
 
 
 
 
 
-    /*public void makeServiceDoSomething(){
+    public void makeServiceDoSomething(){
         if( FocusTimeService.isRunning )
             FocusTimeService.instance.doSomething();
-    }*/
+    }
 
     /*public void testAPI() {
 
@@ -126,26 +121,26 @@ public class CalendarDayViewModel extends AndroidViewModel {
         java.util.Calendar endTime = java.util.Calendar.getInstance();
         endTime.set(2021, 5, 28, 15, 30);
 
-        long id = api.createFocusTime(new FocusTime("Test Title3", "Test Description",
+        /*long id = api.createFocusTime(new FocusTime("Test Title3", "Test Description",
                 beginTime,
-                endTime));
+                endTime));*//*
         //Log.e("asljealksejas     ID", id+"");
 
 
         Log.e("Events length", api.getFocusTimes().size()+"");
         for(FocusTime ft: api.getFocusTimes()) {
-            //Log.e("a", ft.toString());
+
             Log.e("alksje", ft.getId() + "  " + ft.getTitle());
         }
 
 
-    }*/
-
+    }
+*/
     public LiveData<String> getText() {
         return mText;
     }
 
-    /*class StartServiceTask implements Callable<Void> {
+    class StartServiceTask implements Callable<Void> {
 
         @Override
         public Void call() {
@@ -163,6 +158,11 @@ public class CalendarDayViewModel extends AndroidViewModel {
             }
             return null;
         }
-    }*/
+    }
+
+    public void deleteApiEntry(long id, Context c){
+        String stringId = "" + id;
+        api.deleteCalendarById(stringId, c);
+    }
 
 }

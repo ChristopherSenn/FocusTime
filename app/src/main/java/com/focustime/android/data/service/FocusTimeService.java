@@ -1,15 +1,12 @@
 package com.focustime.android.data.service;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
@@ -19,53 +16,11 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.focustime.android.R;
 import com.focustime.android.ui.calendar.CalendarActivity;
 
 public class FocusTimeService extends Service {
-    private static BroadcastReceiver br_ScreenOffReceiver;
-
-    @Override
-    public IBinder onBind(Intent arg0)
-    {
-        return null;
-    }
-
-    @Override
-    public void onCreate()
-    {
-        registerScreenOffReceiver();
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        unregisterReceiver(br_ScreenOffReceiver);
-        br_ScreenOffReceiver = null;
-    }
-
-    private void registerScreenOffReceiver()
-    {
-        br_ScreenOffReceiver = new BroadcastReceiver()
-        {
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                Log.e("whatever", "ACTION_SCREEN_OFF");
-                // do something, e.g. send Intent to main app
-            }
-        };
-
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(br_ScreenOffReceiver, filter);
-    }
-
-
-}
-
-/*public class FocusTimeService extends Service {
     public static final String NOTIFICATION_CHANNEL_ID = "com.example.focustime";
 
     public static boolean isRunning = false;
@@ -102,6 +57,7 @@ public class FocusTimeService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startMyOwnForeground(){
+
         String channelName = "My Background Service";
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
         chan.setLightColor(Color.BLUE);
@@ -140,4 +96,4 @@ public class FocusTimeService extends Service {
         //} catch (Exception e) {}
 
     }
-}*/
+}

@@ -39,7 +39,7 @@ public class CalendarDayFragment extends Fragment {
         resview = binding.dayView;
 
         mViewModel.getToday().observe(getViewLifecycleOwner(), d -> {
-            adapter = new CalenderDayAdapter((Activity) root.getContext(), d);
+            adapter = new CalenderDayAdapter((Activity) root.getContext(), d, this);
             resview.setLayoutManager(new LinearLayoutManager(root.getContext()));
             resview.setAdapter(adapter);
         });
@@ -61,4 +61,7 @@ public class CalendarDayFragment extends Fragment {
         binding = null;
     }
 
+    public CalendarDayViewModel getmViewModel() {
+        return mViewModel;
+    }
 }

@@ -11,15 +11,8 @@
         android:title="@string/title_calendar_day" />
 
     <item
-        android:id="@+id/navigation_monthView"
-        android:icon="@drawable/calendar_icon"
-        android:title="Month View" />
-
-    <item
         android:id="@+id/navigation_create"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_create" />
-
-
 
 </menu>

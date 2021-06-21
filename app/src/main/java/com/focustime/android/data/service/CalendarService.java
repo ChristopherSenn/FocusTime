@@ -21,7 +21,7 @@ import me.everything.providers.android.calendar.Calendar;
 import me.everything.providers.android.calendar.CalendarProvider;
 
 public class CalendarService extends Service {
-    public static final String SERVICE_RECEIVER_ID = "asdlkj" + ".customIntent";
+    public static final String SERVICE_RECEIVER_ID = FocusTimeService.NOTIFICATION_CHANNEL_ID + ".customIntent";
 
     private Looper serviceLooper;
     private ServiceHandler serviceHandler;
