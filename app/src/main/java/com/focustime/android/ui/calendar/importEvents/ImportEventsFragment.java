@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class ImportEventsFragment extends Fragment {
 
         // Init the import card RecyclerView
         adapter = new ImportEventsAdapter((Activity) root.getContext(), viewModel.getEvent());
+
         recyclerView = binding.importRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
         recyclerView.setAdapter(adapter);

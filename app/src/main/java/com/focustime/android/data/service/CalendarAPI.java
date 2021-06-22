@@ -317,23 +317,32 @@ public class CalendarAPI {
         List<Event> events, upcomingEvents = new ArrayList<Event>();
         List<FocusTime> focusTimes = getFocusTimes();
 
+
+
         for(Calendar c: calendars) {
+
+
             if(c.accountName.equals(c.ownerAccount) && !c.accountName.equals(FOCUS_TIME_ACCOUNT_NAME)) { // Looks for the users personal calendar
                 events = getEventsByCalendar(c);
 
+
+
                 for(Event event: events) {
                     if(event.dTStart > java.util.Calendar.getInstance().getTimeInMillis()) { // Filters for only upcoming events
+                        //Log.e("lkjsad", event.title);
                         boolean isAlreadyImported = false;
 
                         for(FocusTime ft: focusTimes) { // Check if the Event has already been imported
 
                             if(ft.getTitle().equals(event.title) && abs(ft.getBeginTime().getTimeInMillis() -event.dTStart) < 80000) {
                                 isAlreadyImported = true;
+                                Log.e("lakjsd", event.title);
                                 break;
                             }
                         }
 
                         if(!isAlreadyImported) upcomingEvents.add(event); // Add to the return List if it fits all of the criteria
+
                     }
 
 
