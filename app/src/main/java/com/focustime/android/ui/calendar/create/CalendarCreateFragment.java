@@ -44,21 +44,6 @@ public class CalendarCreateFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        /*ActivityResultLauncher<Intent> datePicker = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                            Intent data = result.getData();
-                            inputDate.set(Calendar.YEAR, Integer.parseInt(data.getStringExtra("year")));
-                            inputDate.set(Calendar.MONTH, Integer.parseInt(data.getStringExtra("month")));
-                            inputDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(data.getStringExtra("day")));
-                        }
-                    }
-                });*/
-
-
         //return inflater.inflate(R.layout.calendar_create_fragment, container, false);
         mViewModel = new ViewModelProvider(this).get(CalendarCreateViewModel.class);
         binding = CalendarCreateFragmentBinding.inflate(inflater, container, false);
@@ -83,11 +68,9 @@ public class CalendarCreateFragment extends Fragment {
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent intent = new Intent(root.getContext(), CalendarDayPickDateFragment.class);
-                    startActivityForResult(intent, 100);
+                Intent intent = new Intent(root.getContext(), CalendarDayPickDateFragment.class);
+                startActivityForResult(intent, 100);
 
-                    /*Intent intent = new Intent(root.getContext(), CalendarDayPickDateFragment.class);
-                    datePicker.launch(intent);*/
             }
         });
 
@@ -108,20 +91,20 @@ public class CalendarCreateFragment extends Fragment {
                 String formatDate = getStringDateFromCalendar(inputDate);
                 if(!text.getEditText().getText().toString().matches("")){
                     if(dur > 0){
-                        mViewModel.saveScheduleItem(new DayElement(t, sh, sm, dur, formatDate));
+                        mViewModel.saveScheduleItem(new DayElement(t, sh, sm, dur, formatDate, 0));
                         String msg = "FocusTime Saved";
                         Toast toast = Toast.makeText(root.getContext(), msg, Toast.LENGTH_LONG);
                         toast.show();
                     }
                     else{
-                        mViewModel.saveScheduleItem(new DayElement(t, sh, sm, 120, formatDate));
+                        mViewModel.saveScheduleItem(new DayElement(t, sh, sm, 120, formatDate, 0));
                         String msg = "Duration set to 2 hours\n FocusTime Saved";
                         Toast toast = Toast.makeText(root.getContext(), msg, Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 }
                 else{
-                    String msg = "Activity Name Field must contain at least one Character";
+                    String msg = "Aktivity Name Field must contain at least one Character";
                     Toast toast = Toast.makeText(root.getContext(), msg, Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -138,7 +121,6 @@ public class CalendarCreateFragment extends Fragment {
      * Note that Calender Month starts with 0 = Jan (so Î add 1)
      */
     private String getStringDateFromCalendar(Calendar c){
-        System.out.println(c.getTime());
         String returnValue = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
         return returnValue;
     }
@@ -146,13 +128,11 @@ public class CalendarCreateFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println((resultCode == Activity.RESULT_OK)  + "  " + requestCode + (data.getExtras() != null) + "------------------------------------------------------------------");
         if (resultCode == Activity.RESULT_OK && data.getExtras() != null) {
             System.out.println(data.getIntExtra("year", 0));
             inputDate.set(Calendar.YEAR, data.getIntExtra("year", 0));
             inputDate.set(Calendar.MONTH, data.getIntExtra("month", 0));
             inputDate.set(Calendar.DAY_OF_MONTH, data.getIntExtra("day", 0));
-            System.out.println(getStringDateFromCalendar(inputDate));
             date.setText(getStringDateFromCalendar(inputDate));
         }
     }

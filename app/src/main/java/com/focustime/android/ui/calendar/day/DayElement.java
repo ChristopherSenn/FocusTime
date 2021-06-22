@@ -9,14 +9,16 @@ public class DayElement {
     private Integer startMinute;
     private Integer duration; //in Minutes
     private String date; //DateTimeFormatter.ISO_LOCAL_DATE
+    private long dbId;
 
 
-    public DayElement(String newTitle, Integer sH, Integer sM, Integer dur, String d){
+    public DayElement(String newTitle, Integer sH, Integer sM, Integer dur, String d, long id){
         title = newTitle;
         startHour = sH;
         startMinute = sM;
         duration = dur;
         date = d;
+        dbId = id;
     }
 
     public String getTitle() {
@@ -39,6 +41,10 @@ public class DayElement {
         return date;
     }
 
+    public long getDbId() {
+        return dbId;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -58,4 +64,6 @@ public class DayElement {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public void setDbId(long dbId) { this.dbId = dbId; }
 }

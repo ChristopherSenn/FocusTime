@@ -22,6 +22,7 @@ import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.CalendarService;
 import com.focustime.android.util.ScheduleFocusTimeWorker;
 
+import java.util.Calendar;
 import java.util.List;
 
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class CalendarDayViewModel extends AndroidViewModel {
 
             int duration = (int)(f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis()) / 1000 / 60;
 
-            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date ));
+            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date,0));
         }
         //fillWithTestData();
         elementList.setValue(daySchedule);
@@ -164,5 +165,10 @@ public class CalendarDayViewModel extends AndroidViewModel {
             return null;
         }
     }*/
+
+    public void deleteApiEntry(long id, Context c){
+        String stringId = "" + id;
+        api.deleteFocusTime(c, api.getFocusTimeById(id));
+    }
 
 }
