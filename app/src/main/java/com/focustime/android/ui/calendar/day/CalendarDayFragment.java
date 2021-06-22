@@ -11,9 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.focustime.android.data.model.FocusTime;
+import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.databinding.CalendarDayFragmentBinding;
 
 
@@ -43,6 +47,7 @@ public class CalendarDayFragment extends Fragment {
             resview.setLayoutManager(new LinearLayoutManager(root.getContext()));
             resview.setAdapter(adapter);
         });
+
 
         return root;
     }

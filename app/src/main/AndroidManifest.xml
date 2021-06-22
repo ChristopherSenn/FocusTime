@@ -37,7 +37,9 @@
         <activity
             android:name=".ui.calendar.create.CalendarDayPickDateFragment">
         </activity>
-
+        <activity
+            android:name=".ui.calendar.edit.CalendarEditFragment" >
+        </activity>
 
 
         <receiver android:name=".ui.calendar.day.ScheduleFocusTimeReceiver"/>
