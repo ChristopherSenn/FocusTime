@@ -163,6 +163,7 @@ public class CalendarAPI {
 
         boolean alreadyExists = false;
         for(int i = 0; i < calendars.size(); i++) {
+            //Log.e("test", calendars.get(i).displayName);
             if(calendars.get(i).displayName.equals(FOCUS_TIME_CALENDAR_NAME)){
                 alreadyExists = true;
                 break;
@@ -336,7 +337,7 @@ public class CalendarAPI {
 
                             if(ft.getTitle().equals(event.title) && abs(ft.getBeginTime().getTimeInMillis() -event.dTStart) < 80000) {
                                 isAlreadyImported = true;
-                                Log.e("lakjsd", event.title);
+                                //Log.e("lakjsd", event.title);
                                 break;
                             }
                         }
