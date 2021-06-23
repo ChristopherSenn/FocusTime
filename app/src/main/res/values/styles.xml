@@ -19,4 +19,29 @@
         <item name="android:padding">@dimen/defaultMargin</item>
 
     </style>
+
+    <style name="CustomTimePicker">
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
+    </style>
+
+
+    <style name="TextAppearance.App.Widget.TextView" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/defaultTextSize</item>
+        <item name="android:layout_margin">@dimen/defaultMargin</item>
+
+    </style>
+
+    <style name="TextAppearance.App.Widget.TextView.Title" parent="TextAppearance.App.Widget.TextView">
+        <item name="android:textSize">@dimen/titleTextSize</item>
+    </style>
+
+    <style name="TextAppearance.App.Widget.TextView.HugeText" parent="TextAppearance.App.Widget.TextView">
+        <item name="android:textSize">60dp</item>
+    </style>
 </resources>

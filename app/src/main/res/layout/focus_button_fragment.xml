@@ -19,26 +19,27 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="10:00"
-        android:textColor="@android:color/black"
+
+        style="@style/TextAppearance.App.Widget.TextView.HugeText"
         android:textSize="60sp"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_start_stop"
-        android:background="@drawable/cornbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/text_view_countdown"
         android:layout_centerHorizontal="true"
+        style="@style/Widget.Button.Primary"
         android:text="start" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_test"
-        android:background="@drawable/cornbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/button_start_stop"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        style="@style/Widget.Button.Primary"
         android:text="test" />
 
 </RelativeLayout>

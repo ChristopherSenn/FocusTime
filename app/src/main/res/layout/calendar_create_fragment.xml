@@ -23,13 +23,16 @@
         android:layout_marginTop="60dp">
 
         <TimePicker
+            android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:timePickerMode="spinner"
-            android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
-            android:id="@+id/start"
-            android:tooltipText="Start Time"/>
+            android:layout_marginTop="30dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:theme="@style/CustomTimePicker"
+            android:timePickerMode="spinner"
+            android:tooltipText="Start Time" />
 
 
 
