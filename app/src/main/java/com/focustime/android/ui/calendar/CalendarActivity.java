@@ -3,8 +3,10 @@ package com.focustime.android.ui.calendar;
 //import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -40,6 +42,8 @@ public class CalendarActivity extends AppCompatActivity {
 
         binding = ActivityCalendarBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 

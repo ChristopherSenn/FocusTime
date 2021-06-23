@@ -2,7 +2,10 @@ package com.focustime.android.ui.calendar.day;
 
 
 import androidx.lifecycle.ViewModelProvider;
+
+import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.databinding.CalendarDayFragmentBinding;
@@ -47,6 +51,7 @@ public class CalendarDayFragment extends Fragment {
             resview.setLayoutManager(new LinearLayoutManager(root.getContext()));
             resview.setAdapter(adapter);
         });
+
 
 
         return root;

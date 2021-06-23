@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="buttonTextSize">14dp</dimen>
+    <dimen name="inputTextSize">16dp</dimen>
+    <dimen name="defaultTextSize">20dp</dimen>
+    <dimen name="bigTextSize">26dp</dimen>
+    <dimen name="titleTextSize">28dp</dimen>
+
+    <dimen name="defaultMargin">16dp</dimen>
+    <dimen name="halfMargin">8dp</dimen>
+    <dimen name="doubleMargin">32dp</dimen>
+
+    <dimen name="FABrightMargin">16dp</dimen>
+    <dimen name="FABbottomMargin">72dp</dimen>
+
+    <dimen name="defaultEditTextWidth">160dp</dimen>
+    <dimen name="startEditTextWidth">320dp</dimen>
+</resources>

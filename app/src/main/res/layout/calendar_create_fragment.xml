@@ -4,18 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.calendar.create.CalendarCreateFragment">
-    <Button
-        android:layout_width="match_parent"
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
+        style="?attr/primaryButtonStyle"
         android:layout_below="@id/start"
         android:id="@+id/dateInput"
-        android:text="#date"
-        android:backgroundTint="@android:color/darker_gray"
-        android:textColor="@color/black" >
+        android:text="#date">
 
-    </Button>
+    </androidx.appcompat.widget.AppCompatButton>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -72,15 +71,14 @@
         </com.google.android.material.textfield.TextInputLayout>
     </RelativeLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/saveFocusTime"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="80dp"
-        android:background="#C01831"
-        android:text="Save Scheduled Focustime"
-        android:textColor="#ffffff" />
+        style="@style/Widget.Button.Primary"
+        android:text="Save Scheduled Focustime" />
 
 </FrameLayout>
