@@ -17,10 +17,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -28,7 +32,9 @@ import com.focustime.android.databinding.CalendarCreateFragmentBinding;
 import com.focustime.android.ui.calendar.day.DayElement;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class CalendarCreateFragment extends Fragment {
 
@@ -37,6 +43,11 @@ public class CalendarCreateFragment extends Fragment {
     private Calendar inputDate;
     private Button button;
     private Button date;
+    private Spinner spinner;
+
+    private List<String> spinnerOptions;
+
+
     public static CalendarCreateFragment newInstance() {
         return new CalendarCreateFragment();
     }
@@ -97,6 +108,7 @@ public class CalendarCreateFragment extends Fragment {
                         toast.show();
                     }
                     else{
+                        Log.e("asdasd", spinner.getSelectedItem().toString());
                         mViewModel.saveScheduleItem(new DayElement(t, sh, sm, 120, formatDate, 0));
                         String msg = "Duration set to 2 hours\n FocusTime Saved";
                         Toast toast = Toast.makeText(root.getContext(), msg, Toast.LENGTH_SHORT);
@@ -110,6 +122,18 @@ public class CalendarCreateFragment extends Fragment {
                 }
             }
         });
+
+        spinnerOptions = new ArrayList<String>();
+        spinnerOptions.add("Priority only");
+        spinnerOptions.add("Alarms only");
+        spinnerOptions.add("Total silence");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerOptions);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner = binding.spinnerFocusTimeLevel;
+        spinner.setAdapter(dataAdapter);
+
         return root;
     }
 

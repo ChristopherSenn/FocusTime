@@ -7,6 +7,7 @@ public class FocusTime {
 
     private Calendar beginTime, endTime;
     private String title;
+    private short focusTimeLevel;
     private long id;
 
     /**
@@ -16,10 +17,11 @@ public class FocusTime {
      * @param beginTime BeginTime of the FocusTime
      * @param endTime EndTime of the FocusTime
      */
-    public FocusTime(String title, Calendar beginTime, Calendar endTime) {
+    public FocusTime(String title, Calendar beginTime, Calendar endTime, short focusTimeLevel) {
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.title = title;
+        this.focusTimeLevel = focusTimeLevel;
         this.id = UNDEFINED_ID;
     }
 
@@ -32,8 +34,8 @@ public class FocusTime {
      * @param endTime EndTime of the FocusTime
      * @param id Internal ID of the FocusTime
      */
-    public FocusTime(String title, Calendar beginTime, Calendar endTime, long id) {
-        this(title, beginTime, endTime);
+    public FocusTime(String title, Calendar beginTime, Calendar endTime, short focusTimeLevel, long id) {
+        this(title, beginTime, endTime, focusTimeLevel);
         this.id = id;
     }
 
