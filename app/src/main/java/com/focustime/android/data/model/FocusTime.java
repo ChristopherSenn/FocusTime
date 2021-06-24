@@ -1,13 +1,18 @@
 package com.focustime.android.data.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 public class FocusTime {
     public static long UNDEFINED_ID = -1;
 
+    public static final List<String> FOCUS_TIME_LEVELS = Arrays.asList("Priority only", "Alarms only", "Total Silence");
+
     private Calendar beginTime, endTime;
     private String title;
-    private short focusTimeLevel;
+    private int focusTimeLevel;
     private long id;
 
     /**
@@ -17,7 +22,7 @@ public class FocusTime {
      * @param beginTime BeginTime of the FocusTime
      * @param endTime EndTime of the FocusTime
      */
-    public FocusTime(String title, Calendar beginTime, Calendar endTime, short focusTimeLevel) {
+    public FocusTime(String title, Calendar beginTime, Calendar endTime, int focusTimeLevel) {
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.title = title;
@@ -34,7 +39,7 @@ public class FocusTime {
      * @param endTime EndTime of the FocusTime
      * @param id Internal ID of the FocusTime
      */
-    public FocusTime(String title, Calendar beginTime, Calendar endTime, short focusTimeLevel, long id) {
+    public FocusTime(String title, Calendar beginTime, Calendar endTime, int focusTimeLevel, long id) {
         this(title, beginTime, endTime, focusTimeLevel);
         this.id = id;
     }
@@ -61,6 +66,13 @@ public class FocusTime {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getFocusTimeLevel() { return this.focusTimeLevel; }
+
+    public void setFocusTimeLevel(int focusTimeLevel) {
+        if(focusTimeLevel > 2 || focusTimeLevel < 0) this.focusTimeLevel = 0;
+        else this.focusTimeLevel = focusTimeLevel;
     }
 
 

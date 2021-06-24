@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -28,7 +30,9 @@ import com.focustime.android.ui.calendar.create.CalendarDayPickDateFragment;
 import com.focustime.android.ui.calendar.day.DayElement;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class CalendarEditFragment extends Activity {
 
@@ -36,6 +40,11 @@ public class CalendarEditFragment extends Activity {
     private Button button;
     private Button date;
     private long id;
+    private Spinner spinner;
+
+    private List<String> spinnerOptions;
+
+
     public static CalendarEditFragment newInstance() {
         return new CalendarEditFragment();
     }
@@ -103,13 +112,13 @@ public class CalendarEditFragment extends Activity {
                 String formatDate = getStringDateFromCalendar(inputDate);
                 if(!text.getEditText().getText().toString().matches("")){
                     if(dur > 0){
-                        editItem(new DayElement(t, sh, sm, dur, formatDate, id));
+                        editItem(new DayElement(t, sh, sm, dur, formatDate, spinner.getSelectedItemPosition(), id));
                         String msg = "FocusTime Saved";
                         Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
                         toast.show();
                     }
                     else{
-                        editItem(new DayElement(t, sh, sm, 120, formatDate, id));
+                        editItem(new DayElement(t, sh, sm, 120, formatDate, spinner.getSelectedItemPosition(), id));
                         String msg = "Duration set to 2 hours\n FocusTime Saved";
                         Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
                         toast.show();
@@ -122,6 +131,15 @@ public class CalendarEditFragment extends Activity {
                 }
             }
         });
+
+        spinnerOptions = FocusTime.FOCUS_TIME_LEVELS;
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerOptions);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner = findViewById(R.id.spinner);
+        spinner.setAdapter(dataAdapter);
+
     }
 
     /**
@@ -170,7 +188,7 @@ public class CalendarEditFragment extends Activity {
         endTime.add(Calendar.MINUTE, d.getDuration());
         endTime.set(Calendar.SECOND, 0);
         endTime.set(Calendar.MILLISECOND, 0);
-        FocusTime f = new FocusTime(d.getTitle(), beginTime, endTime, d.getDbId());
+        FocusTime f = new FocusTime(d.getTitle(), beginTime, endTime, d.getFocusTimeLevel(), d.getDbId());
         api.updateFocusTime(f);
     }
 }

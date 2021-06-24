@@ -26,6 +26,7 @@ public class CalendarAPI {
     public static final String FOCUS_TIME_CALENDAR_NAME = "Focus Time Calendar";
     public static final String FOCUS_TIME_ACCOUNT_NAME ="focustime";
 
+
     private final CalendarProvider calendarProvider;
 
     public CalendarAPI(Context context) {
@@ -112,7 +113,15 @@ public class CalendarAPI {
         java.util.Calendar endTime = java.util.Calendar.getInstance();
         endTime.setTimeInMillis(event.dTend);
 
-        return new FocusTime(event.title, beginTime, endTime, event.id);
+        String[] split = event.title.split("#");
+        int focusTimeLevel = Integer.parseInt(split[split.length-1]);
+
+        String title = "";
+        for (int i = 0; i < split.length-1; i++) {
+            title += split[i];
+        }
+
+        return new FocusTime(title, beginTime, endTime, focusTimeLevel,  event.id);
     }
 
     /**
@@ -140,9 +149,10 @@ public class CalendarAPI {
         ContentResolver cr = context.getContentResolver();
         ContentValues values = new ContentValues();
 
+
         values.put(Events.DTSTART, focusTime.getBeginTime().getTimeInMillis());
         values.put(Events.DTEND, focusTime.getEndTime().getTimeInMillis());
-        values.put(Events.TITLE, focusTime.getTitle());
+        values.put(Events.TITLE, focusTime.getTitle() + "#" + focusTime.getFocusTimeLevel());
         values.put(Events.ACCESS_LEVEL, Events.ACCESS_PUBLIC);
         values.put(Events.CALENDAR_ID, this.getFocusTimeCalendar().id);
         values.put(Events.EVENT_TIMEZONE, "UTC"); //TODO: Add support for different timezones
@@ -245,7 +255,7 @@ public class CalendarAPI {
                 ContentValues values = new ContentValues();
                 Uri updateUri = null;
 
-                values.put(Events.TITLE, focusTime.getTitle());
+                values.put(Events.TITLE, focusTime.getTitle() + "#" + focusTime.getFocusTimeLevel());
                 values.put(Events.DTSTART, focusTime.getBeginTime().getTimeInMillis());
                 values.put(Events.DTEND, focusTime.getEndTime().getTimeInMillis());
 

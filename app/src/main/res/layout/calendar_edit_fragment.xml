@@ -1,68 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/editFragment"
     android:padding="10dp"
-    android:layout_marginTop="60dp">
+    >
 
     <Button
+        android:id="@+id/dateInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:id="@+id/dateInput"
-        android:text="#date"
         android:backgroundTint="@android:color/darker_gray"
-        android:textColor="@color/black" >
+        android:text="#date"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInput">
 
     </Button>
 
     <TimePicker
+        android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:timePickerMode="spinner"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/dateInput"
-        android:id="@+id/start"
-        android:tooltipText="Start Time" />
+        android:layout_centerHorizontal="true"
+        android:timePickerMode="spinner"
+        android:tooltipText="Start Time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
         android:layout_below="@id/start"
-        android:id="@+id/textInput">
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:hint="Name your Focus Time"
-            tools:layout_editor_absoluteX="16dp"
-            android:padding="2dp"
             android:inputType="text"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:padding="2dp"
+            tools:layout_editor_absoluteX="16dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
         android:layout_below="@id/textInput"
-        android:id="@+id/duration">
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateInput">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:hint="How long in Minutes do you want to Focus?"
-            tools:layout_editor_absoluteX="16dp"
-            android:padding="2dp"
             android:inputType="number"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:padding="2dp"
+            tools:layout_editor_absoluteX="16dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -70,11 +80,22 @@
         android:id="@+id/saveFocusTime"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/dateInput"
         android:layout_gravity="center|bottom"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
         android:background="#C01831"
-        android:layout_below="@id/duration"
         android:text="Save edited Focustime"
-        android:textColor="#ffffff" />
-</RelativeLayout>
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/duration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.842"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/duration" />
+</androidx.constraintlayout.widget.ConstraintLayout>

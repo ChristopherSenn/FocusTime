@@ -18,7 +18,15 @@ public class FocusTimeFactory {
         Calendar endTime = java.util.Calendar.getInstance();
         endTime.setTimeInMillis(event.dTend);
 
-        return new FocusTime(event.title, beginTime, endTime, event.id);
+        String[] split = event.title.split("#");
+        int focusTimeLevel = Integer.parseInt(split[split.length-1]);
+
+        String title = "";
+        for (int i = 0; i < split.length-1; i++) {
+            title += split[i];
+        }
+
+        return new FocusTime(title, beginTime, endTime, focusTimeLevel, event.id);
     }
 
 }

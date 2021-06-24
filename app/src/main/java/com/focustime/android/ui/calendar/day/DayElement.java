@@ -9,15 +9,17 @@ public class DayElement {
     private Integer startMinute;
     private Integer duration; //in Minutes
     private String date; //DateTimeFormatter.ISO_LOCAL_DATE
+    private int focusTimeLevel;
     private long dbId;
 
 
-    public DayElement(String newTitle, Integer sH, Integer sM, Integer dur, String d, long id){
+    public DayElement(String newTitle, Integer sH, Integer sM, Integer dur, String d, int focusTimeLevel, long id){
         title = newTitle;
         startHour = sH;
         startMinute = sM;
         duration = dur;
         date = d;
+        this.focusTimeLevel = focusTimeLevel;
         dbId = id;
     }
 
@@ -41,6 +43,8 @@ public class DayElement {
         return date;
     }
 
+    public int getFocusTimeLevel() { return this.focusTimeLevel; }
+
     public long getDbId() {
         return dbId;
     }
@@ -63,6 +67,11 @@ public class DayElement {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public void setFocusTimeLevel(int focusTimeLevel) {
+        if (focusTimeLevel > 2 || focusTimeLevel < 0) this.focusTimeLevel = 0;
+        else this.focusTimeLevel = focusTimeLevel;
     }
 
     public void setDbId(long dbId) { this.dbId = dbId; }
