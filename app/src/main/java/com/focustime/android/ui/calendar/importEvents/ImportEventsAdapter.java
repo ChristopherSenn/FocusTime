@@ -85,6 +85,7 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
         holder.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                event.title = event.title + "#0";
                 FocusTime importFocusTime = FocusTimeFactory.buildFocusTime(event);
                 api.createFocusTime(importFocusTime, context);
                 events.remove(position);

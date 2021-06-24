@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.databinding.CalendarCreateFragmentBinding;
 import com.focustime.android.ui.calendar.day.DayElement;
@@ -126,7 +127,7 @@ public class CalendarCreateFragment extends Fragment {
 
         spinnerOptions = FocusTime.FOCUS_TIME_LEVELS;
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerOptions);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), R.layout.custom_spinner_item, spinnerOptions);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner = binding.spinnerFocusTimeLevel;

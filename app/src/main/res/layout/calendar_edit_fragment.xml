@@ -8,19 +8,21 @@
     android:padding="10dp"
     >
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/dateInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@android:color/darker_gray"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         android:text="#date"
-        android:textColor="@color/black"
+        android:theme="@style/Widget.Button.Inline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInput">
 
-    </Button>
+    </com.google.android.material.button.MaterialButton>
 
     <TimePicker
         android:id="@+id/start"
@@ -28,6 +30,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/dateInput"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:theme="@style/CustomTimePicker"
         android:timePickerMode="spinner"
         android:tooltipText="Start Time"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +46,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/start"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        app:boxBackgroundColor="@color/colorAlmostWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start">
@@ -61,6 +71,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textInput"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        app:boxBackgroundColor="@color/colorAlmostWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateInput">
@@ -76,26 +90,49 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/saveFocusTime"
-        android:layout_width="fill_parent"
+        style="?attr/primaryButtonStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/dateInput"
-        android:layout_gravity="center|bottom"
-        android:background="#C01831"
         android:text="Save edited Focustime"
-        android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
-    <Spinner
-        android:id="@+id/spinner"
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/duration"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_background"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.842"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/duration" />
+        app:layout_constraintTop_toBottomOf="@+id/duration">
+
+        <Spinner
+            android:id="@+id/spinner"
+            style="@style/CustomSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:src="@mipmap/drop" />
+
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
