@@ -72,7 +72,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         root.findViewById(R.id.arrow_right).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                previousMonthAction(root);
+                nextMonthAction(root);
             }
         });
 
