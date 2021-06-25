@@ -1,8 +1,10 @@
 package com.focustime.android.ui.calendar.focusButton;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
@@ -52,7 +54,7 @@ public class FocusButtonFragment extends Fragment {
     private long mStartTimeInMills;
     private long mTimeLeftInMillis;
     private long mEndTime;
-
+    private int dndLevel = 2;
     private int mHour, mMinute;
 
     private Intent notificationIntent;
@@ -76,6 +78,7 @@ public class FocusButtonFragment extends Fragment {
         mImageView = binding.imageView;
         mTestButton = binding.buttonTest;
 
+
         mButtonStartStop.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -85,9 +88,7 @@ public class FocusButtonFragment extends Fragment {
                     //stopAlarmCongratulationService();
                     focusTimeServiceStarter.stopAlarmCongratulationService(getContext());
                 } else {
-                    startTimer();
-                    //startAlarmCongratulationService();
-                    focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
+                    showDNDTypesDialog();
                 }
             }
         });
@@ -155,7 +156,7 @@ public class FocusButtonFragment extends Fragment {
             if (mStartTimeInMills == 0) {
                 Toast.makeText(FocusButtonFragment.this.getContext(), "please set a focustime", Toast.LENGTH_SHORT).show();
             } else {
-                focusTimeServiceStarter.activateDND(getContext());
+                focusTimeServiceStarter.activateDNDWithLevel(getContext(), dndLevel);
                 mImageView.setImageResource(0);
 
                 mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
@@ -289,5 +290,31 @@ public class FocusButtonFragment extends Fragment {
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
+    }
+
+    private void showDNDTypesDialog(){
+        final String[] items = { "Priority only", "Alarms only", "Total Silence" };
+        dndLevel = 0;
+
+        AlertDialog.Builder singleChoiceDialog =
+                new AlertDialog.Builder(this.getContext());
+        singleChoiceDialog.setTitle("Differnt DND type");
+        // The second parameter is the default option and is set to 0 here
+        singleChoiceDialog.setSingleChoiceItems(items, 2,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dndLevel = which;
+                    }
+                });
+        singleChoiceDialog.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startTimer();
+                        focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
+                    }
+                });
+        singleChoiceDialog.show();
     }
 }
