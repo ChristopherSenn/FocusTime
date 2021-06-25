@@ -62,6 +62,20 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         calendarRecyclerView = binding.calendarRecyclerView;
         setMonthView();
 
+        root.findViewById(R.id.arrow_left).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                previousMonthAction(root);
+            }
+        });
+
+        root.findViewById(R.id.arrow_right).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                previousMonthAction(root);
+            }
+        });
+
 
 
         return root;

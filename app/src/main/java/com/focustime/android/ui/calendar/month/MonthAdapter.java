@@ -1,5 +1,6 @@
 package com.focustime.android.ui.calendar.month;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.focustime.android.R;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
