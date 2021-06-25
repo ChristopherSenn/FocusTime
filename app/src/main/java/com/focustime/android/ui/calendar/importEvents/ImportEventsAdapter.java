@@ -1,6 +1,8 @@
 package com.focustime.android.ui.calendar.importEvents;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
+import com.focustime.android.ui.calendar.create.CalendarCreateFragment;
 import com.focustime.android.ui.calendar.day.DayElement;
 import com.focustime.android.util.FocusTimeFactory;
 
@@ -28,6 +31,7 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
     private Activity context;
     private List<Event> events;
     private CalendarAPI api;
+
 
     public ImportEventsAdapter(Activity context, List<Event> userArrayList) {
         this.context = context;
@@ -59,6 +63,10 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
         beginDate.setTimeInMillis(event.dTStart);
         String stringDate = beginDate.get(Calendar.DAY_OF_MONTH) + "." + (beginDate.get(Calendar.MONTH) + 1) + "." + beginDate.get(Calendar.YEAR);
 
+        String[] days = new String[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+        String dayOfWeek = days[beginDate.get(Calendar.DAY_OF_WEEK) - 1];
+        stringDate = dayOfWeek + ", " + stringDate;
+
         holder.date.setText(stringDate);
 
         Calendar endDate = Calendar.getInstance();
@@ -70,7 +78,12 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
         String stringTime = beginHour + ":" + beginMinute + " - " + endHour + ":" + endMinute;
         holder.time.setText(stringTime);
 
-        holder.description.setText(event.description);
+        if(!event.description.equals("")) {
+            holder.description.setText(event.description);
+        } else {
+            holder.description.setVisibility(View.GONE);
+        }
+
 
         //Remove the Event from the list
         holder.dismiss.setOnClickListener(new View.OnClickListener() {
@@ -85,11 +98,25 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
         holder.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                event.title = event.title + "#0";
-                FocusTime importFocusTime = FocusTimeFactory.buildFocusTime(event);
-                api.createFocusTime(importFocusTime, context);
-                events.remove(position);
-                notifyDataSetChanged();
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Select Focus Time Level");
+                String[] options = FocusTime.FOCUS_TIME_LEVELS.toArray(new String[0]);
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        event.title = event.title + "#" + which;
+                        FocusTime importFocusTime = FocusTimeFactory.buildFocusTime(event);
+                        api.createFocusTime(importFocusTime, context);
+                        events.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                builder.show();
+
+
             }
         });
     }

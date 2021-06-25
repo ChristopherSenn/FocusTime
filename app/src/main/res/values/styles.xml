@@ -23,6 +23,11 @@
         <item name="android:padding">@dimen/defaultMargin</item>
     </style>
 
+    <style name="Widget.Button.Secondary" parent="Widget.Button.Primary">
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
     <style name="CustomTimePicker">
 
         <item name="android:textColorPrimary">@color/colorWhite</item>
