@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.focustime.android.R;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class MonthViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 {
