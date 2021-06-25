@@ -55,16 +55,13 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         binding = MonthViewBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        adapter = newInstance().adapter;
-
-
         selectedDate = LocalDate.now();
 
         calendarRecyclerView = root.findViewById(R.id.calendarRecyclerView);
         monthYearText = root.findViewById(R.id.monthYearTV);
         calendarRecyclerView = binding.calendarRecyclerView;
-        calendarRecyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-        calendarRecyclerView.setAdapter(adapter);
+        setMonthView();
+
 
 
         return root;
@@ -78,7 +75,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
 
         MonthAdapter calendarAdapter = new MonthAdapter(daysInMonth, this);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this.getContext(), 7);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mViewModel.getApplication(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
