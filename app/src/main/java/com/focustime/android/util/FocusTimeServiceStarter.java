@@ -42,13 +42,34 @@ public class FocusTimeServiceStarter {
     }
 
     /**
-     * Activates the Phone's DND mode
+     * Activates the Phone's total silence DND mode
      * @param context Application context
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void activateDND(Context context) {
+    public void activateTotalSilenceDND(Context context) {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
+    }
+
+
+    /**
+     * Activates the Phone's priority only DND mode
+     * @param context Application context
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void activatePriorityOnlyDND(Context context) {
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY);
+    }
+
+    /**
+     * Activates the Phone's alarms only DND mode
+     * @param context Application context
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void activateAlarmsOnlyDND(Context context) {
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALARMS);
     }
 
     /**
