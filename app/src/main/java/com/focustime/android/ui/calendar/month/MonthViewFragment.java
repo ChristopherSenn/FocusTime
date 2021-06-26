@@ -138,11 +138,11 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
 
     @Override
-    public void onItemClick(int position, String dayText)
+    public void onItemClick(int position, LocalDate date)
     {
-        if(!dayText.equals(""))
-        {
-            String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
+        if (date != null) {
+            selectedDate = date;
+            setMonthView();
         }
     }
 
