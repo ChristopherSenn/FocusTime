@@ -8,10 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +51,8 @@ public class FocusButtonFragment extends Fragment {
     private Button mTestButton;
     private ImageView mImageView;
 
+    private TimerCircle timerCircle;
+
     private CountDownTimer mCountDownTimer;
     private boolean mTimerRunning;
     private long mStartTimeInMills;
@@ -77,7 +81,7 @@ public class FocusButtonFragment extends Fragment {
         mButtonStartStop = binding.buttonStartStop;
         mImageView = binding.imageView;
         mTestButton = binding.buttonTest;
-
+        timerCircle = binding.timer;
 
         mButtonStartStop.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -102,8 +106,8 @@ public class FocusButtonFragment extends Fragment {
                     //stopAlarmCongratulationService();
                     focusTimeServiceStarter.stopAlarmCongratulationService(getContext());
                 } else {
-                    mStartTimeInMills = 10000;
-                    mTimeLeftInMillis = 10000;
+                    mStartTimeInMills = 20000;
+                    mTimeLeftInMillis = 20000;
                     startTimer();
                     //startAlarmCongratulationService();
                     focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
@@ -141,6 +145,13 @@ public class FocusButtonFragment extends Fragment {
             }
         });
 
+        timerCircle.setFinishListenter(new TimerCircle.onFinishListener() {
+            @Override
+            public void onFinish() {
+
+            }
+        });
+
         return root;
     }
 
@@ -173,6 +184,9 @@ public class FocusButtonFragment extends Fragment {
 
                         mCountDownTimer.cancel();
                         mTimerRunning = false;
+
+                        resetTimerCircle();
+
                         mImageView.setImageResource(R.drawable.congratulation);
 
                         updateCountDownText(mStartTimeInMills);
@@ -181,6 +195,13 @@ public class FocusButtonFragment extends Fragment {
                 }.start();
 
                 mTimerRunning = true;
+
+                int mDuration = Long.valueOf(mTimeLeftInMillis).intValue();
+                int mMaxTime = Long.valueOf(mStartTimeInMills).intValue();
+                int currentTime = Long.valueOf(mStartTimeInMills - mTimeLeftInMillis).intValue();
+                timerCircle.setDuration(mDuration, mMaxTime, currentTime);
+                timerCircle.setVisibility(View.VISIBLE);
+
                 updateComponents();
             }
 
@@ -190,6 +211,9 @@ public class FocusButtonFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void stopTimer() {
         mTimerRunning = false;
+        mTimeLeftInMillis = mStartTimeInMills;
+
+        resetTimerCircle();
         mCountDownTimer.cancel();
 
         mImageView.setImageResource(R.drawable.tryharder);
@@ -198,6 +222,11 @@ public class FocusButtonFragment extends Fragment {
         updateCountDownText(mStartTimeInMills);
         updateComponents();
         focusTimeServiceStarter.cancelDND(getContext());
+    }
+
+    private void resetTimerCircle() {
+        //timerCircle.reset();
+        timerCircle.setVisibility(View.INVISIBLE);
     }
 
     private void updateCountDownText() {
@@ -216,12 +245,6 @@ public class FocusButtonFragment extends Fragment {
         mTextViewCountdown.setText(timeLeftFormatted);
 
         mTimeLeftInMillis = mStartTimeInMills;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void activateDND() {
-        mNotificationManager = (NotificationManager) FocusButtonFragment.this.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -266,6 +289,7 @@ public class FocusButtonFragment extends Fragment {
                 updateComponents();
                 focusTimeServiceStarter.cancelDND(getContext());
 
+                timerCircle.setVisibility(View.INVISIBLE);
                 mImageView.setImageResource(R.drawable.congratulation);
             } else {
                 startTimer();
