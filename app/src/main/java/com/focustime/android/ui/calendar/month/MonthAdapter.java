@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
 {
-    private final ArrayList<String> daysOfMonth;
+    private final ArrayList<LocalDate> daysOfMonth;
     private final OnItemListener onItemListener;
 
-    public MonthAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener)
+    public MonthAdapter(ArrayList<LocalDate> daysOfMonth, OnItemListener onItemListener)
     {
         this.daysOfMonth = daysOfMonth;
         this.onItemListener = onItemListener;
@@ -38,7 +38,16 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
     @Override
     public void onBindViewHolder(@NonNull MonthViewHolder holder, int position)
     {
-        holder.dayOfMonth.setText(daysOfMonth.get(position));
+        final LocalDate date = daysOfMonth.get(position);
+        if (date == null){
+            holder.dayOfMonth.setText("");
+        }else{
+            holder.dayOfMonth.setText(String.valueOf(date.getDayOfMonth()));
+            if (date.equals(MonthViewFragment.selectedDate))
+                holder.parentView.setBackgroundColor(Color.LTGRAY);
+
+        }
+
     }
 
     @Override

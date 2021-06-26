@@ -37,8 +37,8 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
     private MonthViewModel mViewModel;
     private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
-    private LocalDate selectedDate;
+    public static RecyclerView calendarRecyclerView;
+    public static LocalDate selectedDate;
     private MonthAdapter adapter;
 
 
@@ -86,7 +86,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
     public void setMonthView()
     {
         monthYearText.setText(monthYearFromDate(selectedDate));
-        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray(selectedDate);
 
         MonthAdapter calendarAdapter = new MonthAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mViewModel.getApplication(), 7);
@@ -94,9 +94,9 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
-    private ArrayList<String> daysInMonthArray(LocalDate date)
+    public static ArrayList<LocalDate> daysInMonthArray(LocalDate date)
     {
-        ArrayList<String> daysInMonthArray = new ArrayList<>();
+        ArrayList<LocalDate> daysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
 
         int daysInMonth = yearMonth.lengthOfMonth();
@@ -108,17 +108,17 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         {
             if(i <= dayOfWeek || i > daysInMonth + dayOfWeek)
             {
-                daysInMonthArray.add("");
+                daysInMonthArray.add(null);
             }
             else
             {
-                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
+                daysInMonthArray.add(LocalDate.of(selectedDate.getYear(),selectedDate.getMonth(),i - dayOfWeek));
             }
         }
         return  daysInMonthArray;
     }
 
-    private String monthYearFromDate(LocalDate date)
+    public String monthYearFromDate(LocalDate date)
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
         return date.format(formatter);

@@ -12,13 +12,13 @@ import com.focustime.android.R;
 public class MonthViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 {
 
-    //public final View parentView;
+    public final View parentView;
     public final TextView dayOfMonth;
     private final MonthAdapter.OnItemListener onItemListener;
     public MonthViewHolder(@NonNull View itemView, MonthAdapter.OnItemListener onItemListener)
     {
         super(itemView);
-        //parentView = itemView.findViewById(R.id.parentView);
+        parentView = itemView.findViewById(R.id.parentView);
         dayOfMonth = itemView.findViewById(R.id.cellDayText);
         this.onItemListener = onItemListener;
         itemView.setOnClickListener(this);
