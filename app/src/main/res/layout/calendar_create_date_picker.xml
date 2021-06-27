@@ -14,20 +14,22 @@
             android:layout_height="wrap_content"
             android:id="@+id/datePicker"
             android:padding="30dp"
+            android:theme="@style/DialogTheme"
             android:layout_centerHorizontal="true">
 
         </DatePicker>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/confirmDateButton"
+            style="@style/Widget.Button.Primary"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/datePicker"
             android:layout_marginTop="50dp"
             android:text="Confirm Date">
 
-        </Button>
+        </androidx.appcompat.widget.AppCompatButton>
 
     </RelativeLayout>
 
