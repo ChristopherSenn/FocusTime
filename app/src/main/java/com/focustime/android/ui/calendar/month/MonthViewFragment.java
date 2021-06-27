@@ -6,34 +6,50 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.focustime.android.R;
+import com.focustime.android.data.model.FocusTime;
+import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.databinding.FocusButtonFragmentBinding;
 import com.focustime.android.databinding.MonthViewBinding;
+import com.focustime.android.ui.calendar.day.CalendarDayViewModel;
 import com.focustime.android.ui.calendar.day.CalenderDayAdapter;
+import com.focustime.android.ui.calendar.day.DayElement;
 import com.focustime.android.ui.calendar.focusButton.FocusButtonViewModel;
+import com.focustime.android.ui.calendar.importEvents.ImportEventsAdapter;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class MonthViewFragment extends Fragment{
+public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemListener{
 
     private MonthViewBinding binding;
 
     private MonthViewModel mViewModel;
     private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
-    private LocalDate selectedDate;
+    public static RecyclerView calendarRecyclerView;
+    public static RecyclerView dailyMonthRecyclerView;
+    public static LocalDate selectedDate;
+    private MutableLiveData<ArrayList<DayElement>> elementList;
+    private MonthAdapter adapter;
+    private DailyMonthAdapater dailyMonthAdapater;
+    private ArrayList<DayElement> daySchedule;
 
 
 
@@ -48,11 +64,133 @@ public class MonthViewFragment extends Fragment{
         mViewModel = new ViewModelProvider(this).get(MonthViewModel.class);
         binding = MonthViewBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        selectedDate = LocalDate.now();
+
+        calendarRecyclerView = root.findViewById(R.id.calendarRecyclerView);
+        dailyMonthRecyclerView = binding.dailyMonthRV;
+        monthYearText = root.findViewById(R.id.monthYearTV);
+        calendarRecyclerView = binding.calendarRecyclerView;
+        setMonthView();
+
+        daySchedule = new ArrayList<>();
+        elementList = new MutableLiveData<>();
+        setDayViews();
+
+        root.findViewById(R.id.arrow_left).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                previousMonthAction(root);
+            }
+        });
+
+        root.findViewById(R.id.arrow_right).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                nextMonthAction(root);
+            }
+        });
+
         return root;
 
-
-
     }
+
+    public void setDayViews() {
+        CalendarAPI api = new CalendarAPI(getContext());
+        List<FocusTime> focusTimes = api.getFocusTimes();
+        for(FocusTime f: focusTimes) {
+            int beginHour = f.getBeginTime().get(java.util.Calendar.HOUR_OF_DAY);
+            int beginMinute = f.getBeginTime().get(java.util.Calendar.MINUTE);
+            String date = f.getBeginTime().get(java.util.Calendar.YEAR) + "-" + (f.getBeginTime().get(java.util.Calendar.MONTH) + 1)
+                    + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
+            //Log.e("date",  date);
+
+            int duration = (int)(f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis()) / 1000 / 60;
+
+            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date,0));
+        }
+        elementList.setValue(daySchedule);
+        elementList.observe(getViewLifecycleOwner(), dayElements -> {
+            dailyMonthAdapater = new DailyMonthAdapater((Activity)getContext(), dayElements, this);
+            dailyMonthRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            dailyMonthRecyclerView.setAdapter(dailyMonthAdapater);
+        });
+    }
+
+
+    public void setMonthView()
+    {
+        monthYearText.setText(monthYearFromDate(selectedDate));
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray(selectedDate);
+
+        MonthAdapter calendarAdapter = new MonthAdapter(daysInMonth, this);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mViewModel.getApplication(), 7);
+        calendarRecyclerView.setLayoutManager(layoutManager);
+        calendarRecyclerView.setAdapter(calendarAdapter);
+    }
+
+    public static ArrayList<LocalDate> daysInMonthArray(LocalDate date)
+    {
+        ArrayList<LocalDate> daysInMonthArray = new ArrayList<>();
+        YearMonth yearMonth = YearMonth.from(date);
+
+        int daysInMonth = yearMonth.lengthOfMonth();
+
+        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
+        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
+
+        for(int i = 1; i <= 42; i++)
+        {
+            if(i <= dayOfWeek || i > daysInMonth + dayOfWeek)
+            {
+                daysInMonthArray.add(null);
+            }
+            else
+            {
+                daysInMonthArray.add(LocalDate.of(selectedDate.getYear(),selectedDate.getMonth(),i - dayOfWeek));
+            }
+
+        }
+        return  daysInMonthArray;
+    }
+
+    public String monthYearFromDate(LocalDate date)
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+        return date.format(formatter);
+    }
+
+    public void previousMonthAction(View view)
+    {
+        selectedDate = selectedDate.minusMonths(1);
+        setMonthView();
+    }
+
+    public void nextMonthAction(View view)
+    {
+        selectedDate = selectedDate.plusMonths(1);
+        setMonthView();
+    }
+
+    public MonthViewModel getmViewModel() {
+        return mViewModel;
+    }
+
+
+    @Override
+    public void onItemClick(int position, LocalDate date)
+    {
+        if (date != null) {
+            selectedDate = date;
+            setMonthView();
+        }
+    }
+
+    /*public void initWidgets()
+    {
+        calendarRecyclerView = root.findViewById(R.id.calendarRecyclerView);
+        monthYearText = findViewById(R.id.monthYearTV);
+    }*/
 
 
 

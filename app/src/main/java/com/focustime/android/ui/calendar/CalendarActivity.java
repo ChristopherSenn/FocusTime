@@ -14,6 +14,7 @@ import com.focustime.android.R;
 
 import com.focustime.android.data.service.FocusTimeService;
 import com.focustime.android.databinding.ActivityCalendarBinding;
+import com.focustime.android.ui.calendar.month.MonthViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -23,6 +24,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 
@@ -31,10 +33,12 @@ public class CalendarActivity extends AppCompatActivity {
 
     private ActivityCalendarBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_calendar);
+
 
 
         // Check if we have permission to access the users phone calendar database
@@ -52,6 +56,8 @@ public class CalendarActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_calendar);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+
 
 
     }
