@@ -149,6 +149,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
             {
                 daysInMonthArray.add(LocalDate.of(selectedDate.getYear(),selectedDate.getMonth(),i - dayOfWeek));
             }
+
         }
         return  daysInMonthArray;
     }
