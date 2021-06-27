@@ -107,7 +107,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
             int duration = (int)(f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis()) / 1000 / 60;
 
-            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date,0));
+            daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date,f.getFocusTimeLevel(), f.getId()));
         }
         elementList.setValue(daySchedule);
         elementList.observe(getViewLifecycleOwner(), dayElements -> {
