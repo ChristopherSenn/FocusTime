@@ -1,15 +1,19 @@
 package com.focustime.android.ui.calendar.focusButton;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,12 +51,14 @@ public class FocusButtonFragment extends Fragment {
     private Button mTestButton;
     private ImageView mImageView;
 
+    private TimerCircle timerCircle;
+
     private CountDownTimer mCountDownTimer;
     private boolean mTimerRunning;
     private long mStartTimeInMills;
     private long mTimeLeftInMillis;
     private long mEndTime;
-
+    private int dndLevel = 2;
     private int mHour, mMinute;
 
     private Intent notificationIntent;
@@ -75,6 +81,7 @@ public class FocusButtonFragment extends Fragment {
         mButtonStartStop = binding.buttonStartStop;
         mImageView = binding.imageView;
         mTestButton = binding.buttonTest;
+        timerCircle = binding.timer;
 
         mButtonStartStop.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -85,9 +92,7 @@ public class FocusButtonFragment extends Fragment {
                     //stopAlarmCongratulationService();
                     focusTimeServiceStarter.stopAlarmCongratulationService(getContext());
                 } else {
-                    startTimer();
-                    //startAlarmCongratulationService();
-                    focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
+                    showDNDTypesDialog();
                 }
             }
         });
@@ -101,8 +106,8 @@ public class FocusButtonFragment extends Fragment {
                     //stopAlarmCongratulationService();
                     focusTimeServiceStarter.stopAlarmCongratulationService(getContext());
                 } else {
-                    mStartTimeInMills = 10000;
-                    mTimeLeftInMillis = 10000;
+                    mStartTimeInMills = 20000;
+                    mTimeLeftInMillis = 20000;
                     startTimer();
                     //startAlarmCongratulationService();
                     focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
@@ -140,6 +145,13 @@ public class FocusButtonFragment extends Fragment {
             }
         });
 
+        timerCircle.setFinishListenter(new TimerCircle.onFinishListener() {
+            @Override
+            public void onFinish() {
+
+            }
+        });
+
         return root;
     }
 
@@ -155,7 +167,7 @@ public class FocusButtonFragment extends Fragment {
             if (mStartTimeInMills == 0) {
                 Toast.makeText(FocusButtonFragment.this.getContext(), "please set a focustime", Toast.LENGTH_SHORT).show();
             } else {
-                focusTimeServiceStarter.activateDND(getContext());
+                focusTimeServiceStarter.activateDNDWithLevel(getContext(), dndLevel);
                 mImageView.setImageResource(0);
 
                 mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
@@ -172,6 +184,9 @@ public class FocusButtonFragment extends Fragment {
 
                         mCountDownTimer.cancel();
                         mTimerRunning = false;
+
+                        resetTimerCircle();
+
                         mImageView.setImageResource(R.drawable.congratulation);
 
                         updateCountDownText(mStartTimeInMills);
@@ -180,6 +195,13 @@ public class FocusButtonFragment extends Fragment {
                 }.start();
 
                 mTimerRunning = true;
+
+                int mDuration = Long.valueOf(mTimeLeftInMillis).intValue();
+                int mMaxTime = Long.valueOf(mStartTimeInMills).intValue();
+                int currentTime = Long.valueOf(mStartTimeInMills - mTimeLeftInMillis).intValue();
+                timerCircle.setDuration(mDuration, mMaxTime, currentTime);
+                timerCircle.setVisibility(View.VISIBLE);
+
                 updateComponents();
             }
 
@@ -189,6 +211,9 @@ public class FocusButtonFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void stopTimer() {
         mTimerRunning = false;
+        mTimeLeftInMillis = mStartTimeInMills;
+
+        resetTimerCircle();
         mCountDownTimer.cancel();
 
         mImageView.setImageResource(R.drawable.tryharder);
@@ -197,6 +222,11 @@ public class FocusButtonFragment extends Fragment {
         updateCountDownText(mStartTimeInMills);
         updateComponents();
         focusTimeServiceStarter.cancelDND(getContext());
+    }
+
+    private void resetTimerCircle() {
+        //timerCircle.reset();
+        timerCircle.setVisibility(View.INVISIBLE);
     }
 
     private void updateCountDownText() {
@@ -215,12 +245,6 @@ public class FocusButtonFragment extends Fragment {
         mTextViewCountdown.setText(timeLeftFormatted);
 
         mTimeLeftInMillis = mStartTimeInMills;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void activateDND() {
-        mNotificationManager = (NotificationManager) FocusButtonFragment.this.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -265,6 +289,7 @@ public class FocusButtonFragment extends Fragment {
                 updateComponents();
                 focusTimeServiceStarter.cancelDND(getContext());
 
+                timerCircle.setVisibility(View.INVISIBLE);
                 mImageView.setImageResource(R.drawable.congratulation);
             } else {
                 startTimer();
@@ -289,5 +314,31 @@ public class FocusButtonFragment extends Fragment {
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
+    }
+
+    private void showDNDTypesDialog(){
+        final String[] items = { "Priority only", "Alarms only", "Total Silence" };
+        dndLevel = 0;
+
+        AlertDialog.Builder singleChoiceDialog =
+                new AlertDialog.Builder(this.getContext());
+        singleChoiceDialog.setTitle("Differnt DND type");
+        // The second parameter is the default option and is set to 0 here
+        singleChoiceDialog.setSingleChoiceItems(items, 2,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dndLevel = which;
+                    }
+                });
+        singleChoiceDialog.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startTimer();
+                        focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
+                    }
+                });
+        singleChoiceDialog.show();
     }
 }

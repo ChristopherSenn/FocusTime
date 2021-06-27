@@ -42,13 +42,53 @@ public class FocusTimeServiceStarter {
     }
 
     /**
-     * Activates the Phone's DND mode
+     * Activates the Phone's total silence DND mode
      * @param context Application context
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void activateDND(Context context) {
+    public void activateTotalSilenceDND(Context context) {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
+    }
+
+
+    /**
+     * Activates the Phone's priority only DND mode
+     * @param context Application context
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void activatePriorityOnlyDND(Context context) {
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY);
+    }
+
+    /**
+     * Activates the Phone's alarms only DND mode
+     * @param context Application context
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void activateAlarmsOnlyDND(Context context) {
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALARMS);
+    }
+
+    /**
+     * Activates the Phone's DND mode with dnd level
+     * 0: Priority only
+     * 1: Alarms only
+     * 2: Total Silence
+     * @param context Application context
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void activateDNDWithLevel(Context context, int level) {
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (level == 0)
+            activatePriorityOnlyDND(context);
+        else if (level == 1)
+            activateAlarmsOnlyDND(context);
+        else if (level == 2)
+            activateTotalSilenceDND(context);
     }
 
     /**

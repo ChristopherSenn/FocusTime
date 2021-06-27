@@ -5,4 +5,21 @@
     <attr name="primaryButtonStyle" format="reference"/>
 
     <attr name="primaryButtonTextColor" format="reference" />
+
+        <declare-styleable name="TimerCircle">
+                <!--ring width-->
+                <attr name="width"  format="dimension"></attr>
+                <!--inner circle color-->
+                <attr name="circleColor" format="color"></attr>
+                <!--ring color-->
+                <attr name="ringColor" format="color"></attr>
+                <!--countdown time-->
+                <attr name="maxTime" format="integer"></attr>
+                <!--Path color of the circle-->
+                <attr name="path" format="color"></attr>
+                <!--font color-->
+                <attr name="textColor" format="color"></attr>
+                <!--text size-->
+                <attr name="textSize" format="dimension"></attr>
+        </declare-styleable>
 </resources>

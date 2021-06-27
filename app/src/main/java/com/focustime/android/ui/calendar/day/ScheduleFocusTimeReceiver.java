@@ -38,7 +38,7 @@ public class ScheduleFocusTimeReceiver extends BroadcastReceiver {
 
 
             FocusTimeServiceStarter starter = new FocusTimeServiceStarter();
-            starter.activateDND(context);
+            starter.activateTotalSilenceDND(context);
             starter.startAlarmCongratulationService(context, duration); // Start the FocusTimeService with the calculated duration
         }
 
