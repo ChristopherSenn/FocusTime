@@ -48,7 +48,7 @@ public class FocusButtonFragment extends Fragment {
 
     private TextView mTextViewCountdown;
     private Button mButtonStartStop;
-    private Button mTestButton;
+    //private Button mTestButton;
     private ImageView mImageView;
 
     private TimerCircle timerCircle;
@@ -80,7 +80,7 @@ public class FocusButtonFragment extends Fragment {
         mTextViewCountdown = binding.textViewCountdown;
         mButtonStartStop = binding.buttonStartStop;
         mImageView = binding.imageView;
-        mTestButton = binding.buttonTest;
+        //mTestButton = binding.buttonTest;
         timerCircle = binding.timer;
 
         mButtonStartStop.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +97,7 @@ public class FocusButtonFragment extends Fragment {
             }
         });
 
-        mTestButton.setOnClickListener(new View.OnClickListener() {
+        /*mTestButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
@@ -113,7 +113,7 @@ public class FocusButtonFragment extends Fragment {
                     focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
                 }
             }
-        });
+        });*/
 
         mTextViewCountdown.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -52,7 +52,7 @@
         style="@style/Widget.Button.Primary"
         android:text="start" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <!--<androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,6 +60,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         style="@style/Widget.Button.Primary"
-        android:text="test" />
+        android:text="test" />-->
 
 </RelativeLayout>
