@@ -95,6 +95,34 @@ public class CalendarAPI {
         return focusTimes;
     }
 
+    public List<FocusTime> getFocusTimesByDay(java.util.Calendar day) {
+        Calendar c = getFocusTimeCalendar();
+        List<Event> e = calendarProvider.getEvents(c.id).getList();
+        ArrayList<FocusTime> focusTimes = new ArrayList<>();
+
+        for(Event event: e) {
+            FocusTime f = getFocusTimeById(event.id);
+            java.util.Calendar start = day;
+            start.set(java.util.Calendar.HOUR_OF_DAY, 0);
+            start.set(java.util.Calendar.MINUTE, 0);
+            start.set(java.util.Calendar.SECOND, 0);
+            start.set(java.util.Calendar.MILLISECOND, 0);
+
+            java.util.Calendar end = day;
+            start.set(java.util.Calendar.HOUR_OF_DAY, 23);
+            start.set(java.util.Calendar.MINUTE, 59);
+            start.set(java.util.Calendar.SECOND, 59);
+            start.set(java.util.Calendar.MILLISECOND, 0);
+            if(!f.getBeginTime().before(start) && !f.getBeginTime().after(end)){
+                focusTimes.add(f);
+            }
+            //focusTimes.add(getFocusTimeById(event.id));
+        }
+        Collections.sort(focusTimes, ((o1, o2) -> o1.getBeginTime().compareTo(o2.getBeginTime())));
+
+        return focusTimes;
+    }
+
     /**
      * Returns a specific FocusTime with a certain ID
      * Returns null if the ID doesn't exist or is from an event in a different Calendar.
