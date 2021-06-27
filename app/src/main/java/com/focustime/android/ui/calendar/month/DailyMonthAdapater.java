@@ -28,6 +28,7 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
         this.context = context;
         this.dayElements = userArrayList;
         this.monthViewFragment = cdf;
+
     }
 
     @NonNull
