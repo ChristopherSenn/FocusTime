@@ -132,18 +132,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="210dp" />
+        android:layout_height="200dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addSchedule"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:translationY="130dp"
-        app:backgroundTint="#FFCCCCCC"
-        app:srcCompat="@drawable/plus_button" />
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dailyMonthRV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"/>
+
+
 
 
 </LinearLayout>

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.focustime.android.R;
+import com.focustime.android.data.service.CalendarAPI;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +33,12 @@ public class MonthViewModel extends AndroidViewModel {
     public MonthViewModel(@NonNull @NotNull Application application){
         super(application);
         this.context = application.getApplicationContext();
+    }
+
+    public void deleteApiEntry(long id, Context c){
+        CalendarAPI api = new CalendarAPI(c);
+        String stringId = "" + id;
+        api.deleteFocusTime(c, api.getFocusTimeById(id));
     }
 
 
