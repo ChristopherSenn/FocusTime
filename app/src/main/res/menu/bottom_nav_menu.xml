@@ -5,10 +5,10 @@
         android:icon="@drawable/ic_baseline_timer_24"
         android:title="@string/title_focusButton" />
 
-    <item
+    <!--<item
         android:id="@+id/navigation_day"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_calendar_day" />
+        android:title="@string/title_calendar_day" />-->
 
     <item
         android:id="@+id/navigation_monthView"

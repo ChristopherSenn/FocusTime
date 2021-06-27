@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_day">
+    app:startDestination="@id/navigation_monthView">
 
     <fragment
         android:id="@+id/navigation_focusButton"
         android:name="com.focustime.android.ui.calendar.focusButton.FocusButtonFragment"
         android:label="@string/title_focusButton"
         tools:layout="@layout/focus_button_fragment" />
-    <fragment
+    <!--<fragment
         android:id="@+id/navigation_day"
         android:name="com.focustime.android.ui.calendar.day.CalendarDayFragment"
         android:label="@string/title_calendar_day"
-        tools:layout="@layout/calendar_day_fragment" />
+        tools:layout="@layout/calendar_day_fragment" />-->
     <fragment
         android:id="@+id/navigation_create"
         android:name="com.focustime.android.ui.calendar.create.CalendarCreateFragment"

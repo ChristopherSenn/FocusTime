@@ -50,7 +50,7 @@
         android:layout_below="@id/text_view_countdown"
         android:layout_centerHorizontal="true"
         style="@style/Widget.Button.Primary"
-        android:text="start" />
+        android:text="START" />
 
     <!--<androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_test"
