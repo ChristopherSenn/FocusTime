@@ -13,6 +13,9 @@ import com.focustime.android.R;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/*
+Adapter class for displaying months
+*/
 public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
 {
     private final ArrayList<LocalDate> daysOfMonth;

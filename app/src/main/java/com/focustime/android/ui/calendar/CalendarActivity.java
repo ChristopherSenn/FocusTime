@@ -3,7 +3,6 @@ package com.focustime.android.ui.calendar;
 //import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -16,6 +15,8 @@ import com.focustime.android.data.service.FocusTimeService;
 import com.focustime.android.databinding.ActivityCalendarBinding;
 import com.focustime.android.ui.calendar.month.MonthViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -49,10 +50,12 @@ public class CalendarActivity extends AppCompatActivity {
 
 
 
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_day, R.id.navigation_create, R.id.navigation_focusButton, R.id.navigation_import).build();
+                R.id.navigation_day, R.id.navigation_create, R.id.navigation_focusButton,
+                R.id.navigation_import, R.id.navigation_monthView).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_calendar);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);

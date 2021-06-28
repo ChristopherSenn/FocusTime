@@ -1,7 +1,9 @@
 package com.focustime.android.ui.calendar.month;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +36,7 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -77,6 +80,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         elementList = new MutableLiveData<>();
         setDayViews();
 
+
         root.findViewById(R.id.arrow_left).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -97,11 +101,17 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
     public void setDayViews() {
         CalendarAPI api = new CalendarAPI(getContext());
-        List<FocusTime> focusTimes = api.getFocusTimes();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, 2021);
+        calendar.set(Calendar.MONTH, 6);
+        calendar.set(Calendar.DAY_OF_MONTH, 27);
+        List<FocusTime> focusTimes = api.getFocusTimesByDay(calendar);
+
+
         for(FocusTime f: focusTimes) {
             int beginHour = f.getBeginTime().get(java.util.Calendar.HOUR_OF_DAY);
             int beginMinute = f.getBeginTime().get(java.util.Calendar.MINUTE);
-            String date = f.getBeginTime().get(java.util.Calendar.YEAR) + "-" + (f.getBeginTime().get(java.util.Calendar.MONTH) + 1)
+            String date = f.getBeginTime().get(java.util.Calendar.YEAR) + "-0" + (f.getBeginTime().get(java.util.Calendar.MONTH) + 1)
                     + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
             //Log.e("date",  date);
 
@@ -109,12 +119,14 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
             daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date,f.getFocusTimeLevel(), f.getId()));
         }
+
         elementList.setValue(daySchedule);
-        elementList.observe(getViewLifecycleOwner(), dayElements -> {
-            dailyMonthAdapater = new DailyMonthAdapater((Activity)getContext(), dayElements, this);
-            dailyMonthRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            dailyMonthRecyclerView.setAdapter(dailyMonthAdapater);
-        });
+            elementList.observe(getViewLifecycleOwner(), dayElements -> {
+                dailyMonthAdapater = new DailyMonthAdapater((Activity)getContext(), dayElements, this);
+                dailyMonthRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                dailyMonthRecyclerView.setAdapter(dailyMonthAdapater);
+            });
+
     }
 
 
@@ -183,6 +195,8 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         if (date != null) {
             selectedDate = date;
             setMonthView();
+            Log.d("1234Test1", String.valueOf(selectedDate));
+
         }
     }
 
