@@ -64,7 +64,7 @@
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">@color/colorError</item>
+        <item name="colorAccent">@color/accentGrey</item>
         <item name="colorPrimary">@color/white</item>
         <item name="android:textColorPrimary">@color/colorWhite</item>
 

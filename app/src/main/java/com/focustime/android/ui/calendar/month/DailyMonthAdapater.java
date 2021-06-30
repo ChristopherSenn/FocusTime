@@ -2,7 +2,9 @@ package com.focustime.android.ui.calendar.month;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.focustime.android.R;
+import com.focustime.android.data.model.FocusTime;
+import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.ui.calendar.day.DayElement;
 import com.focustime.android.ui.calendar.edit.CalendarEditFragment;
+import com.focustime.android.util.FocusTimeFactory;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -24,10 +30,15 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
     ArrayList<DayElement> dayElements;
     MonthViewFragment monthViewFragment;
 
+    private DayElement mRecentlyDeletedItem;
+    private int mRecentlyDeletedItemPosition;
+    private  CalendarAPI api;
+
     public DailyMonthAdapater(Activity context, ArrayList<DayElement> userArrayList, MonthViewFragment cdf) {
         this.context = context;
         this.dayElements = userArrayList;
         this.monthViewFragment = cdf;
+        this.api = new CalendarAPI(getContext());
 
     }
 
@@ -78,6 +89,35 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
     @Override
     public int getItemCount() {
         return dayElements.size();
+    }
+
+    public Activity getContext() {
+        return context;
+    }
+
+    public void deleteItem(int position) {
+        mRecentlyDeletedItem = dayElements.get(position);
+        mRecentlyDeletedItemPosition = position;
+        dayElements.remove(position);
+        notifyItemRemoved(position);
+        api.deleteFocusTime(getContext(), api.getFocusTimeById(mRecentlyDeletedItem.getDbId()));
+        showUndoSnackbar();
+    }
+
+    private void showUndoSnackbar() {
+        View view = context.findViewById(R.id.day_view_list_element);
+        Snackbar snackbar = Snackbar.make(view, "You deleted " + mRecentlyDeletedItem.getTitle(),
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction("Undo", v -> undoDelete());
+        snackbar.show();
+    }
+
+    private void undoDelete() {
+        dayElements.add(mRecentlyDeletedItemPosition,
+                mRecentlyDeletedItem);
+        FocusTime f = FocusTimeFactory.buildFocusTimeFromDayElement(mRecentlyDeletedItem);
+        api.createFocusTime(f, getContext());
+        notifyItemInserted(mRecentlyDeletedItemPosition);
     }
 
     class RecyclerViewViewHolder extends RecyclerView.ViewHolder {

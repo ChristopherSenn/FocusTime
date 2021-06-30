@@ -37,7 +37,7 @@
         <activity
             android:name=".ui.calendar.create.CalendarDayPickDateFragment">
         </activity>
-        <activity
+         <activity
             android:name=".ui.calendar.edit.CalendarEditFragment" >
         </activity>
 

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp">
+    android:layout_marginTop="8dp"
+    android:id="@+id/day_view_list_element">
     android:layout_paddingLeft="16dp"
     android:layout_paddingRight="16dp"
     app:cardCornerRadius="4dp">

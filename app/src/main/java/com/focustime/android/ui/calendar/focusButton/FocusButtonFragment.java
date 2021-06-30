@@ -255,10 +255,10 @@ public class FocusButtonFragment extends Fragment {
 
     private void updateComponents() {
         if (mTimerRunning) {
-            mButtonStartStop.setText("give up");
+            mButtonStartStop.setText("Give Up");
             mTextViewCountdown.setClickable(false);
         } else {
-            mButtonStartStop.setText("start");
+            mButtonStartStop.setText("Start FocusTime");
             mTextViewCountdown.setClickable(true);
         }
     }

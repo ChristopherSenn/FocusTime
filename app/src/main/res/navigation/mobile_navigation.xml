@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_focusButton"
         android:name="com.focustime.android.ui.calendar.focusButton.FocusButtonFragment"
-        android:label="@string/title_focusButton"
+        android:label="Set a FocusTime"
         tools:layout="@layout/focus_button_fragment" />
     <!--<fragment
         android:id="@+id/navigation_day"
@@ -18,18 +18,18 @@
     <fragment
         android:id="@+id/navigation_create"
         android:name="com.focustime.android.ui.calendar.create.CalendarCreateFragment"
-        android:label="@string/title_create"
+        android:label="Create a FocusTime"
         tools:layout="@layout/calendar_create_fragment" />
 
     <fragment
         android:id="@+id/navigation_monthView"
         android:name="com.focustime.android.ui.calendar.month.MonthViewFragment"
-        android:label="Month View"
+        android:label="Calendar"
         tools:layout="@layout/month_view" />
 
     <fragment
         android:id="@+id/navigation_import"
         android:name="com.focustime.android.ui.calendar.importEvents.ImportEventsFragment"
-        android:label="Import Events View"
+        android:label="Import Events"
         tools:layout="@layout/import_events_fragment" />
 </navigation>

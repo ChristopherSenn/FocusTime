@@ -1,6 +1,7 @@
 package com.focustime.android.ui.calendar.month;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +30,7 @@ import com.focustime.android.ui.calendar.day.CalenderDayAdapter;
 import com.focustime.android.ui.calendar.day.DayElement;
 import com.focustime.android.ui.calendar.focusButton.FocusButtonViewModel;
 import com.focustime.android.ui.calendar.importEvents.ImportEventsAdapter;
+import com.focustime.android.util.SwipeToDeleteCallback;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -64,6 +67,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         mViewModel = new ViewModelProvider(this).get(MonthViewModel.class);
         binding = MonthViewBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
 
         selectedDate = LocalDate.now();
 
@@ -110,11 +114,21 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
             daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date,f.getFocusTimeLevel(), f.getId()));
         }
         elementList.setValue(daySchedule);
+
+
         elementList.observe(getViewLifecycleOwner(), dayElements -> {
             dailyMonthAdapater = new DailyMonthAdapater((Activity)getContext(), dayElements, this);
             dailyMonthRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             dailyMonthRecyclerView.setAdapter(dailyMonthAdapater);
+
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(dailyMonthAdapater));
+            itemTouchHelper.attachToRecyclerView(dailyMonthRecyclerView);
+
         });
+    }
+
+    public void addSwipeToDelete() {
+
     }
 
 
