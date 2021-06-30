@@ -30,8 +30,8 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
     ArrayList<DayElement> dayElements;
     MonthViewFragment monthViewFragment;
 
-    private DayElement mRecentlyDeletedItem;
-    private int mRecentlyDeletedItemPosition;
+    private DayElement recentlyDeletedItem;
+    private int recentlyDeletedItemPosition;
     private  CalendarAPI api;
 
     public DailyMonthAdapater(Activity context, ArrayList<DayElement> userArrayList, MonthViewFragment cdf) {
@@ -95,29 +95,38 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
         return context;
     }
 
+    /**
+     * Deletes an item at a given position
+     * @param position
+     */
     public void deleteItem(int position) {
-        mRecentlyDeletedItem = dayElements.get(position);
-        mRecentlyDeletedItemPosition = position;
+        recentlyDeletedItem = dayElements.get(position);
+        recentlyDeletedItemPosition = position;
         dayElements.remove(position);
         notifyItemRemoved(position);
-        api.deleteFocusTime(getContext(), api.getFocusTimeById(mRecentlyDeletedItem.getDbId()));
-        showUndoSnackbar();
+        api.deleteFocusTime(getContext(), api.getFocusTimeById(recentlyDeletedItem.getDbId())); //Delete item from db
+        showUndoSnackbar(); // Show a snackbar to undo the delete
     }
 
+    /**
+     * Creates a Snackbar that can undo the last delete of an item
+     */
     private void showUndoSnackbar() {
         View view = context.findViewById(R.id.day_view_list_element);
-        Snackbar snackbar = Snackbar.make(view, "You deleted " + mRecentlyDeletedItem.getTitle(),
+        Snackbar snackbar = Snackbar.make(view, "You deleted " + recentlyDeletedItem.getTitle(),
                 Snackbar.LENGTH_LONG);
-        snackbar.setAction("Undo", v -> undoDelete());
+        snackbar.setAction("Undo", v -> undoDelete()); // Map the actual undo function
         snackbar.show();
     }
 
+    /**
+     * Readd the deleted item to the ArrayList and the Database
+     */
     private void undoDelete() {
-        dayElements.add(mRecentlyDeletedItemPosition,
-                mRecentlyDeletedItem);
-        FocusTime f = FocusTimeFactory.buildFocusTimeFromDayElement(mRecentlyDeletedItem);
-        api.createFocusTime(f, getContext());
-        notifyItemInserted(mRecentlyDeletedItemPosition);
+        dayElements.add(recentlyDeletedItemPosition, recentlyDeletedItem); //Add item back to List
+        FocusTime f = FocusTimeFactory.buildFocusTimeFromDayElement(recentlyDeletedItem);
+        api.createFocusTime(f, getContext()); //Add item back to database
+        notifyItemInserted(recentlyDeletedItemPosition);
     }
 
     class RecyclerViewViewHolder extends RecyclerView.ViewHolder {

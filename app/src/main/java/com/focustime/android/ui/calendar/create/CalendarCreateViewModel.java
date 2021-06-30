@@ -35,23 +35,4 @@ public class CalendarCreateViewModel extends AndroidViewModel {
         api.createFocusTime(f, context);
     }
 
-    /**
-     * Compute the current Time Zone the user is in
-     * @return
-     */
-    public String getTimeZone() {
-        Calendar cal = Calendar.getInstance();
-        long milliDiff = cal.get(Calendar.ZONE_OFFSET);
-        String [] ids = TimeZone.getAvailableIDs();
-        String name = null;
-        for (String id : ids) {
-            TimeZone tz = TimeZone.getTimeZone(id);
-            if (tz.getRawOffset() == milliDiff) {
-                // Found a match.
-                name = id;
-                break;
-            }
-        }
-        return name;
-    }
 }

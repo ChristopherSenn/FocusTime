@@ -69,13 +69,39 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
 
         holder.date.setText(stringDate);
 
-        Calendar endDate = Calendar.getInstance();
-        endDate.setTimeInMillis(event.dTend);
         String beginHour = formatHourMinute(beginDate.get(Calendar.HOUR_OF_DAY));
         String beginMinute = formatHourMinute(beginDate.get(Calendar.MINUTE));
-        String endHour = formatHourMinute(endDate.get(Calendar.HOUR_OF_DAY));
-        String endMinute = formatHourMinute(endDate.get(Calendar.MINUTE));
+        String eventCode = null;
+
+        String endHour, endMinute;
+        Calendar endDate = Calendar.getInstance();
+        if (event.dTend != 0) {
+
+            endDate.setTimeInMillis(event.dTend);
+
+
+        } else { //This happens if an event is marked as repeating
+            String duration = event.duration;
+            duration = duration.substring(0, duration.length() - 1);
+            duration = duration.substring(1);
+
+
+            String[] codes =  {"DAILY", "WEEKLY", "MONTHLY"};
+            eventCode = event.rRule.split(";")[0].substring(5);
+
+
+            long deltaMs = Long.parseLong(duration) * 1000;
+            endDate.setTimeInMillis(beginDate.getTimeInMillis() + deltaMs);
+
+        }
+
+        endHour = formatHourMinute(endDate.get(Calendar.HOUR_OF_DAY));
+        endMinute = formatHourMinute(endDate.get(Calendar.MINUTE));
+
         String stringTime = beginHour + ":" + beginMinute + " - " + endHour + ":" + endMinute;
+        if(eventCode != null) stringDate = stringDate + " - " + eventCode.substring(0, 1) + eventCode.substring(1).toLowerCase();
+        holder.date.setText(stringDate);
+
         holder.time.setText(stringTime);
 
         if(!event.description.equals("")) {
@@ -106,12 +132,57 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         event.title = event.title + "#" + which;
-                        FocusTime importFocusTime = FocusTimeFactory.buildFocusTime(event);
-                        api.createFocusTime(importFocusTime, context);
+
+                        if(event.rRule != null) {
+                            String eventCode = event.rRule.split(";")[0].substring(5);
+                            long oneDayMs = 86400000;
+                            event.dTend = endDate.getTimeInMillis();
+
+                            switch (eventCode) {
+                                case "DAILY":
+                                    for(int i = 0; i < 30; i++) {
+                                        FocusTime importFocusTime = FocusTimeFactory.buildFocusTime(event);
+                                        api.createFocusTime(importFocusTime, context);
+
+                                        event.dTStart += oneDayMs;
+                                        event.dTend += oneDayMs;
+                                    }
+                                    break;
+                                case "WEEKLY":
+                                    for(int i = 0; i < 10; i++) {
+                                        FocusTime importFocusTime = FocusTimeFactory.buildFocusTime(event);
+                                        api.createFocusTime(importFocusTime, context);
+
+                                        event.dTStart += oneDayMs * 7;
+                                        event.dTend += oneDayMs * 7;
+                                    }
+                                    break;
+                                case "MONTHLY":
+                                    for(int i = 0; i < 3; i++) {
+                                        FocusTime importFocusTime = FocusTimeFactory.buildFocusTime(event);
+                                        api.createFocusTime(importFocusTime, context);
+
+                                        beginDate.add(Calendar.MONTH, 1);
+                                        endDate.add(Calendar.MONTH, 1);
+                                        event.dTStart = beginDate.getTimeInMillis();
+                                        event.dTend = endDate.getTimeInMillis();
+                                    }
+                            }
+                        } else {
+
+                                FocusTime importFocusTime = FocusTimeFactory.buildFocusTime(event);
+
+                                api.createFocusTime(importFocusTime, context);
+
+                        }
+
                         events.remove(position);
                         notifyDataSetChanged();
+
+
+
+
                     }
                 });
                 builder.show();

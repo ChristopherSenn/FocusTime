@@ -31,6 +31,11 @@ public class FocusTimeFactory {
         return new FocusTime(title, beginTime, endTime, focusTimeLevel, event.id);
     }
 
+    /**
+     * Builds a FocusTime from an DayElement
+     * @param dayElement The given DayElement
+     * @return A Focus Time
+     */
     public static FocusTime buildFocusTimeFromDayElement(DayElement dayElement) {
         Calendar beginTime = java.util.Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
 

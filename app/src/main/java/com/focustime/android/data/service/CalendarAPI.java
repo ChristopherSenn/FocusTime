@@ -18,6 +18,7 @@ import java.util.List;
 import me.everything.providers.android.calendar.Calendar;
 import me.everything.providers.android.calendar.CalendarProvider;
 import me.everything.providers.android.calendar.Event;
+import me.everything.providers.android.calendar.Instance;
 
 import static java.lang.Math.abs;
 
@@ -81,9 +82,13 @@ public class CalendarAPI {
     public List<FocusTime> getFocusTimes() {
         Calendar c = getFocusTimeCalendar();
         List<Event> e = calendarProvider.getEvents(c.id).getList();
+
+
         ArrayList<FocusTime> focusTimes = new ArrayList<>();
 
         for(Event event: e) {
+
+
             FocusTime f = getFocusTimeById(event.id);
             if(!f.getBeginTime().before(java.util.Calendar.getInstance())){
                 focusTimes.add(f);
@@ -136,6 +141,8 @@ public class CalendarAPI {
             Log.e("CalendarAPI: ", "The selected Event doesn't belong to the Focus Time Calendar!");
             return null;
         }
+
+
         java.util.Calendar beginTime = java.util.Calendar.getInstance();
         beginTime.setTimeInMillis(event.dTStart);
         java.util.Calendar endTime = java.util.Calendar.getInstance();
@@ -360,11 +367,8 @@ public class CalendarAPI {
 
         for(Calendar c: calendars) {
 
-
             if(c.accountName.equals(c.ownerAccount) && !c.accountName.equals(FOCUS_TIME_ACCOUNT_NAME)) { // Looks for the users personal calendar
                 events = getEventsByCalendar(c);
-
-
 
                 for(Event event: events) {
                     if(event.dTStart > java.util.Calendar.getInstance().getTimeInMillis()) { // Filters for only upcoming events

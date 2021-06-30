@@ -1,7 +1,6 @@
 package com.focustime.android.util;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -17,16 +16,16 @@ import com.focustime.android.ui.calendar.month.DailyMonthAdapater;
 import org.jetbrains.annotations.NotNull;
 
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
-        private DailyMonthAdapater mAdapter;
+    private DailyMonthAdapater adapter;
     private Drawable icon;
     private final ColorDrawable background;
 
         public SwipeToDeleteCallback(DailyMonthAdapater adapter) {
             super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-            mAdapter = adapter;
-            icon = ContextCompat.getDrawable(mAdapter.getContext(),
+            this.adapter = adapter;
+            icon = ContextCompat.getDrawable(adapter.getContext(),
                     R.drawable.trash_icon);
-            background = new ColorDrawable(Color.RED);
+            background = new ColorDrawable(adapter.getContext().getResources().getColor(R.color.colorError, null));
         }
 
     @Override
@@ -36,10 +35,11 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        int position = viewHolder.getAdapterPosition();
-        mAdapter.deleteItem(position);
+        int position = viewHolder.getBindingAdapterPosition(); // Get position of swiped Item from viewHolder
+        adapter.deleteItem(position); // Actually delete the item
     }
 
+    //Draws the Background that gets shown below the dragged item
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         super.onChildDraw(c, recyclerView, viewHolder, dX,
@@ -51,8 +51,8 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
         int iconBottom = iconTop + icon.getIntrinsicHeight();
 
         if (dX > 0) { // Swiping to the right
-            int iconLeft = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
-            int iconRight = itemView.getLeft() + iconMargin;
+            int iconLeft = itemView.getLeft() + iconMargin;
+            int iconRight = itemView.getLeft() + iconMargin+ icon.getIntrinsicWidth();
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
             background.setBounds(itemView.getLeft(), itemView.getTop(),
