@@ -367,10 +367,12 @@ public class CalendarAPI {
 
         for(Calendar c: calendars) {
 
+
             if(c.accountName.equals(c.ownerAccount) && !c.accountName.equals(FOCUS_TIME_ACCOUNT_NAME)) { // Looks for the users personal calendar
                 events = getEventsByCalendar(c);
 
                 for(Event event: events) {
+
                     if(event.dTStart > java.util.Calendar.getInstance().getTimeInMillis()) { // Filters for only upcoming events
                         //Log.e("lkjsad", event.title);
                         boolean isAlreadyImported = false;

@@ -2,6 +2,7 @@ package com.focustime.android.ui.calendar.importEvents;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -32,6 +33,8 @@ public class ImportEventsViewModel extends AndroidViewModel {
      */
     public List<Event> getEvent() {
         CalendarAPI api = new CalendarAPI(context);
+
+
         return api.getFocusEventsForImport();
     }
 }

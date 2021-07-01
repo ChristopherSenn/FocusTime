@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/day_view_list_element"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-    android:id="@+id/day_view_list_element">
-    android:layout_paddingLeft="16dp"
-    android:layout_paddingRight="16dp"
-    app:cardCornerRadius="4dp">
+    android:backgroundTint="@color/colorWhite">
+
 
     <RelativeLayout
         android:id="@+id/rv"
@@ -38,7 +37,8 @@
             android:layout_marginLeft="14dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="4dp"
-            android:text="Line1" />
+            android:text="Line1"
+            android:textColor="@color/colorBlack" />
 
         <TextView
             android:id="@+id/date1"
@@ -52,7 +52,8 @@
             android:layout_marginBottom="4dp"
             android:layout_toEndOf="@+id/time1"
             android:layout_toRightOf="@+id/time1"
-            android:text="Line1" />
+            android:text="Line1"
+            android:textColor="@color/colorBlack" />
 
         <TextView
             android:id="@+id/focusDuration"
@@ -63,7 +64,8 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="4dp"
             android:layout_toStartOf="@+id/editButton"
-            android:text="Line1" />
+            android:text="Line1"
+            android:textColor="@color/colorBlack" />
 
         <ImageButton
             android:id="@+id/editButton"

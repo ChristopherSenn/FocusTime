@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp">
+    android:layout_marginTop="8dp"
+    style="@style/CardView.Custom">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorWhite">
 
         <TextView
             android:id="@+id/textView_importCard_title"
@@ -17,6 +19,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="Title"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/defaultTextSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,6 +31,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Monday, 01.01.2021"
+            android:textColor="@color/colorBlack"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_importCard_title" />
 
@@ -38,6 +42,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="00:00 - 00:00"
+            android:textColor="@color/colorBlack"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_importCard_date" />
 
@@ -48,6 +53,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="This is the Event description."
+            android:textColor="@color/colorBlack"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_importCard_time" />
 

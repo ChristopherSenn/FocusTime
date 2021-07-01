@@ -70,5 +70,9 @@
 
     </style>
 
+    <style name="CardView.Custom" parent="CardView">
+        <item name="cardBackgroundColor">@color/colorWhite</item>
+    </style>
+
 
 </resources>

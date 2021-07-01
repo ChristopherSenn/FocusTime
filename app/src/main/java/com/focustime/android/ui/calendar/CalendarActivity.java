@@ -3,7 +3,6 @@ package com.focustime.android.ui.calendar;
 //import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -16,6 +15,8 @@ import com.focustime.android.data.service.FocusTimeService;
 import com.focustime.android.databinding.ActivityCalendarBinding;
 import com.focustime.android.ui.calendar.month.MonthViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -39,7 +40,8 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_calendar);
 
-
+        ActionBar bar = getSupportActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
 
         // Check if we have permission to access the users phone calendar database
         checkPermission(CALLBACK_ID, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
