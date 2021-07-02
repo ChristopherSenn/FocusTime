@@ -19,6 +19,7 @@ import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.ui.calendar.create.CalendarCreateFragment;
 import com.focustime.android.ui.calendar.day.DayElement;
 import com.focustime.android.util.FocusTimeFactory;
+import com.focustime.android.util.TimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -69,8 +70,8 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
 
         holder.date.setText(stringDate);
 
-        String beginHour = formatHourMinute(beginDate.get(Calendar.HOUR_OF_DAY));
-        String beginMinute = formatHourMinute(beginDate.get(Calendar.MINUTE));
+        String beginHour = TimeFormatter.formatHourMinute(beginDate.get(Calendar.HOUR_OF_DAY));
+        String beginMinute = TimeFormatter.formatHourMinute(beginDate.get(Calendar.MINUTE));
         String eventCode = null;
 
         String endHour, endMinute;
@@ -95,8 +96,8 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
 
         }
 
-        endHour = formatHourMinute(endDate.get(Calendar.HOUR_OF_DAY));
-        endMinute = formatHourMinute(endDate.get(Calendar.MINUTE));
+        endHour = TimeFormatter.formatHourMinute(endDate.get(Calendar.HOUR_OF_DAY));
+        endMinute = TimeFormatter.formatHourMinute(endDate.get(Calendar.MINUTE));
 
         String stringTime = beginHour + ":" + beginMinute + " - " + endHour + ":" + endMinute;
         if(eventCode != null) stringDate = stringDate + " - " + eventCode.substring(0, 1) + eventCode.substring(1).toLowerCase();
@@ -192,15 +193,7 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
         });
     }
 
-    /**
-     * Adds a 0 to an Integer if its smaller than 10
-     * @param i Input integer
-     * @return Formatted String
-     */
-    private String formatHourMinute(int i) {
-        if(i < 10) return "0"+i;
-        return i+"";
-    }
+
 
     @Override
     public int getItemCount() {

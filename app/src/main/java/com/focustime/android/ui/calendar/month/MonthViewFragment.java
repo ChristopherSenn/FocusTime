@@ -37,6 +37,7 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -105,8 +106,9 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         for(FocusTime f: focusTimes) {
             int beginHour = f.getBeginTime().get(java.util.Calendar.HOUR_OF_DAY);
             int beginMinute = f.getBeginTime().get(java.util.Calendar.MINUTE);
-            String date = f.getBeginTime().get(java.util.Calendar.YEAR) + "-" + (f.getBeginTime().get(java.util.Calendar.MONTH) + 1)
-                    + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
+            String date = f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH) + "." +
+                    (f.getBeginTime().get(Calendar.MONTH)+1) + "." +
+                    f.getBeginTime().get(Calendar.YEAR);
             //Log.e("date",  date);
 
             int duration = (int)(f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis()) / 1000 / 60;

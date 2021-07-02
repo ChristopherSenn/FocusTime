@@ -20,8 +20,10 @@ import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.ui.calendar.day.DayElement;
 import com.focustime.android.ui.calendar.edit.CalendarEditFragment;
 import com.focustime.android.util.FocusTimeFactory;
+import com.focustime.android.util.TimeFormatter;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.RecyclerViewViewHolder> {
@@ -56,11 +58,12 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
 
         holder.title.setText(dayElement.getTitle());
         holder.date.setText(dayElement.getDate());
-        String t = dayElement.getStartHour() + ":" + dayElement.getStartMinute();
+        String t = TimeFormatter.formatHourMinute(dayElement.getStartHour()) + ":" + TimeFormatter.formatHourMinute(dayElement.getStartMinute());
         holder.time.setText(t);
-        holder.duration.setText(dayElement.getDuration().toString());
+        holder.duration.setText(TimeFormatter.formatDuration(dayElement.getDuration()));
         holder.edit.setImageResource(R.drawable.edit_icon);
         holder.delete.setImageResource(R.drawable.trash_icon);
+
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override

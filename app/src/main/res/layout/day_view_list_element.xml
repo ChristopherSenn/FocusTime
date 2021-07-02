@@ -8,7 +8,7 @@
     android:backgroundTint="@color/colorWhite">
 
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -19,13 +19,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="4dp"
             android:text="Line1"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/time1"
@@ -33,12 +32,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title1"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="14dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginStart="8dp"
             android:text="Line1"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/date1"
+            app:layout_constraintTop_toBottomOf="@+id/title1" />
 
         <TextView
             android:id="@+id/date1"
@@ -46,36 +45,37 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title1"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="14dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="4dp"
             android:layout_toEndOf="@+id/time1"
             android:layout_toRightOf="@+id/time1"
             android:text="Line1"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title1" />
 
         <TextView
             android:id="@+id/focusDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="16dp"
             android:layout_toStartOf="@+id/editButton"
             android:text="Line1"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/editButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/editButton"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/deleteButton"
-            android:backgroundTint="@color/white" />
+            android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/deleteButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/deleteButton"
@@ -83,10 +83,11 @@
             android:layout_height="16dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:backgroundTint="@color/white" />
+            android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
