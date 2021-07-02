@@ -222,7 +222,7 @@ public class CalendarAPI {
 
             ContentValues values = new ContentValues();
             values.put(CalendarContract.Calendars.ACCOUNT_NAME, FOCUS_TIME_ACCOUNT_NAME);
-            values.put(CalendarContract.Calendars.ACCOUNT_TYPE, "com.google");
+            values.put(CalendarContract.Calendars.ACCOUNT_TYPE,CalendarContract.ACCOUNT_TYPE_LOCAL);
             values.put(CalendarContract.Calendars.NAME, FOCUS_TIME_CALENDAR_NAME);
             values.put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, FOCUS_TIME_CALENDAR_NAME);
             values.put(CalendarContract.Calendars.CALENDAR_COLOR, 0x00FF00);
