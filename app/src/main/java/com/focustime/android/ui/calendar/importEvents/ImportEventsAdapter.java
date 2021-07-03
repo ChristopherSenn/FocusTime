@@ -80,19 +80,23 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
 
             endDate.setTimeInMillis(event.dTend);
 
-
         } else { //This happens if an event is marked as repeating
-            String duration = event.duration;
-            duration = duration.substring(0, duration.length() - 1);
-            duration = duration.substring(1);
+            if(event.duration == null && event.dTend == 0) { // Error handling for faulty db entries
+                endDate.setTimeInMillis(beginDate.getTimeInMillis());
+            } else {
+                String duration = event.duration;
+                duration = duration.substring(0, duration.length() - 1);
+                duration = duration.substring(1);
 
 
-            String[] codes =  {"DAILY", "WEEKLY", "MONTHLY"};
-            eventCode = event.rRule.split(";")[0].substring(5);
+                String[] codes =  {"DAILY", "WEEKLY", "MONTHLY"};
+                eventCode = event.rRule.split(";")[0].substring(5);
 
 
-            long deltaMs = Long.parseLong(duration) * 1000;
-            endDate.setTimeInMillis(beginDate.getTimeInMillis() + deltaMs);
+                long deltaMs = Long.parseLong(duration) * 1000;
+                endDate.setTimeInMillis(beginDate.getTimeInMillis() + deltaMs);
+            }
+
 
         }
 

@@ -39,9 +39,9 @@ public class FocusTimeFactory {
     public static FocusTime buildFocusTimeFromDayElement(DayElement dayElement) {
         Calendar beginTime = java.util.Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
 
-        String[] splitDate =  dayElement.getDate().split("-");
-        beginTime.set(Integer.parseInt(splitDate[0]), Integer.parseInt(splitDate[1])-1,
-                Integer.parseInt(splitDate[2]),
+        String[] splitDate =  dayElement.getDate().split(".");
+        beginTime.set(Integer.parseInt(splitDate[2]), Integer.parseInt(splitDate[1])-1,
+                Integer.parseInt(splitDate[0]),
                 dayElement.getStartHour(),
                 dayElement.getStartMinute());
         beginTime.set(Calendar.SECOND, 0);
