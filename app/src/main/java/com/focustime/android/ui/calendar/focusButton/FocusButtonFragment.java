@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,23 +98,6 @@ public class FocusButtonFragment extends Fragment {
             }
         });
 
-        /*mTestButton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View v) {
-                if (mTimerRunning) {
-                    stopTimer();
-                    //stopAlarmCongratulationService();
-                    focusTimeServiceStarter.stopAlarmCongratulationService(getContext());
-                } else {
-                    mStartTimeInMills = 20000;
-                    mTimeLeftInMillis = 20000;
-                    startTimer();
-                    //startAlarmCongratulationService();
-                    focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
-                }
-            }
-        });*/
 
         mTextViewCountdown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -303,6 +287,7 @@ public class FocusButtonFragment extends Fragment {
 
         SharedPreferences preferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+
 
         editor.putLong("startTimeInMillis",mStartTimeInMills);
         editor.putLong("millisLeft", mTimeLeftInMillis);

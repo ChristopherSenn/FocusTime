@@ -110,7 +110,6 @@ public class CalendarCreateFragment extends Fragment {
                         toast.show();
                     }
                     else{
-                        Log.e("asdasd", spinner.getSelectedItem().toString());
                         mViewModel.saveScheduleItem(new DayElement(t, sh, sm, 120, formatDate, spinner.getSelectedItemPosition(), FocusTime.UNDEFINED_ID));
                         String msg = "Duration set to 2 hours\n FocusTime Saved";
                         Toast toast = Toast.makeText(root.getContext(), msg, Toast.LENGTH_SHORT);
@@ -144,7 +143,7 @@ public class CalendarCreateFragment extends Fragment {
      * Note that Calender Month starts with 0 = Jan (so Î add 1)
      */
     private String getStringDateFromCalendar(Calendar c){
-        String returnValue = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+        String returnValue = c.get(Calendar.DAY_OF_MONTH) + "." + (c.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.YEAR);
         return returnValue;
     }
 

@@ -3,6 +3,7 @@ package com.focustime.android.ui.calendar.day;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -32,10 +33,21 @@ public class ScheduleFocusTimeReceiver extends BroadcastReceiver {
 
         CalendarAPI calendarAPI = new CalendarAPI(context);
 
-        if(calendarAPI.getFocusTimes().size() > 0) { // Check if there are any FocusTime to be started
-            FocusTime next = calendarAPI.getFocusTimes().get(0);
+        //if(calendarAPI.getFocusTimes().size() > 0) { // Check if there are any FocusTime to be started
+            //FocusTime next = calendarAPI.getFocusTimes().get(0);
+            FocusTime next = calendarAPI.getFocusTimeById(intent.getLongExtra("focusTimeId", -1));
             long duration = next.getEndTime().getTimeInMillis() - next.getBeginTime().getTimeInMillis(); // Calculate duration of the FocusTime
 
+            SharedPreferences preferences = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+
+
+            editor.putLong("startTimeInMillis", next.getEndTime().getTimeInMillis() - next.getBeginTime().getTimeInMillis());
+            editor.putLong("millisLeft", next.getEndTime().getTimeInMillis() - next.getBeginTime().getTimeInMillis());
+            editor.putBoolean("timeRunning", true);
+            editor.putLong("endTime", next.getEndTime().getTimeInMillis());
+
+            editor.apply();
 
             FocusTimeServiceStarter starter = new FocusTimeServiceStarter();
             starter.activateDNDWithLevel(context, next.getFocusTimeLevel());
@@ -43,5 +55,5 @@ public class ScheduleFocusTimeReceiver extends BroadcastReceiver {
         }
 
         //Toast.makeText(context, "Worker is Working", Toast.LENGTH_LONG).show();
-    }
+    //}
 }

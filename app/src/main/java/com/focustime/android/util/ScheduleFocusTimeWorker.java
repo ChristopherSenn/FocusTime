@@ -47,6 +47,7 @@ public class ScheduleFocusTimeWorker extends Worker {
             Calendar c = nextFocusTime.getBeginTime();
 
             Intent notifyIntent = new Intent(getApplicationContext(), ScheduleFocusTimeReceiver.class); // Create an Intent to the Receiver
+            notifyIntent.putExtra("focusTimeId", nextFocusTime.getId());
             PendingIntent pendingIntent = PendingIntent.getBroadcast
                     (getApplicationContext(), 3, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT); // Make it a pending Intent
 
