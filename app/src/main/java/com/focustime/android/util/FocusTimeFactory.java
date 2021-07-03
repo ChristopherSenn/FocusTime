@@ -1,5 +1,7 @@
 package com.focustime.android.util;
 
+import android.util.Log;
+
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.ui.calendar.day.DayElement;
 
@@ -39,7 +41,7 @@ public class FocusTimeFactory {
     public static FocusTime buildFocusTimeFromDayElement(DayElement dayElement) {
         Calendar beginTime = java.util.Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
 
-        String[] splitDate =  dayElement.getDate().split(".");
+        String[] splitDate =  dayElement.getDate().split("\\.");
         beginTime.set(Integer.parseInt(splitDate[2]), Integer.parseInt(splitDate[1])-1,
                 Integer.parseInt(splitDate[0]),
                 dayElement.getStartHour(),
@@ -48,9 +50,9 @@ public class FocusTimeFactory {
         beginTime.set(Calendar.MILLISECOND, 0);
 
         Calendar endTime = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
-        endTime.set(Integer.parseInt(splitDate[0]),
+        endTime.set(Integer.parseInt(splitDate[2]),
                 Integer.parseInt(splitDate[1])-1,
-                Integer.parseInt(splitDate[2]), dayElement.getStartHour(),
+                Integer.parseInt(splitDate[0]), dayElement.getStartHour(),
                 dayElement.getStartMinute()+dayElement.getDuration());
         endTime.set(Calendar.SECOND, 0);
         endTime.set(Calendar.MILLISECOND, 0);

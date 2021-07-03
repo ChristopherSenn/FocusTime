@@ -76,10 +76,10 @@ public class CalendarEditFragment extends Activity {
 
 
         inputDate = Calendar.getInstance();
-        String[] splitDate =  args.getString("date").split("-");
-        inputDate.set(Calendar.YEAR, Integer.parseInt(splitDate[0]));
-        inputDate.set(Calendar.MONTH, Integer.parseInt(splitDate[1]));
-        inputDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[2]));
+        String[] splitDate =  args.getString("date").split("\\.");
+        inputDate.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
+        inputDate.set(Calendar.MONTH, Integer.parseInt(splitDate[1])-1);
+        inputDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
         inputDate.set(Calendar.HOUR, args.getInt("hour"));
         inputDate.set(Calendar.MINUTE, args.getInt("minute"));
         inputDate.set(Calendar.SECOND, 0);
