@@ -30,6 +30,7 @@ public class AlarmCongratulationService extends Service {
     private Notification notification;
 
     private long mStartTimeInMills;
+    private String focusTimeName;
 
     @Nullable
     @Override
@@ -56,6 +57,8 @@ public class AlarmCongratulationService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        focusTimeName = intent.getStringExtra("focusTimeName");
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startMyOwnForeground();
         else
@@ -64,6 +67,7 @@ public class AlarmCongratulationService extends Service {
         Log.i(TAG, "AlarmCongratulationService is created");
 
         mStartTimeInMills = intent.getLongExtra("mStartTimeInMills", 600000);
+
 
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         long triggerAtTime = SystemClock.elapsedRealtime() + mStartTimeInMills;
@@ -92,7 +96,8 @@ public class AlarmCongratulationService extends Service {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("AlarmCongratulation Service in background")
+                .setContentTitle("Ongoing FocusTime")
+                .setContentText("FocusTime '" + focusTimeName + "' is currently running")
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();

@@ -321,7 +321,7 @@ public class FocusButtonFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startTimer();
-                        focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills);
+                        focusTimeServiceStarter.startAlarmCongratulationService(getContext(), mStartTimeInMills, "Custom FocusTime");
                     }
                 });
         singleChoiceDialog.show();

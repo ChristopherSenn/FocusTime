@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -22,11 +23,12 @@ public class FocusTimeServiceStarter {
      * @param startTimeInMillis Duration the service / FocusTime should last in Milliseconds
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void startAlarmCongratulationService(Context context, long startTimeInMillis) {
+    public void startAlarmCongratulationService(Context context, long startTimeInMillis, String focusTimeName) {
         notificationIntent = new Intent(context, AlarmCongratulationService.class);
 
         if (startTimeInMillis != 0) {
             notificationIntent.putExtra("mStartTimeInMills", startTimeInMillis);
+            notificationIntent.putExtra("focusTimeName", focusTimeName);
             context.startForegroundService(notificationIntent);
         }
     }

@@ -51,7 +51,7 @@ public class ScheduleFocusTimeReceiver extends BroadcastReceiver {
 
             FocusTimeServiceStarter starter = new FocusTimeServiceStarter();
             starter.activateDNDWithLevel(context, next.getFocusTimeLevel());
-            starter.startAlarmCongratulationService(context, duration); // Start the FocusTimeService with the calculated duration
+            starter.startAlarmCongratulationService(context, duration, next.getTitle()); // Start the FocusTimeService with the calculated duration
         }
 
         //Toast.makeText(context, "Worker is Working", Toast.LENGTH_LONG).show();
