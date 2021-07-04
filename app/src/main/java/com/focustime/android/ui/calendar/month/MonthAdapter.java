@@ -1,6 +1,7 @@
 package com.focustime.android.ui.calendar.month;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,13 @@ import java.util.ArrayList;
 public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
 {
     private final ArrayList<LocalDate> daysOfMonth;
+    private final ArrayList<Boolean> focusTimesSet;
     private final OnItemListener onItemListener;
 
-    public MonthAdapter(ArrayList<LocalDate> daysOfMonth, OnItemListener onItemListener)
+    public MonthAdapter(ArrayList<LocalDate> daysOfMonth, ArrayList<Boolean> focusTimesSet, OnItemListener onItemListener)
     {
         this.daysOfMonth = daysOfMonth;
+        this.focusTimesSet = focusTimesSet;
         this.onItemListener = onItemListener;
     }
 
@@ -38,7 +41,13 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
     @Override
     public void onBindViewHolder(@NonNull MonthViewHolder holder, int position)
     {
+
         final LocalDate date = daysOfMonth.get(position);
+        final Boolean focusTimeSet = focusTimesSet.get(position);
+
+
+
+
         if (date == null){
             holder.dayOfMonth.setText("");
             holder.dot_imageView.setVisibility(View.GONE);
@@ -46,6 +55,13 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
             holder.dayOfMonth.setText(String.valueOf(date.getDayOfMonth()));
             if (date.equals(MonthViewFragment.selectedDate))
                 holder.parentView.setBackgroundColor(Color.LTGRAY);
+            if(focusTimeSet != null){
+                Log.e("focusTime", focusTimeSet.toString());
+                if(focusTimeSet == false){
+                    holder.dot_imageView.setVisibility(View.GONE);
+                }
+            }
+
 
         }
 

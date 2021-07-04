@@ -1,19 +1,16 @@
 package com.focustime.android.ui.calendar.month;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -24,17 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
-import com.focustime.android.databinding.FocusButtonFragmentBinding;
 import com.focustime.android.databinding.MonthViewBinding;
-import com.focustime.android.ui.calendar.day.CalendarDayViewModel;
-import com.focustime.android.ui.calendar.day.CalenderDayAdapter;
 import com.focustime.android.ui.calendar.day.DayElement;
-import com.focustime.android.ui.calendar.focusButton.FocusButtonViewModel;
-import com.focustime.android.ui.calendar.importEvents.ImportEventsAdapter;
 import com.focustime.android.util.SwipeToDeleteCallback;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -101,6 +92,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
     }
 
+
     public void setDayViews() {
         CalendarAPI api = new CalendarAPI(getContext());
         Calendar calendar = Calendar.getInstance();
@@ -110,7 +102,6 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
         List<FocusTime> focusTimes = api.getFocusTimesByDay(calendar);
 
-        Log.e("test123456", calendar.getTimeInMillis() + "");
 
         if(daySchedule != null){
            daySchedule.clear();
@@ -122,7 +113,6 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
             String date = f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH) + "." +
                     (f.getBeginTime().get(Calendar.MONTH)+1) + "." +
                     f.getBeginTime().get(Calendar.YEAR);
-            Log.e("date",  date);
 
             int duration = (int)(f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis()) / 1000 / 60;
 
@@ -142,20 +132,53 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         });
     }
 
-    public void addSwipeToDelete() {
-
-    }
-
 
     public void setMonthView()
     {
+
+        ArrayList<Boolean> focusTimesSet = setDot();
         monthYearText.setText(monthYearFromDate(selectedDate));
         ArrayList<LocalDate> daysInMonth = daysInMonthArray(selectedDate);
 
-        MonthAdapter calendarAdapter = new MonthAdapter(daysInMonth, this);
+        MonthAdapter calendarAdapter = new MonthAdapter(daysInMonth, focusTimesSet, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mViewModel.getApplication(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+
+    }
+
+    public ArrayList<Boolean> setDot(){
+        CalendarAPI api = new CalendarAPI(getContext());
+        List<FocusTime> focusTimes = api.getFocusTimes();
+
+        ArrayList<Boolean> setDotArray = new ArrayList<>();
+
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray(selectedDate);
+        String date = "";
+
+        for(FocusTime f: focusTimes){
+            date = f.getBeginTime().get(Calendar.YEAR) + "-0"  +
+                    (f.getBeginTime().get(Calendar.MONTH)+1) + "-0" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
+
+            for(int i =0; i <= 32; i++ ){
+                if (daysInMonth.get(i) == null){
+                    setDotArray.add(null);
+                }
+                if(null != daysInMonth.get(i)){
+                    String day = daysInMonth.get(i).toString();
+
+                     if(day.equals(date)){
+                         setDotArray.add(true);
+                     }else {
+                         setDotArray.add(false);
+                     }
+                }
+
+            }
+
+        }
+
+        return setDotArray;
     }
 
     public static ArrayList<LocalDate> daysInMonthArray(LocalDate date)
@@ -186,6 +209,12 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
     public String monthYearFromDate(LocalDate date)
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+        return date.format(formatter);
+    }
+
+    public String formatDate(LocalDate date)
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
         return date.format(formatter);
     }
 
