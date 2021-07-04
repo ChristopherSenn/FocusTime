@@ -19,7 +19,8 @@
         android:id="@+id/navigation_create"
         android:name="com.focustime.android.ui.calendar.create.CalendarCreateFragment"
         android:label="Create a FocusTime"
-        tools:layout="@layout/calendar_create_fragment" />
+        tools:layout="@layout/calendar_create_fragment"/>
+
 
     <fragment
         android:id="@+id/navigation_monthView"

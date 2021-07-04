@@ -3,18 +3,25 @@ package com.focustime.android.ui.calendar.month;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,12 +32,15 @@ import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.databinding.FocusButtonFragmentBinding;
 import com.focustime.android.databinding.MonthViewBinding;
+import com.focustime.android.ui.calendar.create.CalendarCreateFragment;
 import com.focustime.android.ui.calendar.day.CalendarDayViewModel;
 import com.focustime.android.ui.calendar.day.CalenderDayAdapter;
 import com.focustime.android.ui.calendar.day.DayElement;
 import com.focustime.android.ui.calendar.focusButton.FocusButtonViewModel;
 import com.focustime.android.ui.calendar.importEvents.ImportEventsAdapter;
+import com.focustime.android.util.ActionBarSetter;
 import com.focustime.android.util.SwipeToDeleteCallback;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -81,6 +91,25 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         daySchedule = new ArrayList<>();
         elementList = new MutableLiveData<>();
         setDayViews();
+
+        ActionBar bar = ActionBarSetter.setCustomActionBar(getActivity());
+        View view = bar.getCustomView();
+        ImageButton imageButton = view.findViewById(R.id.image_button_create);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*CalendarCreateFragment calendarCreateFragment = new CalendarCreateFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, calendarCreateFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();*/
+                Bundle bundle = new Bundle();
+                bundle.putIntArray("currentDate", new int[] {selectedDate.getDayOfMonth(), selectedDate.getMonthValue(), selectedDate.getYear()});
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_calendar);
+
+                navController.navigate(R.id.navigation_create, bundle);
+            }
+        });
 
         root.findViewById(R.id.arrow_left).setOnClickListener(new View.OnClickListener(){
             @Override
@@ -202,11 +231,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         }
     }
 
-    /*public void initWidgets()
-    {
-        calendarRecyclerView = root.findViewById(R.id.calendarRecyclerView);
-        monthYearText = findViewById(R.id.monthYearTV);
-    }*/
+
 
 
 

@@ -3,6 +3,7 @@ package com.focustime.android.ui.calendar.create;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,9 @@ public class CalendarDayPickDateFragment extends Activity {
 
         final DatePicker datePicker = findViewById(R.id.datePicker);
         final Button confirm = findViewById(R.id.confirmDateButton);
+
+        int[] dateint = getIntent().getIntArrayExtra("date");
+        datePicker.updateDate(dateint[2], dateint[1], dateint[0]);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override

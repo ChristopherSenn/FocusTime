@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.focustime.android.R;
 import com.focustime.android.data.service.AlarmCongratulationService;
 import com.focustime.android.databinding.FocusButtonFragmentBinding;
+import com.focustime.android.util.ActionBarSetter;
 import com.focustime.android.util.FocusTimeServiceStarter;
 
 
@@ -76,6 +77,8 @@ public class FocusButtonFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(FocusButtonViewModel.class);
         binding = FocusButtonFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        ActionBarSetter.setDefaultActionBar(getActivity());
 
         focusTimeServiceStarter = new FocusTimeServiceStarter();
         mTextViewCountdown = binding.textViewCountdown;

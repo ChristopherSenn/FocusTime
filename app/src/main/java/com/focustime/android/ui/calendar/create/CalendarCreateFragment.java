@@ -32,6 +32,7 @@ import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.databinding.CalendarCreateFragmentBinding;
 import com.focustime.android.ui.calendar.day.DayElement;
+import com.focustime.android.util.ActionBarSetter;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -62,6 +63,9 @@ public class CalendarCreateFragment extends Fragment {
         binding = CalendarCreateFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
+
+
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
@@ -75,13 +79,27 @@ public class CalendarCreateFragment extends Fragment {
         date = binding.dateInput;
         final TextInputLayout duration = binding.duration;
 
+        ActionBarSetter.setDefaultActionBar(getActivity());
+
         inputDate = c;
-        date.setText(getStringDateFromCalendar(inputDate));
+        int[] dateInt;
+        if(getArguments() != null) {
+            dateInt = getArguments().getIntArray("currentDate");
+            if(dateInt[1] != 1) dateInt[1] = dateInt[1]-1;
+            else dateInt[1] = 12;
+            date.setText(dateInt[0] + "." + dateInt[1] + "." + dateInt[2]);
+        }else {
+            date.setText(getStringDateFromCalendar(inputDate));
+
+            dateInt = new int[] {inputDate.get(Calendar.DAY_OF_MONTH), inputDate.get(Calendar.MONTH), inputDate.get(Calendar.YEAR)};
+        }
+
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(root.getContext(), CalendarDayPickDateFragment.class);
+                intent.putExtra("date", dateInt);
                 startActivityForResult(intent, 100);
 
             }

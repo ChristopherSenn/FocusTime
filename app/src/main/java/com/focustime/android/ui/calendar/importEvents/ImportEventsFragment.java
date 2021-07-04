@@ -21,6 +21,7 @@ import com.focustime.android.databinding.CalendarDayFragmentBinding;
 import com.focustime.android.databinding.ImportEventsFragmentBinding;
 import com.focustime.android.ui.calendar.day.CalendarDayViewModel;
 import com.focustime.android.ui.calendar.day.CalenderDayAdapter;
+import com.focustime.android.util.ActionBarSetter;
 
 public class ImportEventsFragment extends Fragment {
 
@@ -50,6 +51,7 @@ public class ImportEventsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
         recyclerView.setAdapter(adapter);
 
+        ActionBarSetter.setDefaultActionBar(getActivity());
 
         return root;
 
