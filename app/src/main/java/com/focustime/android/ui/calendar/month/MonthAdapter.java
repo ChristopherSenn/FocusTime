@@ -41,6 +41,7 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
         final LocalDate date = daysOfMonth.get(position);
         if (date == null){
             holder.dayOfMonth.setText("");
+            holder.dot_imageView.setVisibility(View.GONE);
         }else{
             holder.dayOfMonth.setText(String.valueOf(date.getDayOfMonth()));
             if (date.equals(MonthViewFragment.selectedDate))

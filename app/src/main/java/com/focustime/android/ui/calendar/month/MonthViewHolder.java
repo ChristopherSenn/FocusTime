@@ -1,6 +1,7 @@
 package com.focustime.android.ui.calendar.month;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,11 +20,13 @@ public class MonthViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public final View parentView;
     public final TextView dayOfMonth;
     private final MonthAdapter.OnItemListener onItemListener;
+    public final ImageView dot_imageView;
     public MonthViewHolder(@NonNull View itemView, MonthAdapter.OnItemListener onItemListener, ArrayList<LocalDate> daysOfMonth)
     {
         super(itemView);
         parentView = itemView.findViewById(R.id.parentView);
         dayOfMonth = itemView.findViewById(R.id.cellDayText);
+        dot_imageView = itemView.findViewById(R.id.dot_focusTime);
         this.onItemListener = onItemListener;
         itemView.setOnClickListener(this);
         this.daysOfMonth = daysOfMonth;

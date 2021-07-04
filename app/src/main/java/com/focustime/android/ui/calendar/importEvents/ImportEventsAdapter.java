@@ -82,6 +82,7 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
 
 
         } else { //This happens if an event is marked as repeating
+            Log.e("event", event.toString());
             String duration = event.duration;
             duration = duration.substring(0, duration.length() - 1);
             duration = duration.substring(1);

@@ -105,19 +105,22 @@ public class CalendarAPI {
         List<Event> e = calendarProvider.getEvents(c.id).getList();
         ArrayList<FocusTime> focusTimes = new ArrayList<>();
 
+        java.util.Calendar start = (java.util.Calendar) day.clone();
+        start.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        start.set(java.util.Calendar.MINUTE, 0);
+        start.set(java.util.Calendar.SECOND, 0);
+        start.set(java.util.Calendar.MILLISECOND, 0);
+
+        java.util.Calendar end = (java.util.Calendar) day.clone();
+        end.set(java.util.Calendar.HOUR_OF_DAY, 23);
+        end.set(java.util.Calendar.MINUTE, 59);
+        end.set(java.util.Calendar.SECOND, 59);
+        end.set(java.util.Calendar.MILLISECOND, 0);
+
+
         for(Event event: e) {
             FocusTime f = getFocusTimeById(event.id);
-            java.util.Calendar start = day;
-            start.set(java.util.Calendar.HOUR_OF_DAY, 0);
-            start.set(java.util.Calendar.MINUTE, 0);
-            start.set(java.util.Calendar.SECOND, 0);
-            start.set(java.util.Calendar.MILLISECOND, 0);
 
-            java.util.Calendar end = day;
-            start.set(java.util.Calendar.HOUR_OF_DAY, 23);
-            start.set(java.util.Calendar.MINUTE, 59);
-            start.set(java.util.Calendar.SECOND, 59);
-            start.set(java.util.Calendar.MILLISECOND, 0);
             if(!f.getBeginTime().before(start) && !f.getBeginTime().after(end)){
                 focusTimes.add(f);
             }

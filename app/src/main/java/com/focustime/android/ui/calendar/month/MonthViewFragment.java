@@ -3,6 +3,7 @@ package com.focustime.android.ui.calendar.month;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,14 +103,26 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
     public void setDayViews() {
         CalendarAPI api = new CalendarAPI(getContext());
-        List<FocusTime> focusTimes = api.getFocusTimes();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, selectedDate.getYear());
+        calendar.set(Calendar.MONTH, selectedDate.getMonthValue()-1);
+        calendar.set(Calendar.DAY_OF_MONTH, selectedDate.getDayOfMonth());
+
+        List<FocusTime> focusTimes = api.getFocusTimesByDay(calendar);
+
+        Log.e("test123456", calendar.getTimeInMillis() + "");
+
+        if(daySchedule != null){
+           daySchedule.clear();
+        }
+
         for(FocusTime f: focusTimes) {
             int beginHour = f.getBeginTime().get(java.util.Calendar.HOUR_OF_DAY);
             int beginMinute = f.getBeginTime().get(java.util.Calendar.MINUTE);
             String date = f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH) + "." +
                     (f.getBeginTime().get(Calendar.MONTH)+1) + "." +
                     f.getBeginTime().get(Calendar.YEAR);
-            //Log.e("date",  date);
+            Log.e("date",  date);
 
             int duration = (int)(f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis()) / 1000 / 60;
 
@@ -199,6 +212,8 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         if (date != null) {
             selectedDate = date;
             setMonthView();
+            setDayViews();
+            //Log.e("test123", selectedDate.toString());
         }
     }
 
