@@ -47,7 +47,11 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
         holder.date.setText(dayElement.getDate());
         String t = dayElement.getStartHour() + ":" + dayElement.getStartMinute();
         holder.time.setText(t);
-        holder.duration.setText(dayElement.getDuration().toString());
+        int d = dayElement.getDuration();
+        int h = d/60; //div rounded down
+        int m = d%60; //modulo
+        String dur = h+":"+m;
+        holder.duration.setText(dur);
         holder.edit.setImageResource(R.drawable.edit_icon);
         holder.delete.setImageResource(R.drawable.trash_icon);
 
