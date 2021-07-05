@@ -35,7 +35,7 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
         View view = inflater.inflate(R.layout.calendar_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = (int) (parent.getHeight() * 0.166666666);
-        return new MonthViewHolder(view, onItemListener, daysOfMonth);
+        return new MonthViewHolder(view, onItemListener, daysOfMonth, focusTimesSet);
     }
 
     @Override
@@ -46,8 +46,6 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
         final Boolean focusTimeSet = focusTimesSet.get(position);
 
 
-
-
         if (date == null){
             holder.dayOfMonth.setText("");
             holder.dot_imageView.setVisibility(View.GONE);
@@ -56,7 +54,6 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
             if (date.equals(MonthViewFragment.selectedDate))
                 holder.parentView.setBackgroundColor(Color.LTGRAY);
             if(focusTimeSet != null){
-                Log.e("focusTime", focusTimeSet.toString());
                 if(focusTimeSet == false){
                     holder.dot_imageView.setVisibility(View.GONE);
                 }

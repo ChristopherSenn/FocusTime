@@ -21,7 +21,7 @@ public class MonthViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public final TextView dayOfMonth;
     private final MonthAdapter.OnItemListener onItemListener;
     public final ImageView dot_imageView;
-    public MonthViewHolder(@NonNull View itemView, MonthAdapter.OnItemListener onItemListener, ArrayList<LocalDate> daysOfMonth)
+    public MonthViewHolder(@NonNull View itemView, MonthAdapter.OnItemListener onItemListener, ArrayList<LocalDate> daysOfMonth, ArrayList<Boolean> isFocusTimSet)
     {
         super(itemView);
         parentView = itemView.findViewById(R.id.parentView);

@@ -90,9 +90,9 @@ public class CalendarAPI {
 
 
             FocusTime f = getFocusTimeById(event.id);
-            if(!f.getBeginTime().before(java.util.Calendar.getInstance())){
+            //if(!f.getBeginTime().before(java.util.Calendar.getInstance())){
                 focusTimes.add(f);
-            }
+           // }
             //focusTimes.add(getFocusTimeById(event.id));
         }
         Collections.sort(focusTimes, ((o1, o2) -> o1.getBeginTime().compareTo(o2.getBeginTime())));

@@ -135,7 +135,6 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
     public void setMonthView()
     {
-
         ArrayList<Boolean> focusTimesSet = setDot();
         monthYearText.setText(monthYearFromDate(selectedDate));
         ArrayList<LocalDate> daysInMonth = daysInMonthArray(selectedDate);
@@ -148,35 +147,33 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
     }
 
     public ArrayList<Boolean> setDot(){
+
         CalendarAPI api = new CalendarAPI(getContext());
         List<FocusTime> focusTimes = api.getFocusTimes();
 
         ArrayList<Boolean> setDotArray = new ArrayList<>();
 
         ArrayList<LocalDate> daysInMonth = daysInMonthArray(selectedDate);
-        String date = "";
 
-        for(FocusTime f: focusTimes){
-            date = f.getBeginTime().get(Calendar.YEAR) + "-0"  +
-                    (f.getBeginTime().get(Calendar.MONTH)+1) + "-0" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
+      for(LocalDate dayOfMonth : daysInMonth){
+          if(dayOfMonth == null){
+              setDotArray.add(null);
+          } else {
+              boolean wasAdded = false;
+              for(FocusTime f: focusTimes){
+                  Calendar date2 = f.getBeginTime();
+                  if(dayOfMonth.getYear() == date2.get(Calendar.YEAR) && (dayOfMonth.getMonthValue() == (date2.get(Calendar.MONTH)+1))
+                          && dayOfMonth.getDayOfMonth() == date2.get(Calendar.DAY_OF_MONTH)){
+                      setDotArray.add(true);
+                      wasAdded = true;
+                      break;
+                  }
+              }
+              if(!wasAdded)
+                setDotArray.add(false);
+          }
 
-            for(int i =0; i <= 32; i++ ){
-                if (daysInMonth.get(i) == null){
-                    setDotArray.add(null);
-                }
-                if(null != daysInMonth.get(i)){
-                    String day = daysInMonth.get(i).toString();
-
-                     if(day.equals(date)){
-                         setDotArray.add(true);
-                     }else {
-                         setDotArray.add(false);
-                     }
-                }
-
-            }
-
-        }
+      }
 
         return setDotArray;
     }
@@ -222,12 +219,14 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
     {
         selectedDate = selectedDate.minusMonths(1);
         setMonthView();
+        setDayViews();
     }
 
     public void nextMonthAction(View view)
     {
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
+        setDayViews();
     }
 
     public MonthViewModel getmViewModel() {
@@ -240,17 +239,11 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
     {
         if (date != null) {
             selectedDate = date;
-            setMonthView();
+           setMonthView();
             setDayViews();
-            //Log.e("test123", selectedDate.toString());
         }
     }
 
-    /*public void initWidgets()
-    {
-        calendarRecyclerView = root.findViewById(R.id.calendarRecyclerView);
-        monthYearText = findViewById(R.id.monthYearTV);
-    }*/
 
 
 
