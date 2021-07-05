@@ -131,14 +131,24 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
     public void setDayViews() {
         CalendarAPI api = new CalendarAPI(getContext());
-        List<FocusTime> focusTimes = api.getFocusTimes();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, selectedDate.getYear());
+        calendar.set(Calendar.MONTH, selectedDate.getMonthValue()-1);
+        calendar.set(Calendar.DAY_OF_MONTH, selectedDate.getDayOfMonth());
+
+        List<FocusTime> focusTimes = api.getFocusTimesByDay(calendar);
+
+
+        if(daySchedule != null){
+           daySchedule.clear();
+        }
+
         for(FocusTime f: focusTimes) {
             int beginHour = f.getBeginTime().get(java.util.Calendar.HOUR_OF_DAY);
             int beginMinute = f.getBeginTime().get(java.util.Calendar.MINUTE);
             String date = f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH) + "." +
                     (f.getBeginTime().get(Calendar.MONTH)+1) + "." +
                     f.getBeginTime().get(Calendar.YEAR);
-            //Log.e("date",  date);
 
             int duration = (int)(f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis()) / 1000 / 60;
 
@@ -158,20 +168,50 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         });
     }
 
-    public void addSwipeToDelete() {
-
-    }
-
 
     public void setMonthView()
     {
+        ArrayList<Boolean> focusTimesSet = setDot();
         monthYearText.setText(monthYearFromDate(selectedDate));
         ArrayList<LocalDate> daysInMonth = daysInMonthArray(selectedDate);
 
-        MonthAdapter calendarAdapter = new MonthAdapter(daysInMonth, this);
+        MonthAdapter calendarAdapter = new MonthAdapter(daysInMonth, focusTimesSet, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mViewModel.getApplication(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+
+    }
+
+    public ArrayList<Boolean> setDot(){
+
+        CalendarAPI api = new CalendarAPI(getContext());
+        List<FocusTime> focusTimes = api.getFocusTimes();
+
+        ArrayList<Boolean> setDotArray = new ArrayList<>();
+
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray(selectedDate);
+
+      for(LocalDate dayOfMonth : daysInMonth){
+          if(dayOfMonth == null){
+              setDotArray.add(null);
+          } else {
+              boolean wasAdded = false;
+              for(FocusTime f: focusTimes){
+                  Calendar date2 = f.getBeginTime();
+                  if(dayOfMonth.getYear() == date2.get(Calendar.YEAR) && (dayOfMonth.getMonthValue() == (date2.get(Calendar.MONTH)+1))
+                          && dayOfMonth.getDayOfMonth() == date2.get(Calendar.DAY_OF_MONTH)){
+                      setDotArray.add(true);
+                      wasAdded = true;
+                      break;
+                  }
+              }
+              if(!wasAdded)
+                setDotArray.add(false);
+          }
+
+      }
+
+        return setDotArray;
     }
 
     public static ArrayList<LocalDate> daysInMonthArray(LocalDate date)
@@ -205,16 +245,24 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         return date.format(formatter);
     }
 
+    public String formatDate(LocalDate date)
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+        return date.format(formatter);
+    }
+
     public void previousMonthAction(View view)
     {
         selectedDate = selectedDate.minusMonths(1);
         setMonthView();
+        setDayViews();
     }
 
     public void nextMonthAction(View view)
     {
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
+        setDayViews();
     }
 
     public MonthViewModel getmViewModel() {
@@ -227,11 +275,16 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
     {
         if (date != null) {
             selectedDate = date;
-            setMonthView();
+           setMonthView();
+            setDayViews();
         }
     }
 
-
+    /*public void initWidgets()
+    {
+        calendarRecyclerView = root.findViewById(R.id.calendarRecyclerView);
+        monthYearText = findViewById(R.id.monthYearTV);
+    }*/
 
 
 
