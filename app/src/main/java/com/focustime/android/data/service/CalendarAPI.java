@@ -148,13 +148,21 @@ public class CalendarAPI {
         java.util.Calendar endTime = java.util.Calendar.getInstance();
         endTime.setTimeInMillis(event.dTend);
 
-        String[] split = event.title.split("#");
-        int focusTimeLevel = Integer.parseInt(split[split.length-1]);
+        int focusTimeLevel = 0;
+        String title = event.title;
+        try {
+            String[] split = event.title.split("#");
+            focusTimeLevel = Integer.parseInt(split[split.length-1]);
 
-        String title = "";
-        for (int i = 0; i < split.length-1; i++) {
-            title += split[i];
+            title = "";
+            for (int i = 0; i < split.length-1; i++) {
+                title += split[i];
+            }
+        }catch (Exception e) {
+            // No level encoded! Set to default 0!
         }
+
+        //int focusTimeLevel = 0;
 
         return new FocusTime(title, beginTime, endTime, focusTimeLevel,  event.id);
     }
@@ -311,7 +319,7 @@ public class CalendarAPI {
      *
      * @param context application context
      */
-    private void deleteFocusTimeCalendar(Context context) {
+    public void deleteFocusTimeCalendar(Context context) {
         Uri calUri = CalendarContract.Calendars.CONTENT_URI;
         calUri = calUri.buildUpon()
                 .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")

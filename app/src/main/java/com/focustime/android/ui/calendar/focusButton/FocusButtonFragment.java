@@ -126,8 +126,10 @@ public class FocusButtonFragment extends Fragment {
                                 }
                                 mStartTimeInMills = (mHour * 60 + mMinute) * 60 * 1000;
                                 mTimeLeftInMillis = mStartTimeInMills;
+
                             }
                         }, mHour, mMinute, true);
+                customTimePickerDialog.setTitle("Set Time in Hours : Minutes");
                 customTimePickerDialog.show();
             }
         });

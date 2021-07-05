@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.focustime.android.R;
 
+import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.FocusTimeService;
 import com.focustime.android.databinding.ActivityCalendarBinding;
 import com.focustime.android.ui.calendar.month.MonthViewModel;
@@ -39,6 +40,7 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_calendar);
+
 
         ActionBar bar = getSupportActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
