@@ -126,9 +126,14 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
      * Readd the deleted item to the ArrayList and the Database
      */
     private void undoDelete() {
-        dayElements.add(recentlyDeletedItemPosition, recentlyDeletedItem); //Add item back to List
+
+
         FocusTime f = FocusTimeFactory.buildFocusTimeFromDayElement(recentlyDeletedItem);
-        api.createFocusTime(f, getContext()); //Add item back to database
+        long newId = api.createFocusTime(f, getContext()); //Add item back to database
+        recentlyDeletedItem.setDbId(newId);
+
+        dayElements.add(recentlyDeletedItemPosition, recentlyDeletedItem); //Add item back to List
+
         notifyItemInserted(recentlyDeletedItemPosition);
     }
 

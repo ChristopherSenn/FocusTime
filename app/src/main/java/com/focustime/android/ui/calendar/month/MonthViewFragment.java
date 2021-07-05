@@ -280,12 +280,6 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         }
     }
 
-    /*public void initWidgets()
-    {
-        calendarRecyclerView = root.findViewById(R.id.calendarRecyclerView);
-        monthYearText = findViewById(R.id.monthYearTV);
-    }*/
-
 
 
 }
