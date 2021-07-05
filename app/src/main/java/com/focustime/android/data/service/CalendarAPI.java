@@ -177,7 +177,8 @@ public class CalendarAPI {
      */
     public void updateFocusTime(FocusTime newFocusTime) {
         Event e = calendarProvider.getEvent(newFocusTime.getId());
-        e.title = newFocusTime.getTitle();
+        e.title = newFocusTime.getTitle()+ "#" + newFocusTime.getFocusTimeLevel();
+
         e.dTStart = newFocusTime.getBeginTime().getTimeInMillis();
         e.dTend = newFocusTime.getEndTime().getTimeInMillis();
 

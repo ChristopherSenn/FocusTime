@@ -82,6 +82,7 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
                 intent.putExtra("duration", dayElement.getDuration());
                 intent.putExtra("title", dayElement.getTitle());
                 intent.putExtra("date", dayElement.getDate());
+                intent.putExtra("focusTimeLevel", dayElement.getFocusTimeLevel());
                 context.startActivity(intent);
             }
         });

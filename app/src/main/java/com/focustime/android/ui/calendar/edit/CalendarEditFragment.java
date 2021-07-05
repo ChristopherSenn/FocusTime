@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +91,8 @@ public class CalendarEditFragment extends Activity {
             @Override
             public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), CalendarDayPickDateFragment.class);
+                    int[] dateInt = new int[] {inputDate.get(Calendar.DAY_OF_MONTH), inputDate.get(Calendar.MONTH), inputDate.get(Calendar.YEAR)};
+                    intent.putExtra("date", dateInt);
                     startActivityForResult(intent, 100);
 
             }
@@ -134,11 +137,13 @@ public class CalendarEditFragment extends Activity {
 
         spinnerOptions = FocusTime.FOCUS_TIME_LEVELS;
 
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerOptions);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner = findViewById(R.id.spinner);
         spinner.setAdapter(dataAdapter);
+        spinner.setSelection(args.getInt("focusTimeLevel"));
 
     }
 
@@ -151,7 +156,7 @@ public class CalendarEditFragment extends Activity {
      */
     private String getStringDateFromCalendar(Calendar c){
         System.out.println(c.getTime());
-        String returnValue = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+        String returnValue =c.get(Calendar.DAY_OF_MONTH) + "." + (c.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.YEAR) ;
         return returnValue;
     }
 
@@ -170,19 +175,19 @@ public class CalendarEditFragment extends Activity {
     public void editItem(DayElement d){
         CalendarAPI api = new CalendarAPI(getApplicationContext());
         Calendar beginTime = java.util.Calendar.getInstance();
-        String[] splitDate =  d.getDate().split("-");
-        beginTime.set(Calendar.YEAR, Integer.parseInt(splitDate[0]));
-        beginTime.set(Calendar.MONTH, Integer.parseInt(splitDate[1]));
-        beginTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[2]));
+        String[] splitDate =  d.getDate().split("\\.");
+        beginTime.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
+        beginTime.set(Calendar.MONTH, Integer.parseInt(splitDate[1])-1);
+        beginTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
         beginTime.set(Calendar.HOUR, d.getStartHour());
         beginTime.set(Calendar.MINUTE, d.getStartMinute());
         beginTime.set(Calendar.SECOND, 0);
         beginTime.set(Calendar.MILLISECOND, 0);
 
         Calendar endTime = Calendar.getInstance();
-        endTime.set(Calendar.YEAR, Integer.parseInt(splitDate[0]));
-        endTime.set(Calendar.MONTH, Integer.parseInt(splitDate[1]));
-        endTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[2]));
+        endTime.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
+        endTime.set(Calendar.MONTH, Integer.parseInt(splitDate[1])-1);
+        endTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
         endTime.set(Calendar.HOUR, d.getStartHour());
         endTime.set(Calendar.MINUTE, d.getStartMinute());
         endTime.add(Calendar.MINUTE, d.getDuration());
