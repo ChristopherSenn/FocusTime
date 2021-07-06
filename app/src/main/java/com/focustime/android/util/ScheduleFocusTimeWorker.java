@@ -42,9 +42,7 @@ public class ScheduleFocusTimeWorker extends Worker {
         CalendarAPI api = new CalendarAPI(getApplicationContext());
 
             FocusTime nextFocusTime = api.getNextFocusTime();
-            Log.e("lkasjd", "generall call");
             if(nextFocusTime != null) {
-                Log.e("aslkdj", nextFocusTime.getBeginTime().getTimeInMillis()+"");
                 Calendar c = nextFocusTime.getBeginTime();
 
                 Intent notifyIntent = new Intent(getApplicationContext(), ScheduleFocusTimeReceiver.class); // Create an Intent to the Receiver
