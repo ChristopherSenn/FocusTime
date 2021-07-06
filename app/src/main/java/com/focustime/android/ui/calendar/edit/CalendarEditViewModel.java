@@ -41,6 +41,6 @@ public class CalendarEditViewModel extends AndroidViewModel {
         endTime.set(Calendar.SECOND, 0);
         endTime.set(Calendar.MILLISECOND, 0);
         FocusTime f = new FocusTime(d.getTitle(), beginTime, endTime, d.getFocusTimeLevel(), d.getDbId());
-        api.updateFocusTime(f);
+        api.updateFocusTime(context, f);
     }
 }

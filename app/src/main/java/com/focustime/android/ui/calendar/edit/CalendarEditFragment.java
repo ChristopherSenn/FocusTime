@@ -26,6 +26,7 @@ import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.databinding.CalendarCreateFragmentBinding;
 import com.focustime.android.databinding.CalendarEditFragmentBinding;
+import com.focustime.android.ui.calendar.CalendarActivity;
 import com.focustime.android.ui.calendar.create.CalendarCreateViewModel;
 import com.focustime.android.ui.calendar.create.CalendarDayPickDateFragment;
 import com.focustime.android.ui.calendar.day.DayElement;
@@ -114,18 +115,22 @@ public class CalendarEditFragment extends Activity {
                 }
                 String formatDate = getStringDateFromCalendar(inputDate);
                 if(!text.getEditText().getText().toString().matches("")){
+
                     if(dur > 0){
                         editItem(new DayElement(t, sh, sm, dur, formatDate, spinner.getSelectedItemPosition(), id));
-                        String msg = "FocusTime Saved";
+                        /*String msg = "FocusTime Saved";
                         Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
-                        toast.show();
+                        toast.show();*/
                     }
                     else{
                         editItem(new DayElement(t, sh, sm, 120, formatDate, spinner.getSelectedItemPosition(), id));
-                        String msg = "Duration set to 2 hours\n FocusTime Saved";
+                        /*String msg = "Duration set to 2 hours\n FocusTime Saved";
                         Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
-                        toast.show();
+                        toast.show();*/
                     }
+                    onBackPressed();
+
+
                 }
                 else{
                     String msg = "Aktivity Name Field must contain at least one Character";
@@ -194,6 +199,6 @@ public class CalendarEditFragment extends Activity {
         endTime.set(Calendar.SECOND, 0);
         endTime.set(Calendar.MILLISECOND, 0);
         FocusTime f = new FocusTime(d.getTitle(), beginTime, endTime, d.getFocusTimeLevel(), d.getDbId());
-        api.updateFocusTime(f);
+        api.updateFocusTime(getApplicationContext(), f);
     }
 }

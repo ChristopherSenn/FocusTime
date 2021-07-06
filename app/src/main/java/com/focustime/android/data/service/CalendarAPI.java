@@ -170,20 +170,6 @@ public class CalendarAPI {
         return new FocusTime(title, beginTime, endTime, focusTimeLevel,  event.id);
     }
 
-    /**
-     * Updates a FocusTime in the phone's database
-     *
-     * @param newFocusTime FocusTime with updated parameters
-     */
-    public void updateFocusTime(FocusTime newFocusTime) {
-        Event e = calendarProvider.getEvent(newFocusTime.getId());
-        e.title = newFocusTime.getTitle()+ "#" + newFocusTime.getFocusTimeLevel();
-
-        e.dTStart = newFocusTime.getBeginTime().getTimeInMillis();
-        e.dTend = newFocusTime.getEndTime().getTimeInMillis();
-
-        calendarProvider.update(e);
-    }
 
     /**
      * Save a FocusTime to the phone's database
