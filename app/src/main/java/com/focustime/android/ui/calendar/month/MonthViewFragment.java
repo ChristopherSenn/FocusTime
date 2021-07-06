@@ -133,6 +133,8 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
     public void onResume() {
         super.onResume();
         this.updateElementList();
+        setMonthView();
+
     }
 
     public void setDayViews() {

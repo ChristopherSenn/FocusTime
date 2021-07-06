@@ -39,6 +39,7 @@ import java.util.List;
 public class CalendarEditFragment extends Activity {
 
     private Calendar inputDate;
+    private int hour, minute;
     private Button button;
     private Button date;
     private long id;
@@ -60,41 +61,44 @@ public class CalendarEditFragment extends Activity {
 
         //return inflater.inflate(R.layout.calendar_create_fragment, container, false);
 
-
-        Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
+        hour = args.getInt("hour");
+        minute = args.getInt("minute");
 
         TimePicker tp1 = findViewById(R.id.start);
         tp1.setIs24HourView(true);
-        tp1.setHour(args.getInt("hour"));
-        tp1.setMinute(args.getInt("minute"));
-        TextInputLayout text = findViewById(R.id.textInput);
-        button = findViewById(R.id.saveFocusTime);
-        date = findViewById(R.id.dateInput);
+        tp1.setHour(hour);
+        tp1.setMinute(minute);
+
+
+        TextInputLayout title = findViewById(R.id.textInput);
+        title.getEditText().setText(args.getString("title"));
+
         TextInputLayout duration = findViewById(R.id.duration);
-        text.getEditText().setText(args.getString("title"));
         duration.getEditText().setText("" + args.getInt("duration"));
 
+        button = findViewById(R.id.saveFocusTime);
+        date = findViewById(R.id.dateInput);
 
         inputDate = Calendar.getInstance();
         String[] splitDate =  args.getString("date").split("\\.");
         inputDate.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
         inputDate.set(Calendar.MONTH, Integer.parseInt(splitDate[1])-1);
         inputDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
-        inputDate.set(Calendar.HOUR, args.getInt("hour"));
-        inputDate.set(Calendar.MINUTE, args.getInt("minute"));
+        inputDate.set(Calendar.HOUR, 0);
+        inputDate.set(Calendar.MINUTE, 0);
         inputDate.set(Calendar.SECOND, 0);
         inputDate.set(Calendar.MILLISECOND, 0);
+
         date.setText(getStringDateFromCalendar(inputDate));
+
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), CalendarDayPickDateFragment.class);
-                    int[] dateInt = new int[] {inputDate.get(Calendar.DAY_OF_MONTH), inputDate.get(Calendar.MONTH), inputDate.get(Calendar.YEAR)};
-                    intent.putExtra("date", dateInt);
-                    startActivityForResult(intent, 100);
+                Intent intent = new Intent(getApplicationContext(), CalendarDayPickDateFragment.class);
+                int[] dateInt = new int[] {inputDate.get(Calendar.DAY_OF_MONTH), inputDate.get(Calendar.MONTH), inputDate.get(Calendar.YEAR)};
+                intent.putExtra("date", dateInt);
+                startActivityForResult(intent, 100);
 
             }
         });
@@ -105,28 +109,26 @@ public class CalendarEditFragment extends Activity {
             public void onClick(View view) {
 
                 String t = "";
-                t = text.getEditText().getText().toString();
+                t = title.getEditText().getText().toString();
+
                 Integer sh = tp1.getHour();
                 Integer sm = tp1.getMinute();
+
                 int dur = 0; //Duration of FocusTime
                 if(!duration.getEditText().getText().toString().matches("")){
                     String d = duration.getEditText().getText().toString();
                     dur = Integer.parseInt(d);
                 }
+
                 String formatDate = getStringDateFromCalendar(inputDate);
-                if(!text.getEditText().getText().toString().matches("")){
+
+                if(!title.getEditText().getText().toString().matches("")){
 
                     if(dur > 0){
                         editItem(new DayElement(t, sh, sm, dur, formatDate, spinner.getSelectedItemPosition(), id));
-                        /*String msg = "FocusTime Saved";
-                        Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
-                        toast.show();*/
                     }
                     else{
                         editItem(new DayElement(t, sh, sm, 120, formatDate, spinner.getSelectedItemPosition(), id));
-                        /*String msg = "Duration set to 2 hours\n FocusTime Saved";
-                        Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
-                        toast.show();*/
                     }
                     onBackPressed();
 
@@ -160,7 +162,6 @@ public class CalendarEditFragment extends Activity {
      * Note that Calender Month starts with 0 = Jan (so Î add 1)
      */
     private String getStringDateFromCalendar(Calendar c){
-        System.out.println(c.getTime());
         String returnValue =c.get(Calendar.DAY_OF_MONTH) + "." + (c.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.YEAR) ;
         return returnValue;
     }
@@ -178,22 +179,24 @@ public class CalendarEditFragment extends Activity {
     }
 
     public void editItem(DayElement d){
+
         CalendarAPI api = new CalendarAPI(getApplicationContext());
         Calendar beginTime = java.util.Calendar.getInstance();
         String[] splitDate =  d.getDate().split("\\.");
         beginTime.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
         beginTime.set(Calendar.MONTH, Integer.parseInt(splitDate[1])-1);
         beginTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
-        beginTime.set(Calendar.HOUR, d.getStartHour());
+        beginTime.set(Calendar.HOUR_OF_DAY, d.getStartHour());
         beginTime.set(Calendar.MINUTE, d.getStartMinute());
         beginTime.set(Calendar.SECOND, 0);
         beginTime.set(Calendar.MILLISECOND, 0);
+
 
         Calendar endTime = Calendar.getInstance();
         endTime.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
         endTime.set(Calendar.MONTH, Integer.parseInt(splitDate[1])-1);
         endTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
-        endTime.set(Calendar.HOUR, d.getStartHour());
+        endTime.set(Calendar.HOUR_OF_DAY, d.getStartHour());
         endTime.set(Calendar.MINUTE, d.getStartMinute());
         endTime.add(Calendar.MINUTE, d.getDuration());
         endTime.set(Calendar.SECOND, 0);
