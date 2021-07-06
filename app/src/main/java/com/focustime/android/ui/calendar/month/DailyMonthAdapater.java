@@ -65,6 +65,11 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
         holder.delete.setImageResource(R.drawable.trash_icon);
 
 
+
+        holder.focusTimeLevel.setText(FocusTime.FOCUS_TIME_LEVELS.get(dayElement.getFocusTimeLevel()));
+        int[] colors = {context.getColor(R.color.colorLevel0), context.getColor(R.color.colorLevel1), context.getColor(R.color.colorLevel2),};
+        holder.focusTimeLevel.setTextColor(colors[dayElement.getFocusTimeLevel()]);
+
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
@@ -147,6 +152,7 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
         TextView date;
         ImageButton edit;
         ImageButton delete;
+        TextView focusTimeLevel;
 
         public RecyclerViewViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -156,7 +162,7 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
             date = itemView.findViewById(R.id.date1);
             edit = itemView.findViewById(R.id.editButton);
             delete = itemView.findViewById(R.id.deleteButton);
-
+            focusTimeLevel = itemView.findViewById(R.id.textViewfocustimelevel);
         }
     }
 
