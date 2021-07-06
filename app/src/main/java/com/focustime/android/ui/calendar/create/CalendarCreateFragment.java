@@ -85,9 +85,13 @@ public class CalendarCreateFragment extends Fragment {
         int[] dateInt;
         if(getArguments() != null) {
             dateInt = getArguments().getIntArray("currentDate");
-            if(dateInt[1] != 1) dateInt[1] = dateInt[1]-1;
-            else dateInt[1] = 12;
             date.setText(dateInt[0] + "." + dateInt[1] + "." + dateInt[2]);
+            if(dateInt[1] != 0) dateInt[1] = dateInt[1]-1;
+            else dateInt[1] = 11;
+            inputDate.set(Calendar.DAY_OF_MONTH, dateInt[0]);
+            inputDate.set(Calendar.MONTH, dateInt[1]);
+            inputDate.set(Calendar.YEAR, dateInt[2]);
+
         }else {
             date.setText(getStringDateFromCalendar(inputDate));
 

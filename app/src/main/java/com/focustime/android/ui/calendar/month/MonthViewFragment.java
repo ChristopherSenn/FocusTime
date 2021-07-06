@@ -130,6 +130,21 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
     }
 
     public void setDayViews() {
+
+        updateElementList();
+
+        elementList.observe(getViewLifecycleOwner(), dayElements -> {
+            dailyMonthAdapater = new DailyMonthAdapater((Activity)getContext(), dayElements, this);
+            dailyMonthRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            dailyMonthRecyclerView.setAdapter(dailyMonthAdapater);
+
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(dailyMonthAdapater));
+            itemTouchHelper.attachToRecyclerView(dailyMonthRecyclerView);
+
+        });
+    }
+
+    private void updateElementList() {
         CalendarAPI api = new CalendarAPI(getContext());
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, selectedDate.getYear());
@@ -140,7 +155,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
 
         if(daySchedule != null){
-           daySchedule.clear();
+            daySchedule.clear();
         }
 
         for(FocusTime f: focusTimes) {
@@ -155,17 +170,6 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
             daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date,f.getFocusTimeLevel(), f.getId()));
         }
         elementList.setValue(daySchedule);
-
-
-        elementList.observe(getViewLifecycleOwner(), dayElements -> {
-            dailyMonthAdapater = new DailyMonthAdapater((Activity)getContext(), dayElements, this);
-            dailyMonthRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            dailyMonthRecyclerView.setAdapter(dailyMonthAdapater);
-
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(dailyMonthAdapater));
-            itemTouchHelper.attachToRecyclerView(dailyMonthRecyclerView);
-
-        });
     }
 
 
@@ -255,14 +259,14 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
     {
         selectedDate = selectedDate.minusMonths(1);
         setMonthView();
-        setDayViews();
+        updateElementList();
     }
 
     public void nextMonthAction(View view)
     {
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
-        setDayViews();
+        updateElementList();
     }
 
     public MonthViewModel getmViewModel() {
@@ -271,13 +275,9 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
 
     @Override
-    public void onItemClick(int position, LocalDate date)
-    {
-        if (date != null) {
+    public void onItemClick(LocalDate date) {
             selectedDate = date;
-           setMonthView();
-            setDayViews();
-        }
+            updateElementList();
     }
 
 

@@ -1,5 +1,6 @@
 package com.focustime.android.ui.calendar.month;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +14,14 @@ import com.focustime.android.R;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
 {
     private final ArrayList<LocalDate> daysOfMonth;
     private final ArrayList<Boolean> focusTimesSet;
     private final OnItemListener onItemListener;
+    private MonthViewHolder monthViewHolder;
 
     public MonthAdapter(ArrayList<LocalDate> daysOfMonth, ArrayList<Boolean> focusTimesSet, OnItemListener onItemListener)
     {
@@ -35,8 +38,11 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
         View view = inflater.inflate(R.layout.calendar_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = (int) (parent.getHeight() * 0.166666666);
-        return new MonthViewHolder(view, onItemListener, daysOfMonth, focusTimesSet);
+        return new MonthViewHolder(view, onItemListener, daysOfMonth, focusTimesSet, this);
     }
+
+    private List<View> viewList = new ArrayList<>();
+
 
     @Override
     public void onBindViewHolder(@NonNull MonthViewHolder holder, int position)
@@ -44,6 +50,7 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
 
         final LocalDate date = daysOfMonth.get(position);
         final Boolean focusTimeSet = focusTimesSet.get(position);
+        this.monthViewHolder = holder;
 
 
         if (date == null){
@@ -58,11 +65,27 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
                     holder.dot_imageView.setVisibility(View.GONE);
                 }
             }
-
-
         }
 
+        viewList.add(holder.itemView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalDate clickedDate = daysOfMonth.get(position);
+                if(clickedDate != null) {
+                    onItemListener.onItemClick(clickedDate);
+                    Context c = holder.itemView.getContext();
+                    for(View v: viewList) {
+                        v.setBackgroundColor(c.getColor(R.color.colorPrimary));
+                    }
+                    holder.itemView.setBackgroundColor(c.getColor(R.color.accentGrey));
+                }
+        }
+    });
+
     }
+
 
     @Override
     public int getItemCount()
@@ -72,6 +95,6 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
 
     public interface  OnItemListener
     {
-        void onItemClick(int position, LocalDate date);
+        void onItemClick(LocalDate date);
     }
 }
