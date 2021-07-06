@@ -41,21 +41,22 @@ public class ScheduleFocusTimeWorker extends Worker {
     public Result doWork() {
         CalendarAPI api = new CalendarAPI(getApplicationContext());
 
-        if(api.getFocusTimes().size() > 0) { // If size <= 0 there are no FocusTimes to schedule
-            FocusTime nextFocusTime = api.getFocusTimes().get(0);
+            FocusTime nextFocusTime = api.getNextFocusTime();
+            Log.e("lkasjd", "generall call");
+            if(nextFocusTime != null) {
+                Log.e("aslkdj", nextFocusTime.getBeginTime().getTimeInMillis()+"");
+                Calendar c = nextFocusTime.getBeginTime();
 
-            Calendar c = nextFocusTime.getBeginTime();
+                Intent notifyIntent = new Intent(getApplicationContext(), ScheduleFocusTimeReceiver.class); // Create an Intent to the Receiver
+                notifyIntent.putExtra("focusTimeId", nextFocusTime.getId());
+                PendingIntent pendingIntent = PendingIntent.getBroadcast
+                        (getApplicationContext(), 3, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT); // Make it a pending Intent
 
-            Intent notifyIntent = new Intent(getApplicationContext(), ScheduleFocusTimeReceiver.class); // Create an Intent to the Receiver
-            notifyIntent.putExtra("focusTimeId", nextFocusTime.getId());
-            PendingIntent pendingIntent = PendingIntent.getBroadcast
-                    (getApplicationContext(), 3, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT); // Make it a pending Intent
+                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 
-            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-
-            alarmManager.cancel(pendingIntent); // As this worker gets called regularly, the current alarm has to be canceled to avoid duplicates
-            alarmManager.set(AlarmManager.RTC_WAKEUP,  c.getTimeInMillis() , pendingIntent); // Set alarm when the next FocusTime starts with the PendingIntent to the Receiver
-        }
+                alarmManager.cancel(pendingIntent); // As this worker gets called regularly, the current alarm has to be canceled to avoid duplicates
+                alarmManager.set(AlarmManager.RTC_WAKEUP,  c.getTimeInMillis() , pendingIntent); // Set alarm when the next FocusTime starts with the PendingIntent to the Receiver
+            }
 
         return Result.success();
     }

@@ -176,6 +176,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
             daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date,f.getFocusTimeLevel(), f.getId()));
         }
         elementList.setValue(daySchedule);
+
     }
 
 

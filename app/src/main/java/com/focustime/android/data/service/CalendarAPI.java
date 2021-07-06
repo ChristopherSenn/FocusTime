@@ -100,6 +100,37 @@ public class CalendarAPI {
         return focusTimes;
     }
 
+    /**
+     * Returns a List of every FocusTime Event that is happening from today on
+     *
+     * @return List of every FocusTime Event.
+     */
+    public FocusTime getNextFocusTime() {
+        Calendar c = getFocusTimeCalendar();
+        List<Event> e = calendarProvider.getEvents(c.id).getList();
+
+
+        ArrayList<FocusTime> focusTimes = new ArrayList<>();
+
+        for(Event event: e) {
+
+
+            FocusTime f = getFocusTimeById(event.id);
+            if(!f.getBeginTime().before(java.util.Calendar.getInstance())){
+                focusTimes.add(f);
+            }
+            //focusTimes.add(getFocusTimeById(event.id));
+        }
+        Collections.sort(focusTimes, ((o1, o2) -> o1.getBeginTime().compareTo(o2.getBeginTime())));
+
+        if(getFocusTimes().size() > 0) { // If size <= 0 there are no FocusTimes to schedule
+            return focusTimes.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
     public List<FocusTime> getFocusTimesByDay(java.util.Calendar day) {
         Calendar c = getFocusTimeCalendar();
         List<Event> e = calendarProvider.getEvents(c.id).getList();

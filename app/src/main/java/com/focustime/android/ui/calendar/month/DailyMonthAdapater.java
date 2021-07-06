@@ -107,7 +107,9 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
         recentlyDeletedItem = dayElements.get(position);
         recentlyDeletedItemPosition = position;
         dayElements.remove(position);
+
         notifyItemRemoved(position);
+
         api.deleteFocusTime(getContext(), api.getFocusTimeById(recentlyDeletedItem.getDbId())); //Delete item from db
         showUndoSnackbar(); // Show a snackbar to undo the delete
     }
