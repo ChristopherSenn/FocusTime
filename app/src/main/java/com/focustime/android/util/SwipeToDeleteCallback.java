@@ -36,9 +36,9 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-        int position = viewHolder.getBindingAdapterPosition(); // Get position of swiped Item from viewHolder
-        adapter.deleteItem(position); // Actually delete the item
+        viewHolder.itemView.findViewById(R.id.deleteButton).performClick(); // Simulate delete button click because somehow that works
+        //int position = viewHolder.getBindingAdapterPosition(); // Get position of swiped Item from viewHolder
+        //adapter.deleteItem(position); // Actually delete the item
     }
 
     //Draws the Background that gets shown below the dragged item
