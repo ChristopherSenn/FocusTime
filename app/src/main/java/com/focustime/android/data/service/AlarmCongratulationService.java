@@ -95,7 +95,7 @@ public class AlarmCongratulationService extends Service {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.calendar_icon)
                 .setContentTitle("Ongoing FocusTime")
                 .setContentText("FocusTime '" + focusTimeName + "' is currently running")
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
