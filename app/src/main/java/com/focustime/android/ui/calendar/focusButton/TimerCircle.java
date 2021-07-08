@@ -294,7 +294,7 @@ public class TimerCircle extends View {
         int temp = random.nextInt(6);
 
         if (temp <= 1)
-            return "Focuesd";
+            return "Focused";
         else if (temp <= 2)
             return "Effort";
         else if (temp <= 3)

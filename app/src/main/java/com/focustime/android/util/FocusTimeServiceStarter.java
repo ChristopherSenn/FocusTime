@@ -83,14 +83,24 @@ public class FocusTimeServiceStarter {
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void activateDNDWithLevel(Context context, int level) {
+
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (level == 0)
-            activatePriorityOnlyDND(context);
-        else if (level == 1)
-            activateAlarmsOnlyDND(context);
-        else if (level == 2)
-            activateTotalSilenceDND(context);
+        // Check if the notification policy access has been granted for the app.
+        if (!mNotificationManager.isNotificationPolicyAccessGranted()) {
+            Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else {
+            if (level == 0)
+                activatePriorityOnlyDND(context);
+            else if (level == 1)
+                activateAlarmsOnlyDND(context);
+            else if (level == 2)
+                activateTotalSilenceDND(context);
+
+        }
+
     }
 
     /**
