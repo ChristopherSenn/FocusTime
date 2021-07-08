@@ -74,8 +74,7 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
             @Override
             public void onClick(View view){
 
-                //monthViewFragment.getmViewModel().deleteApiEntry(dayElements.get(position).getDbId(), context);
-                deleteItem(position);
+                deleteItem( holder.getBindingAdapterPosition());
             }
         });
 
@@ -111,13 +110,16 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
      * @param position
      */
     public void deleteItem(int position) {
+
         recentlyDeletedItem = dayElements.get(position);
         recentlyDeletedItemPosition = position;
 
 
         dayElements.remove(position);
 
+        //this.notifyItemRangeRemoved(position, dayElements.size());
         notifyItemRemoved(position);
+        //notifyDataSetChanged();
 
         api.deleteFocusTime(getContext(), api.getFocusTimeById(recentlyDeletedItem.getDbId())); //Delete item from db
         showUndoSnackbar(); // Show a snackbar to undo the delete
