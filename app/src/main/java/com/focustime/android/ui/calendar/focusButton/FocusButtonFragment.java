@@ -137,7 +137,7 @@ public class FocusButtonFragment extends Fragment {
         timerCircle.setFinishListenter(new TimerCircle.onFinishListener() {
             @Override
             public void onFinish() {
-
+                //resetTimerCircle();
             }
         });
 
@@ -176,7 +176,7 @@ public class FocusButtonFragment extends Fragment {
 
                         resetTimerCircle();
 
-                        mImageView.setImageResource(R.drawable.congratulation);
+                        //mImageView.setImageResource(R.drawable.congratulation);
 
                         updateCountDownText(mStartTimeInMills);
                         updateComponents();
@@ -205,7 +205,7 @@ public class FocusButtonFragment extends Fragment {
         resetTimerCircle();
         mCountDownTimer.cancel();
 
-        mImageView.setImageResource(R.drawable.tryharder);
+        //mImageView.setImageResource(R.drawable.tryharder);
 
         mCountDownTimer.cancel();
         updateCountDownText(mStartTimeInMills);
@@ -214,8 +214,16 @@ public class FocusButtonFragment extends Fragment {
     }
 
     private void resetTimerCircle() {
+
         //timerCircle.reset();
-        timerCircle.setVisibility(View.INVISIBLE);
+        Log.e("alkjsd", "LKjad");
+        try {
+            timerCircle.setDuration(0, 0, 0);
+        } catch (Exception e) {
+            Log.e("salkdj", e.toString());
+        }
+
+        //timerCircle.setVisibility(View.INVISIBLE);
     }
 
     private void updateCountDownText() {
@@ -278,8 +286,8 @@ public class FocusButtonFragment extends Fragment {
                 updateComponents();
                 focusTimeServiceStarter.cancelDND(getContext());
 
-                timerCircle.setVisibility(View.INVISIBLE);
-                mImageView.setImageResource(R.drawable.congratulation);
+                //timerCircle.setVisibility(View.INVISIBLE);
+                //mImageView.setImageResource(R.drawable.congratulation);
             } else {
                 startTimer();
             }

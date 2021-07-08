@@ -8,11 +8,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.focustime.android.R;
 
@@ -288,9 +290,14 @@ public class TimerCircle extends View {
         this.finishListenter = listenter;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public void reset() {
+        this.resetPivot();
+    }
+
     public String getRandomWords() {
         // an interesting little function
-        Random random = new Random();
+        /*Random random = new Random();
         int temp = random.nextInt(6);
 
         if (temp <= 1)
@@ -301,6 +308,8 @@ public class TimerCircle extends View {
             return "Strive";
         else if (temp <= 4)
             return "Happy:)";
-        else return "Best";
+        else return "Best";*/
+        return "Focus Time";
     }
+
 }
