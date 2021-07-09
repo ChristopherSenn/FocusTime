@@ -215,13 +215,6 @@ public class FocusButtonFragment extends Fragment {
 
     private void resetTimerCircle() {
 
-        //timerCircle.reset();
-        Log.e("alkjsd", "LKjad");
-        try {
-            timerCircle.setDuration(0, 0, 0);
-        } catch (Exception e) {
-            Log.e("salkdj", e.toString());
-        }
 
         //timerCircle.setVisibility(View.INVISIBLE);
     }
@@ -302,10 +295,13 @@ public class FocusButtonFragment extends Fragment {
         SharedPreferences.Editor editor = preferences.edit();
 
 
-        editor.putLong("startTimeInMillis",mStartTimeInMills);
-        editor.putLong("millisLeft", mTimeLeftInMillis);
-        editor.putBoolean("timeRunning", mTimerRunning);
-        editor.putLong("endTime", mEndTime);
+        if(!mTimerRunning == false) {
+            editor.putLong("startTimeInMillis",mStartTimeInMills);
+            editor.putLong("millisLeft", mTimeLeftInMillis);
+            editor.putBoolean("timeRunning", mTimerRunning);
+            editor.putLong("endTime", mEndTime);
+        }
+
 
         editor.apply();
 

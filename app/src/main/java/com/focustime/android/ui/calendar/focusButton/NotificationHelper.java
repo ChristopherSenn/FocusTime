@@ -49,7 +49,7 @@ public class NotificationHelper extends ContextWrapper {
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setSmallIcon(R.drawable.ic_dashboard_black_24dp)
+                .setSmallIcon(R.drawable.app_icon_notifcation)
                 //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.cat))
                 .setColor(Color.parseColor("#ff0020"))
                 .setContentIntent(pendingIntent)

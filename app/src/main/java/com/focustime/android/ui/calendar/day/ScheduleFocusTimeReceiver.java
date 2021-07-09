@@ -9,10 +9,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.data.service.FocusTimeService;
+import com.focustime.android.ui.calendar.focusButton.FocusButtonFragment;
 import com.focustime.android.util.FocusTimeServiceStarter;
 
 public class ScheduleFocusTimeReceiver extends BroadcastReceiver {
@@ -48,6 +53,8 @@ public class ScheduleFocusTimeReceiver extends BroadcastReceiver {
             editor.putLong("endTime", next.getEndTime().getTimeInMillis());
 
             editor.apply();
+
+
 
             FocusTimeServiceStarter starter = new FocusTimeServiceStarter();
             starter.activateDNDWithLevel(context, next.getFocusTimeLevel());
