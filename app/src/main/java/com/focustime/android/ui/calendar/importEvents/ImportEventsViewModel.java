@@ -2,19 +2,13 @@ package com.focustime.android.ui.calendar.importEvents;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.focustime.android.data.service.CalendarAPI;
-import com.focustime.android.ui.calendar.day.DayElement;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import me.everything.providers.android.calendar.Event;

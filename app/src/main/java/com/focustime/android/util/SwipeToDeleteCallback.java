@@ -3,7 +3,6 @@ package com.focustime.android.util;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,6 +15,9 @@ import com.focustime.android.ui.calendar.month.DailyMonthAdapater;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Credit for this goes to https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
+ */
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private DailyMonthAdapater adapter;
     private Drawable icon;
@@ -37,6 +39,8 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         viewHolder.itemView.findViewById(R.id.deleteButton).performClick(); // Simulate delete button click because somehow that works
+
+        // For whatever reason this doesn't work consistently
         //int position = viewHolder.getBindingAdapterPosition(); // Get position of swiped Item from viewHolder
         //adapter.deleteItem(position); // Actually delete the item
     }

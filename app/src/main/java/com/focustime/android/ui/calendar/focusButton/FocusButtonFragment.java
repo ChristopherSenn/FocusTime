@@ -8,13 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +28,6 @@ import androidx.fragment.app.Fragment;
 
 import androidx.lifecycle.ViewModelProvider;
 
-import com.focustime.android.R;
-import com.focustime.android.data.service.AlarmCongratulationService;
 import com.focustime.android.databinding.FocusButtonFragmentBinding;
 import com.focustime.android.util.ActionBarSetter;
 import com.focustime.android.util.FocusTimeServiceStarter;
@@ -50,7 +44,6 @@ public class FocusButtonFragment extends Fragment {
 
     private TextView mTextViewCountdown;
     private Button mButtonStartStop;
-    //private Button mTestButton;
     private ImageView mImageView;
 
     private TimerCircle timerCircle;
@@ -73,7 +66,7 @@ public class FocusButtonFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        //return inflater.inflate(R.layout.calendar_day_fragment, container, false);
+
         mViewModel = new ViewModelProvider(this).get(FocusButtonViewModel.class);
         binding = FocusButtonFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -84,7 +77,7 @@ public class FocusButtonFragment extends Fragment {
         mTextViewCountdown = binding.textViewCountdown;
         mButtonStartStop = binding.buttonStartStop;
         mImageView = binding.imageView;
-        //mTestButton = binding.buttonTest;
+
         timerCircle = binding.timer;
 
         mButtonStartStop.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +86,7 @@ public class FocusButtonFragment extends Fragment {
             public void onClick(View v) {
                 if (mTimerRunning) {
                     stopTimer();
-                    //stopAlarmCongratulationService();
+
                     focusTimeServiceStarter.stopAlarmCongratulationService(getContext());
                 } else {
                     showDNDTypesDialog();
@@ -137,7 +130,6 @@ public class FocusButtonFragment extends Fragment {
         timerCircle.setFinishListenter(new TimerCircle.onFinishListener() {
             @Override
             public void onFinish() {
-                //resetTimerCircle();
             }
         });
 
@@ -176,7 +168,6 @@ public class FocusButtonFragment extends Fragment {
 
                         resetTimerCircle();
 
-                        //mImageView.setImageResource(R.drawable.congratulation);
 
                         updateCountDownText(mStartTimeInMills);
                         updateComponents();
@@ -205,8 +196,6 @@ public class FocusButtonFragment extends Fragment {
         resetTimerCircle();
         mCountDownTimer.cancel();
 
-        //mImageView.setImageResource(R.drawable.tryharder);
-
         mCountDownTimer.cancel();
         updateCountDownText(mStartTimeInMills);
         updateComponents();
@@ -216,7 +205,6 @@ public class FocusButtonFragment extends Fragment {
     private void resetTimerCircle() {
 
 
-        //timerCircle.setVisibility(View.INVISIBLE);
     }
 
     private void updateCountDownText() {
@@ -279,8 +267,6 @@ public class FocusButtonFragment extends Fragment {
                 updateComponents();
                 focusTimeServiceStarter.cancelDND(getContext());
 
-                //timerCircle.setVisibility(View.INVISIBLE);
-                //mImageView.setImageResource(R.drawable.congratulation);
             } else {
                 startTimer();
             }

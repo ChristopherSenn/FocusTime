@@ -50,7 +50,6 @@ public class NotificationHelper extends ContextWrapper {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setSmallIcon(R.drawable.calendar_icon)
-                //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.cat))
                 .setColor(Color.parseColor("#ff0020"))
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);

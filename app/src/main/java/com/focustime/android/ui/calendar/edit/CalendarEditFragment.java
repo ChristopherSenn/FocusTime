@@ -5,34 +5,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
-import com.focustime.android.databinding.CalendarCreateFragmentBinding;
-import com.focustime.android.databinding.CalendarEditFragmentBinding;
-import com.focustime.android.ui.calendar.CalendarActivity;
-import com.focustime.android.ui.calendar.create.CalendarCreateViewModel;
 import com.focustime.android.ui.calendar.create.CalendarDayPickDateFragment;
 import com.focustime.android.ui.calendar.day.DayElement;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -59,7 +46,6 @@ public class CalendarEditFragment extends Activity {
         setContentView(R.layout.calendar_edit_fragment);
         id = args.getLong("id");
 
-        //return inflater.inflate(R.layout.calendar_create_fragment, container, false);
 
         hour = args.getInt("hour");
         minute = args.getInt("minute");
@@ -135,7 +121,7 @@ public class CalendarEditFragment extends Activity {
 
                 }
                 else{
-                    String msg = "Aktivity Name Field must contain at least one Character";
+                    String msg = "Name Field must contain at least one Character";
                     Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
                     toast.show();
                 }

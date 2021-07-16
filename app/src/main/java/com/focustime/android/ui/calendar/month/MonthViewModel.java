@@ -36,7 +36,6 @@ public class MonthViewModel extends AndroidViewModel {
     Context context;
 
 
-    private MutableLiveData<String> mText;
 
     public MonthViewModel(@NonNull @NotNull Application application){
         super(application);
@@ -44,7 +43,7 @@ public class MonthViewModel extends AndroidViewModel {
 
         scheduleFocusTimeWorker();
 
-        // TODO: Find a workaround for blocking the UI Thread
+        // Not the most elegant solution but the best one I could come up with
         while(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             try{Thread.sleep(10);}
             catch (Exception e){}
@@ -56,15 +55,10 @@ public class MonthViewModel extends AndroidViewModel {
      */
     private void scheduleFocusTimeWorker() {
         PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(ScheduleFocusTimeWorker.class, 15, TimeUnit.MINUTES).build();
-        WorkManager.getInstance().enqueueUniquePeriodicWork("NextFocusTime", ExistingPeriodicWorkPolicy.REPLACE ,periodicWork);
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork("NextFocusTime", ExistingPeriodicWorkPolicy.REPLACE ,periodicWork);
 
     }
 
-    public void deleteApiEntry(long id, Context c){
-        CalendarAPI api = new CalendarAPI(c);
-        String stringId = "" + id;
-        api.deleteFocusTime(c, api.getFocusTimeById(id));
-    }
 
 
 

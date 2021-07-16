@@ -82,22 +82,6 @@ public class CustomTimePickerDialog extends TimePickerDialog {
             hourPicker.setDisplayedValues(displayedValues2
                     .toArray(new String[displayedValues2.size()]));
 
-            //The following code is probably too old so that it can't get the picker
-//            Class<?> classForid = Class.forName("com.android.internal.R$id");
-//            Field timePickerField = classForid.getField("timePicker");
-//            mTimePicker = (TimePicker) findViewById(timePickerField.getInt(null));
-//            Field field = classForid.getField("minute");
-//
-//            NumberPicker minuteSpinner = (NumberPicker) mTimePicker
-//                    .findViewById(field.getInt(null));
-//            minuteSpinner.setMinValue(0);
-//            minuteSpinner.setMaxValue((60 / TIME_PICKER_INTERVAL) - 1);
-//            List<String> displayedValues = new ArrayList<>();
-//            for (int i = 0; i < 60; i += TIME_PICKER_INTERVAL) {
-//                displayedValues.add(String.format("%02d", i));
-//            }
-//            minuteSpinner.setDisplayedValues(displayedValues
-//                    .toArray(new String[displayedValues.size()]));
 
         } catch (Exception e) {
             e.printStackTrace();

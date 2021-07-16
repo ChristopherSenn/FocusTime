@@ -4,12 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -18,8 +14,6 @@ import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.ui.calendar.day.ScheduleFocusTimeReceiver;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Worker that periodically checks what the next FocusTime is and then sets an AlarmManager to Trigger a Broadcast Receiver at that time

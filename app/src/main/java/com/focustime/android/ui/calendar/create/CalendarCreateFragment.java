@@ -1,15 +1,10 @@
 package com.focustime.android.ui.calendar.create;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -17,11 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -35,7 +28,6 @@ import com.focustime.android.ui.calendar.day.DayElement;
 import com.focustime.android.util.ActionBarSetter;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -58,7 +50,6 @@ public class CalendarCreateFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        //return inflater.inflate(R.layout.calendar_create_fragment, container, false);
         mViewModel = new ViewModelProvider(this).get(CalendarCreateViewModel.class);
         binding = CalendarCreateFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -139,7 +130,7 @@ public class CalendarCreateFragment extends Fragment {
                     }
                 }
                 else{
-                    String msg = "Aktivity Name Field must contain at least one Character";
+                    String msg = "Name Field must contain at least one Character";
                     Toast toast = Toast.makeText(root.getContext(), msg, Toast.LENGTH_SHORT);
                     toast.show();
                 }

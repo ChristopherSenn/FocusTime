@@ -18,11 +18,10 @@ import java.util.List;
 import me.everything.providers.android.calendar.Calendar;
 import me.everything.providers.android.calendar.CalendarProvider;
 import me.everything.providers.android.calendar.Event;
-import me.everything.providers.android.calendar.Instance;
 
 import static java.lang.Math.abs;
 
-// Fuck this piece of shit Framework and its piece of shit documentation. We are doing this synchronous now.
+
 public class CalendarAPI {
     public static final String FOCUS_TIME_CALENDAR_NAME = "Focus Time Calendar";
     public static final String FOCUS_TIME_ACCOUNT_NAME ="focustime";
@@ -32,7 +31,7 @@ public class CalendarAPI {
 
     public CalendarAPI(Context context) {
         calendarProvider = new CalendarProvider(context);
-        //this.deleteFocusTimeCalendar(context);
+        //this.deleteFocusTimeCalendar(context); //Use this do autodelete Calendar if neccessary
         this.createFocusTimeCalendar(context);
 
 
@@ -90,10 +89,8 @@ public class CalendarAPI {
 
 
             FocusTime f = getFocusTimeById(event.id);
-            //if(!f.getBeginTime().before(java.util.Calendar.getInstance())){
-                focusTimes.add(f);
-           // }
-            //focusTimes.add(getFocusTimeById(event.id));
+            focusTimes.add(f);
+
         }
         Collections.sort(focusTimes, ((o1, o2) -> o1.getBeginTime().compareTo(o2.getBeginTime())));
 
@@ -101,7 +98,7 @@ public class CalendarAPI {
     }
 
     /**
-     * Returns a List of every FocusTime Event that is happening from today on
+     * Returns the next FocusTime that is going to happen-
      *
      * @return List of every FocusTime Event.
      */
@@ -109,17 +106,13 @@ public class CalendarAPI {
         Calendar c = getFocusTimeCalendar();
         List<Event> e = calendarProvider.getEvents(c.id).getList();
 
-
         ArrayList<FocusTime> focusTimes = new ArrayList<>();
 
         for(Event event: e) {
-
-
             FocusTime f = getFocusTimeById(event.id);
             if(!f.getBeginTime().before(java.util.Calendar.getInstance())){
                 focusTimes.add(f);
             }
-            //focusTimes.add(getFocusTimeById(event.id));
         }
         Collections.sort(focusTimes, ((o1, o2) -> o1.getBeginTime().compareTo(o2.getBeginTime())));
 
@@ -131,6 +124,11 @@ public class CalendarAPI {
         }
     }
 
+    /**
+     *
+     * @param day The day that events should be gotten from
+     * @return List of FocusTimes from that day
+     */
     public List<FocusTime> getFocusTimesByDay(java.util.Calendar day) {
         Calendar c = getFocusTimeCalendar();
         List<Event> e = calendarProvider.getEvents(c.id).getList();
@@ -155,7 +153,6 @@ public class CalendarAPI {
             if(!f.getBeginTime().before(start) && !f.getBeginTime().after(end)){
                 focusTimes.add(f);
             }
-            //focusTimes.add(getFocusTimeById(event.id));
         }
         Collections.sort(focusTimes, ((o1, o2) -> o1.getBeginTime().compareTo(o2.getBeginTime())));
 
@@ -172,10 +169,9 @@ public class CalendarAPI {
     public FocusTime getFocusTimeById(long id) {
         Event event = calendarProvider.getEvent(id);
         if(event.calendarId != getFocusTimeCalendar().id) {
-            Log.e("CalendarAPI: ", "The selected Event doesn't belong to the Focus Time Calendar!");
+            //The selected Event doesn't belong to the Focus Time Calendar!
             return null;
         }
-
 
         java.util.Calendar beginTime = java.util.Calendar.getInstance();
         beginTime.setTimeInMillis(event.dTStart);
@@ -192,11 +188,10 @@ public class CalendarAPI {
             for (int i = 0; i < split.length-1; i++) {
                 title += split[i];
             }
-        }catch (Exception e) {
-            // No level encoded! Set to default 0!
+        }catch (NumberFormatException e) {
+            // No level encoded!
+            // Level is set to default (0).
         }
-
-        //int focusTimeLevel = 0;
 
         return new FocusTime(title, beginTime, endTime, focusTimeLevel,  event.id);
     }
@@ -219,7 +214,7 @@ public class CalendarAPI {
         values.put(Events.TITLE, focusTime.getTitle() + "#" + focusTime.getFocusTimeLevel());
         values.put(Events.ACCESS_LEVEL, Events.ACCESS_PUBLIC);
         values.put(Events.CALENDAR_ID, this.getFocusTimeCalendar().id);
-        values.put(Events.EVENT_TIMEZONE, "UTC"); //TODO: Add support for different timezones
+        values.put(Events.EVENT_TIMEZONE, "UTC");
         Uri uri = cr.insert(Events.CONTENT_URI, values);
 
         long eventID = Long.parseLong(uri.getLastPathSegment());
@@ -237,7 +232,6 @@ public class CalendarAPI {
 
         boolean alreadyExists = false;
         for(int i = 0; i < calendars.size(); i++) {
-            //Log.e("test", calendars.get(i).displayName);
             if(calendars.get(i).displayName.equals(FOCUS_TIME_CALENDAR_NAME)){
                 alreadyExists = true;
                 break;
@@ -257,7 +251,7 @@ public class CalendarAPI {
             values.put(CalendarContract.Calendars.CALENDAR_COLOR, 0x00FF00);
             values.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_EDITOR);
             values.put(CalendarContract.Calendars.OWNER_ACCOUNT, FOCUS_TIME_ACCOUNT_NAME);
-            values.put(CalendarContract.Calendars.VISIBLE, 1);
+            values.put(CalendarContract.Calendars.VISIBLE, 0);
             values.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
             values.put(CalendarContract.Calendars.CALENDAR_TIME_ZONE, "Europe/Rome");
             values.put(CalendarContract.Calendars.CAN_PARTIALLY_UPDATE, 1);
@@ -269,7 +263,6 @@ public class CalendarAPI {
             values.put(CalendarContract.Calendars.CAL_SYNC8, System.currentTimeMillis());
 
             Uri newCalendar = context.getContentResolver().insert(target, values);
-            Log.e("CalendarAPI", "NEW FOCUS TIME CALENDAR WAS CREATED");
         }
 
     }
@@ -282,11 +275,11 @@ public class CalendarAPI {
      */
     public boolean deleteFocusTime(Context context, FocusTime focusTime) {
         if(focusTime.getId() == FocusTime.UNDEFINED_ID) {
-            Log.e("CalendarAPI", "deleteFocusTime - Given FocusTime doesn't have a valid ID.");
+            //Given FocusTime doesn't have a valid ID.
             return false;
         } else {
             if(getFocusTimeById(focusTime.getId()) == null) {
-                Log.e("CalendarAPI", "deleteFocusTime - The given Event is not a FocusTime!");
+                //The given Event is not a FocusTime!
                 return false;
             } else {
                 ContentResolver cr = context.getContentResolver();
@@ -308,11 +301,11 @@ public class CalendarAPI {
      */
     public boolean updateFocusTime(Context context, FocusTime focusTime) {
         if(focusTime.getId() == FocusTime.UNDEFINED_ID) {
-            Log.e("CalendarAPI", "updateFocusTime - Given FocusTime doesn't have a valid ID.");
+           //Given FocusTime doesn't have a valid ID.
             return false;
         } else {
             if(getFocusTimeById(focusTime.getId()) == null) {
-                Log.e("CalendarAPI", "updateFocusTime - The given Event is not a FocusTime!");
+                //The given Event is not a FocusTime!
                 return false;
             } else {
                 ContentResolver cr = context.getContentResolver();
@@ -345,7 +338,7 @@ public class CalendarAPI {
         calUri = calUri.buildUpon()
                 .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
                 .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, FOCUS_TIME_ACCOUNT_NAME)
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE, "com.google")
+                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE, "LOCAL")
                 .build();
 
         ContentResolver cr = context.getContentResolver();
@@ -403,14 +396,12 @@ public class CalendarAPI {
                 for(Event event: events) {
 
                     if(event.dTStart > java.util.Calendar.getInstance().getTimeInMillis()) { // Filters for only upcoming events
-                        //Log.e("lkjsad", event.title);
                         boolean isAlreadyImported = false;
 
                         for(FocusTime ft: focusTimes) { // Check if the Event has already been imported
 
                             if(ft.getTitle().equals(event.title) && abs(ft.getBeginTime().getTimeInMillis() -event.dTStart) < 80000) {
                                 isAlreadyImported = true;
-                                //Log.e("lakjsd", event.title);
                                 break;
                             }
                         }
@@ -427,7 +418,7 @@ public class CalendarAPI {
 
         }
 
-        return null; //
+        return null;
     }
 
 

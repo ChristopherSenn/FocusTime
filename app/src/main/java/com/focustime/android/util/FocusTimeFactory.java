@@ -1,7 +1,5 @@
 package com.focustime.android.util;
 
-import android.util.Log;
-
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.ui.calendar.day.DayElement;
 

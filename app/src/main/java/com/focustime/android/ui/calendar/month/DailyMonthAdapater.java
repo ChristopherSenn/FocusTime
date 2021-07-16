@@ -2,9 +2,7 @@ package com.focustime.android.ui.calendar.month;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +20,6 @@ import com.focustime.android.ui.calendar.edit.CalendarEditFragment;
 import com.focustime.android.util.FocusTimeFactory;
 import com.focustime.android.util.TimeFormatter;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.sql.Time;
 import java.util.ArrayList;
 
 public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.RecyclerViewViewHolder> {
@@ -116,10 +112,7 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
 
 
         dayElements.remove(position);
-
-        //this.notifyItemRangeRemoved(position, dayElements.size());
-        notifyItemRemoved(position);
-        //notifyDataSetChanged();
+        notifyItemRemoved(position); // Remove item from list
 
         api.deleteFocusTime(getContext(), api.getFocusTimeById(recentlyDeletedItem.getDbId())); //Delete item from db
         showUndoSnackbar(); // Show a snackbar to undo the delete

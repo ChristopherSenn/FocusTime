@@ -3,7 +3,6 @@ package com.focustime.android.ui.calendar.importEvents;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
-import com.focustime.android.ui.calendar.create.CalendarCreateFragment;
-import com.focustime.android.ui.calendar.day.DayElement;
 import com.focustime.android.util.FocusTimeFactory;
 import com.focustime.android.util.TimeFormatter;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -88,9 +83,7 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
                 duration = duration.substring(0, duration.length() - 1);
                 duration = duration.substring(1);
 
-
-                String[] codes =  {"DAILY", "WEEKLY", "MONTHLY"};
-                eventCode = event.rRule.split(";")[0].substring(5);
+                eventCode = event.rRule.split(";")[0].substring(5); //They have some very weird encoding of repeating events which makes this necessary
 
 
                 long deltaMs = Long.parseLong(duration) * 1000;
@@ -104,6 +97,7 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
         endMinute = TimeFormatter.formatHourMinute(endDate.get(Calendar.MINUTE));
 
         String stringTime = beginHour + ":" + beginMinute + " - " + endHour + ":" + endMinute;
+        //They have some very weird encoding of repeating events which makes this necessary
         if(eventCode != null) stringDate = stringDate + " - " + eventCode.substring(0, 1) + eventCode.substring(1).toLowerCase();
         holder.date.setText(stringDate);
 
@@ -140,6 +134,7 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
                         event.title = event.title + "#" + which;
 
                         if(event.rRule != null) {
+                            //They have some very weird encoding of repeating events which makes this necessary
                             String eventCode = event.rRule.split(";")[0].substring(5);
                             long oneDayMs = 86400000;
                             event.dTend = endDate.getTimeInMillis();
@@ -175,17 +170,13 @@ public class ImportEventsAdapter extends RecyclerView.Adapter <ImportEventsAdapt
                                     }
                             }
                         } else {
-
                                 FocusTime importFocusTime = FocusTimeFactory.buildFocusTime(event);
-
                                 api.createFocusTime(importFocusTime, context);
 
                         }
 
                         events.remove(position);
                         notifyDataSetChanged();
-
-
 
 
                     }

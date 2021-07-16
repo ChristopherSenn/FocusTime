@@ -10,17 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.focustime.android.R;
-import com.focustime.android.databinding.CalendarDayFragmentBinding;
 import com.focustime.android.databinding.ImportEventsFragmentBinding;
-import com.focustime.android.ui.calendar.day.CalendarDayViewModel;
-import com.focustime.android.ui.calendar.day.CalenderDayAdapter;
 import com.focustime.android.util.ActionBarSetter;
 
 public class ImportEventsFragment extends Fragment {

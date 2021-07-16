@@ -1,7 +1,5 @@
 package com.focustime.android.ui.calendar.month;
 
-import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,7 +11,6 @@ import com.focustime.android.R;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MonthViewHolder extends RecyclerView.ViewHolder
@@ -36,7 +33,6 @@ public class MonthViewHolder extends RecyclerView.ViewHolder
         dot_imageView = itemView.findViewById(R.id.dot_focusTime);
         this.monthAdapter = monthAdapter;
         this.onItemListener = onItemListener;
-        //itemView.setOnClickListener(this);
         this.daysOfMonth = daysOfMonth;
 
     }

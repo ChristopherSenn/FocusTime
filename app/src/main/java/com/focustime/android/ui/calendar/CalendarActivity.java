@@ -1,20 +1,14 @@
 package com.focustime.android.ui.calendar;
 
-//import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.focustime.android.R;
 
-import com.focustime.android.data.service.CalendarAPI;
-import com.focustime.android.data.service.FocusTimeService;
 import com.focustime.android.databinding.ActivityCalendarBinding;
-import com.focustime.android.ui.calendar.month.MonthViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.ActionBar;
@@ -26,9 +20,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-
 
 public class CalendarActivity extends AppCompatActivity {
     private final int CALLBACK_ID = 42;
@@ -39,7 +30,6 @@ public class CalendarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_calendar);
 
 
         ActionBar bar = getSupportActionBar();

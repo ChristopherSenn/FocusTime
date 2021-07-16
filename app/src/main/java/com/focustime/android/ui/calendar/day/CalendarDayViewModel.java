@@ -19,7 +19,6 @@ import androidx.work.WorkManager;
 
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
-import com.focustime.android.data.service.CalendarService;
 import com.focustime.android.util.ScheduleFocusTimeWorker;
 
 import java.util.Calendar;
@@ -46,25 +45,14 @@ public class CalendarDayViewModel extends AndroidViewModel {
         daySchedule = new ArrayList<>();
         init();
 
-        //Intent intent = new Intent(context, CalendarService.class);
-        //context.startService(intent);
 
         scheduleFocusTimeWorker();
-        //testService();
 
-        // TODO: Find a workaround for blocking the UI Thread
         while(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             try{Thread.sleep(10);}
             catch (Exception e){}
         }
-        //testAPI();
-        context.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.e("Broadcast Receiver", "Received");
-                //Toast.makeText(context, "service done", Toast.LENGTH_SHORT).show();
-            }
-        }, new IntentFilter(CalendarService.SERVICE_RECEIVER_ID));
+
 
     }
 
@@ -75,14 +63,13 @@ public class CalendarDayViewModel extends AndroidViewModel {
             int beginMinute = f.getBeginTime().get(java.util.Calendar.MINUTE);
             String date = f.getBeginTime().get(java.util.Calendar.YEAR) + "-" + (f.getBeginTime().get(java.util.Calendar.MONTH) + 1)
                     + "-" + f.getBeginTime().get(java.util.Calendar.DAY_OF_MONTH);
-            //Log.e("date",  date);
+
 
             int duration = (int)(f.getEndTime().getTimeInMillis() - f.getBeginTime().getTimeInMillis()) / 1000 / 60;
 
 
             daySchedule.add(new DayElement(f.getTitle(),beginHour, beginMinute, duration, date, f.getFocusTimeLevel(), FocusTime.UNDEFINED_ID));
         }
-        //fillWithTestData();
         elementList.setValue(daySchedule);
     }
 
@@ -99,73 +86,11 @@ public class CalendarDayViewModel extends AndroidViewModel {
         return elementList;
     }
 
-    /*public void testService() {
-        TaskRunner taskRunner = new TaskRunner();
-        taskRunner.executeAsync(new StartServiceTask(), (result) -> {
-            makeServiceDoSomething();
-        });
-    }*/
-
-
-
-
-
-    /*public void makeServiceDoSomething(){
-        if( FocusTimeService.isRunning )
-            FocusTimeService.instance.doSomething();
-    }*/
-
-    /*public void testAPI() {
-
-
-        List<Calendar> calendars = api.getAllCalendars();
-        for(int i = 0; i < calendars.size(); i++) {
-            Log.e("ase", calendars.get(i).toString());
-            Log.e("Calendar", calendars.get(i).displayName + ", id " + calendars.get(i).id);
-        }
-        java.util.Calendar beginTime = java.util.Calendar.getInstance();
-        beginTime.set(2021, 5, 28, 15, 00);
-        java.util.Calendar endTime = java.util.Calendar.getInstance();
-        endTime.set(2021, 5, 28, 15, 30);
-
-        long id = api.createFocusTime(new FocusTime("Test Title3", "Test Description",
-                beginTime,
-                endTime));
-        //Log.e("asljealksejas     ID", id+"");
-
-
-        Log.e("Events length", api.getFocusTimes().size()+"");
-        for(FocusTime ft: api.getFocusTimes()) {
-            //Log.e("a", ft.toString());
-            Log.e("alksje", ft.getId() + "  " + ft.getTitle());
-        }
-
-
-    }*/
 
     public LiveData<String> getText() {
         return mText;
     }
 
-    /*class StartServiceTask implements Callable<Void> {
-
-        @Override
-        public Void call() {
-            if( FocusTimeService.isRunning ){
-                // Stop service
-                Intent intent = new Intent(context, FocusTimeService.class);
-                context.stopService(intent);
-            }
-            else {
-                // Start service
-                Intent intent = new Intent(context, FocusTimeService.class);
-                context.startService(intent);
-                Log.e("Service TEst", "Service Started");
-
-            }
-            return null;
-        }
-    }*/
 
     public void deleteApiEntry(long id, Context c){
         String stringId = "" + id;

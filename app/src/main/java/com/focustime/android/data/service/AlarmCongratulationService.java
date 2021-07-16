@@ -45,7 +45,6 @@ public class AlarmCongratulationService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.i(TAG, "AlarmCongratulationService is destroyed");
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent i =  new Intent(this, CongratulationAlertReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this,0, i,0);
@@ -64,7 +63,6 @@ public class AlarmCongratulationService extends Service {
         else
             startForeground(1, new Notification());
 
-        Log.i(TAG, "AlarmCongratulationService is created");
 
         mStartTimeInMills = intent.getLongExtra("mStartTimeInMills", 600000);
 

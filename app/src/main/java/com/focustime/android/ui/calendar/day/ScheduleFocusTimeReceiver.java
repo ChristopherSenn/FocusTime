@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
-import com.focustime.android.data.service.FocusTimeService;
+
 import com.focustime.android.ui.calendar.focusButton.FocusButtonFragment;
 import com.focustime.android.util.FocusTimeServiceStarter;
 

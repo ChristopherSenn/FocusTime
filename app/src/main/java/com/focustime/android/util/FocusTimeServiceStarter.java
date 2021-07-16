@@ -4,12 +4,10 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.focustime.android.data.service.AlarmCongratulationService;
-import com.focustime.android.ui.calendar.focusButton.FocusButtonFragment;
 
 /**
  * Utility class used to start the AlarmCongratulation service wherever in the App it is neccessary.
