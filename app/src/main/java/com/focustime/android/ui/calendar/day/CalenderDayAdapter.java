@@ -2,7 +2,6 @@ package com.focustime.android.ui.calendar.day;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.focustime.android.R;
-import com.focustime.android.ui.calendar.edit.CalendarEditFragment;
+import com.focustime.android.ui.calendar.edit.CalendarEditActivity;
 
 import java.util.ArrayList;
 
@@ -59,10 +56,13 @@ public class CalenderDayAdapter extends RecyclerView.Adapter <CalenderDayAdapter
             }
         });
 
+        /**
+         * Opens the Edit View when the edit Button gets klicked
+         */
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(context, CalendarEditFragment.class);
+                Intent intent = new Intent(context, CalendarEditActivity.class);
                 intent.putExtra("id", dayElement.getDbId());
                 intent.putExtra("hour", dayElement.getStartHour());
                 intent.putExtra("minute", dayElement.getStartMinute());

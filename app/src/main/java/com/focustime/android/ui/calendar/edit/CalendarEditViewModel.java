@@ -11,6 +11,9 @@ import com.focustime.android.ui.calendar.day.DayElement;
 
 import java.util.Calendar;
 
+/**
+ * Interface of the Edit Activity to the API
+ */
 public class CalendarEditViewModel extends AndroidViewModel {
     private Context context;
 

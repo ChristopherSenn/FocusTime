@@ -1,7 +1,9 @@
 package com.focustime.android.ui.calendar.day;
 
 import java.util.Date;
-
+/**
+Dayelement for the RecyclerView in the DayView
+ */
 public class DayElement {
 
     private String title;

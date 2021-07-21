@@ -24,7 +24,9 @@ import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.databinding.CalendarDayFragmentBinding;
 
-
+/**
+ * Fragment for the display of Focus Times as Day View
+ */
 public class CalendarDayFragment extends Fragment {
 
 
@@ -61,7 +63,7 @@ public class CalendarDayFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // TODO: Use the ViewModel
+
         mViewModel.getToday();
     }
 

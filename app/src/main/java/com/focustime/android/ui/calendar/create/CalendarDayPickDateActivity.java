@@ -13,10 +13,13 @@ import com.focustime.android.R;
 
 import java.util.Calendar;
 
-public class CalendarDayPickDateFragment extends Activity {
+/**
+ * Date Picker For picking a Date (for creating or editing)
+ */
+public class CalendarDayPickDateActivity extends Activity {
 
-    public static CalendarDayPickDateFragment newInstance() {
-        return new CalendarDayPickDateFragment();
+    public static CalendarDayPickDateActivity newInstance() {
+        return new CalendarDayPickDateActivity();
     }
 
     public void onCreate(Bundle savedInstanceState) {

@@ -17,13 +17,16 @@ import androidx.annotation.RequiresApi;
 import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
-import com.focustime.android.ui.calendar.create.CalendarDayPickDateFragment;
+import com.focustime.android.ui.calendar.create.CalendarDayPickDateActivity;
 import com.focustime.android.ui.calendar.day.DayElement;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Calendar;
 import java.util.List;
 
-public class CalendarEditFragment extends Activity {
+/**
+ * Activity for editing a FocusTime
+ */
+public class CalendarEditActivity extends Activity {
 
     private Calendar inputDate;
     private int hour, minute;
@@ -35,8 +38,8 @@ public class CalendarEditFragment extends Activity {
     private List<String> spinnerOptions;
 
 
-    public static CalendarEditFragment newInstance() {
-        return new CalendarEditFragment();
+    public static CalendarEditActivity newInstance() {
+        return new CalendarEditActivity();
     }
 
     @SuppressLint("SetTextI18n")
@@ -78,10 +81,13 @@ public class CalendarEditFragment extends Activity {
         date.setText(getStringDateFromCalendar(inputDate));
 
 
+        /**
+         * Button to Open the Date Picker
+         */
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CalendarDayPickDateFragment.class);
+                Intent intent = new Intent(getApplicationContext(), CalendarDayPickDateActivity.class);
                 int[] dateInt = new int[] {inputDate.get(Calendar.DAY_OF_MONTH), inputDate.get(Calendar.MONTH), inputDate.get(Calendar.YEAR)};
                 intent.putExtra("date", dateInt);
                 startActivityForResult(intent, 100);
@@ -89,6 +95,9 @@ public class CalendarEditFragment extends Activity {
             }
         });
 
+        /**
+         * Button to Save the Set Data
+         */
         button.setOnClickListener(new View.OnClickListener(){
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -142,7 +151,7 @@ public class CalendarEditFragment extends Activity {
 
     /**
      *
-     * @param c
+     * @param c Calendar
      * @return YYYYY-MM-DD
      *
      * Note that Calender Month starts with 0 = Jan (so Î add 1)
@@ -156,7 +165,6 @@ public class CalendarEditFragment extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && data.getExtras() != null) {
-            System.out.println(data.getIntExtra("year", 0));
             inputDate.set(Calendar.YEAR, data.getIntExtra("year", 0));
             inputDate.set(Calendar.MONTH, data.getIntExtra("month", 0));
             inputDate.set(Calendar.DAY_OF_MONTH, data.getIntExtra("day", 0));
@@ -164,6 +172,10 @@ public class CalendarEditFragment extends Activity {
         }
     }
 
+    /**
+     *  Saves an Edited FocusTime in the Backend
+     * @param d
+     */
     public void editItem(DayElement d){
 
         CalendarAPI api = new CalendarAPI(getApplicationContext());

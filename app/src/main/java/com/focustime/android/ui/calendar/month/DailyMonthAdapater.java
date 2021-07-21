@@ -16,7 +16,7 @@ import com.focustime.android.R;
 import com.focustime.android.data.model.FocusTime;
 import com.focustime.android.data.service.CalendarAPI;
 import com.focustime.android.ui.calendar.day.DayElement;
-import com.focustime.android.ui.calendar.edit.CalendarEditFragment;
+import com.focustime.android.ui.calendar.edit.CalendarEditActivity;
 import com.focustime.android.util.FocusTimeFactory;
 import com.focustime.android.util.TimeFormatter;
 import com.google.android.material.snackbar.Snackbar;
@@ -77,7 +77,7 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(context, CalendarEditFragment.class);
+                Intent intent = new Intent(context, CalendarEditActivity.class);
                 intent.putExtra("id", dayElement.getDbId());
                 intent.putExtra("hour", dayElement.getStartHour());
                 intent.putExtra("minute", dayElement.getStartMinute());

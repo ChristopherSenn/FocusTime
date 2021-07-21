@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * This Class handles the Backend Connection to the Day View and the Update of the Schedule List in the DayView
+ */
 public class CalendarDayViewModel extends AndroidViewModel {
     private MutableLiveData<String> mText;
     private Context context;
@@ -56,6 +58,10 @@ public class CalendarDayViewModel extends AndroidViewModel {
 
     }
 
+
+/**
+ * gets the whole Schedule from the Backend API and stores it in daySchedule
+ */
     public void init(){
         List<FocusTime> focusTimes = api.getFocusTimes();
         for(FocusTime f: focusTimes) {
@@ -92,6 +98,13 @@ public class CalendarDayViewModel extends AndroidViewModel {
     }
 
 
+    /**
+     *
+     * Deletes a Focus Time Entry in the Database by it's ID
+     *
+     * @param id FocusTime id (assigned when the Focus time gets created)
+     * @param c Context
+     */
     public void deleteApiEntry(long id, Context c){
         String stringId = "" + id;
         api.deleteFocusTime(c, api.getFocusTimeById(id));

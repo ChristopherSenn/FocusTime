@@ -31,6 +31,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Calendar;
 import java.util.List;
 
+
+/**
+ * Fragment for creating a new FocusTime
+ */
 public class CalendarCreateFragment extends Fragment {
 
     private CalendarCreateViewModel mViewModel;
@@ -89,17 +93,22 @@ public class CalendarCreateFragment extends Fragment {
             dateInt = new int[] {inputDate.get(Calendar.DAY_OF_MONTH), inputDate.get(Calendar.MONTH), inputDate.get(Calendar.YEAR)};
         }
 
-
+        /**
+         * Button to open the Date Picker
+         */
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(root.getContext(), CalendarDayPickDateFragment.class);
+                Intent intent = new Intent(root.getContext(), CalendarDayPickDateActivity.class);
                 intent.putExtra("date", dateInt);
                 startActivityForResult(intent, 100);
 
             }
         });
 
+        /**
+         * Button to Create FocusTime with set Properties
+         */
         button.setOnClickListener(new View.OnClickListener(){
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -160,11 +169,17 @@ public class CalendarCreateFragment extends Fragment {
         return returnValue;
     }
 
+
+    /**
+     * For the Result from the Date Picker
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && data.getExtras() != null) {
-            System.out.println(data.getIntExtra("year", 0));
             inputDate.set(Calendar.YEAR, data.getIntExtra("year", 0));
             inputDate.set(Calendar.MONTH, data.getIntExtra("month", 0));
             inputDate.set(Calendar.DAY_OF_MONTH, data.getIntExtra("day", 0));
