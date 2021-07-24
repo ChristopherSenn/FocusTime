@@ -55,7 +55,7 @@ public class MonthViewModel extends AndroidViewModel {
      */
     private void scheduleFocusTimeWorker() {
         PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(ScheduleFocusTimeWorker.class, 15, TimeUnit.MINUTES).build();
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork("NextFocusTime", ExistingPeriodicWorkPolicy.REPLACE ,periodicWork);
+        WorkManager.getInstance().enqueueUniquePeriodicWork("NextFocusTime", ExistingPeriodicWorkPolicy.REPLACE ,periodicWork);
 
     }
 

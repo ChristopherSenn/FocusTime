@@ -51,7 +51,10 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
         final Boolean focusTimeSet = focusTimesSet.get(position);
         this.monthViewHolder = holder;
 
-
+        /**
+         * set background color for selected date
+         * set dot under dates with saved focus times
+         */
         if (date == null){
             holder.dayOfMonth.setText("");
             holder.dot_imageView.setVisibility(View.GONE);

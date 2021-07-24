@@ -130,7 +130,7 @@ public class DailyMonthAdapater extends RecyclerView.Adapter<DailyMonthAdapater.
     }
 
     /**
-     * Readd the deleted item to the ArrayList and the Database
+     * Read the deleted item to the ArrayList and the Database
      */
     private void undoDelete() {
 
