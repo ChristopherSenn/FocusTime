@@ -117,6 +117,7 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
     }
 
+
     public void setDayViews() {
 
         updateElementList();
@@ -131,6 +132,12 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
         });
     }
+
+    /**
+     * gets the focus times for one particular date
+     * is used to get the daily view of schedules when clicking on a date
+     *
+     */
 
     private void updateElementList() {
         CalendarAPI api = new CalendarAPI(getContext());
@@ -175,6 +182,15 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
 
     }
 
+    /**
+     * Returns a list of booleans
+     * Is used to set dots under dates with focus times
+     * If there a focus times for a date the boolean value is true
+     * Otherwise it is false
+     *
+     * @return List of booleans
+     */
+
     public ArrayList<Boolean> setDot(){
 
         CalendarAPI api = new CalendarAPI(getContext());
@@ -207,6 +223,14 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         return setDotArray;
     }
 
+    /**
+     * Returns a list of dates
+     * Is used to display the days for one month
+     *
+     * @param date The current date
+     * @return List of dates
+     */
+
     public static ArrayList<LocalDate> daysInMonthArray(LocalDate date)
     {
         ArrayList<LocalDate> daysInMonthArray = new ArrayList<>();
@@ -238,11 +262,10 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         return date.format(formatter);
     }
 
-    public String formatDate(LocalDate date)
-    {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
-        return date.format(formatter);
-    }
+    /**
+     * Used for the button click to go to previous month
+     * Displays the previous month with its focus times
+     */
 
     public void previousMonthAction(View view)
     {
@@ -251,6 +274,10 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         updateElementList();
     }
 
+    /**
+     * Used for the button click to go to the next month
+     * Displays the next month with its focus times
+     */
     public void nextMonthAction(View view)
     {
         selectedDate = selectedDate.plusMonths(1);
@@ -258,10 +285,10 @@ public class MonthViewFragment extends Fragment implements MonthAdapter.OnItemLi
         updateElementList();
     }
 
-    public MonthViewModel getmViewModel() {
-        return mViewModel;
-    }
-
+    /**
+     * Updates the selected date
+     * Updates list of focus times
+     */
 
     @Override
     public void onItemClick(LocalDate date) {
