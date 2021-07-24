@@ -35,7 +35,9 @@ import com.focustime.android.util.FocusTimeServiceStarter;
 
 import java.util.Locale;
 
-
+/**
+ * Fragment for the display of view about setting focus time manually
+ */
 public class FocusButtonFragment extends Fragment {
 
     private FocusButtonViewModel mViewModel;
@@ -80,6 +82,9 @@ public class FocusButtonFragment extends Fragment {
 
         timerCircle = binding.timer;
 
+        /**
+         * set start and stop button
+         */
         mButtonStartStop.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -95,6 +100,9 @@ public class FocusButtonFragment extends Fragment {
         });
 
 
+        /**
+         * set CustomTimePickerDialog on a Button
+         */
         mTextViewCountdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,9 +174,6 @@ public class FocusButtonFragment extends Fragment {
                         mCountDownTimer.cancel();
                         mTimerRunning = false;
 
-                        resetTimerCircle();
-
-
                         updateCountDownText(mStartTimeInMills);
                         updateComponents();
                     }
@@ -193,18 +198,12 @@ public class FocusButtonFragment extends Fragment {
         mTimerRunning = false;
         mTimeLeftInMillis = mStartTimeInMills;
 
-        resetTimerCircle();
         mCountDownTimer.cancel();
 
         mCountDownTimer.cancel();
         updateCountDownText(mStartTimeInMills);
         updateComponents();
         focusTimeServiceStarter.cancelDND(getContext());
-    }
-
-    private void resetTimerCircle() {
-
-
     }
 
     private void updateCountDownText() {
@@ -241,6 +240,9 @@ public class FocusButtonFragment extends Fragment {
         }
     }
 
+    /**
+     * Read the necessary information from SharedPreferences
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onStart() {
@@ -273,6 +275,10 @@ public class FocusButtonFragment extends Fragment {
         }
     }
 
+
+    /**
+     * save the necessary information from SharedPreferences
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -296,6 +302,9 @@ public class FocusButtonFragment extends Fragment {
         }
     }
 
+    /**
+     * When user click the start button, a dialog pops up to set the dnd level
+     */
     private void showDNDTypesDialog(){
         final String[] items = { "Priority only", "Alarms only", "Total Silence" };
         dndLevel = 0;

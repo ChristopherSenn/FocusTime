@@ -11,7 +11,9 @@ import java.util.List;
 import android.content.DialogInterface;
 import android.widget.NumberPicker;
 
-
+/**
+ * Customize a dialog with timepicker with different time intervals
+ */
 public class CustomTimePickerDialog extends TimePickerDialog {
 
     private final static int TIME_PICKER_INTERVAL = 5;

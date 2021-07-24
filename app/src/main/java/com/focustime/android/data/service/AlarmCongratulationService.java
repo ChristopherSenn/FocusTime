@@ -21,6 +21,9 @@ import androidx.core.app.NotificationCompat;
 import com.focustime.android.R;
 import com.focustime.android.ui.calendar.focusButton.CongratulationAlertReceiver;
 
+/**
+ * One Service for setting up congratulations notifications
+ */
 public class AlarmCongratulationService extends Service {
     public static final String NOTIFICATION_CHANNEL_ID = "com.example.focustime";
     private final static String TAG = "AlarmCService";
@@ -43,6 +46,9 @@ public class AlarmCongratulationService extends Service {
         super.onCreate();
     }
 
+    /**
+     * Cancel reciever
+     */
     @Override
     public void onDestroy() {
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -53,6 +59,13 @@ public class AlarmCongratulationService extends Service {
         super.onDestroy();
     }
 
+    /**
+     *  Get the time by intent and use it to set the alarm and receiver
+     * @param intent
+     * @param flags
+     * @param startId
+     * @return
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -81,6 +94,9 @@ public class AlarmCongratulationService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    /**
+     * Set up the notification channel
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startMyOwnForeground(){
         String channelName = "My Background Service";

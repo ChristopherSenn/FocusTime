@@ -14,6 +14,9 @@ import androidx.core.app.NotificationCompat;
 import com.focustime.android.R;
 import com.focustime.android.ui.calendar.CalendarActivity;
 
+/**
+ * Help setting with notifications
+ */
 public class NotificationHelper extends ContextWrapper {
     public static final String channelID = "channelID";
     public static final String channelName = "Channel Name";

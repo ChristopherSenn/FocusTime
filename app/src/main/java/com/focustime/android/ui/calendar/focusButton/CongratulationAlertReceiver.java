@@ -11,6 +11,9 @@ import androidx.core.app.NotificationCompat;
 
 import com.focustime.android.data.service.AlarmCongratulationService;
 
+/**
+ * A receiver to cancel DND mode and trigger congratulation notifications when the timer is over.
+ */
 public class CongratulationAlertReceiver extends BroadcastReceiver {
     private NotificationManager mNotificationManager;
     private Intent notificationIntent;
